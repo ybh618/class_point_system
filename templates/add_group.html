@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h2">
+            <i class="bi bi-plus-circle-fill text-primary"></i> 添加小组
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-collection-fill"></i> 小组信息
+                </h5>
+            </div>
+            <form method="POST">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">小组名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                               placeholder="请输入小组名称，如：第一组、创新组等">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="class_name" class="form-label">所属班级 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="class_name" name="class_name" required
+                               placeholder="请输入班级名称">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">小组描述</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"
+                                  placeholder="请输入小组描述或目标（选填）"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="color" class="form-label">小组颜色</label>
+                        <div class="d-flex align-items-center">
+                            <input type="color" class="form-control form-control-color me-3"
+                                   id="color" name="color" value="#007bff" style="width: 60px;">
+                            <div class="flex-grow-1">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button type="button" class="btn btn-sm" style="background-color: #007bff;"
+                                            onclick="setColor('#007bff')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #28a745;"
+                                            onclick="setColor('#28a745')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #dc3545;"
+                                            onclick="setColor('#dc3545')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #ffc107;"
+                                            onclick="setColor('#ffc107')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #6f42c1;"
+                                            onclick="setColor('#6f42c1')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #fd7e14;"
+                                            onclick="setColor('#fd7e14')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #20c997;"
+                                            onclick="setColor('#20c997')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #e83e8c;"
+                                            onclick="setColor('#e83e8c')">&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 预览 -->
+                    <div class="alert alert-light">
+                        <h6 class="mb-2">预览效果</h6>
+                        <div class="p-3 rounded" id="preview" style="background-color: #007bff20; border-left: 4px solid #007bff;">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-collection-fill me-2" style="color: #007bff;"></i>
+                                <strong id="previewName">小组名称</strong>
+                            </div>
+                            <small class="text-muted" id="previewClass">班级名称</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> 创建小组
+                    </button>
+                    <a href="{{ url_for('groups') }}" class="btn btn-secondary ms-2">
+                        <i class="bi bi-x-circle"></i> 取消
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-info-circle-fill"></i> 使用说明
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle text-success"></i>
+                        小组用于班级内的团队协作和竞争
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle text-success"></i>
+                        可以为学生分配小组，统计小组平均分
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-info-circle text-info"></i>
+                        选择合适的颜色便于区分不同小组
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-info-circle text-info"></i>
+                        小组描述可以说明小组目标或特色
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-lightbulb-fill"></i> 小组建议
+                </h6>
+            </div>
+            <div class="card-body">
+                <h6>常见小组类型：</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="bi bi-star text-warning"></i>
+                        <strong>学习小组：</strong>按学习成绩分组
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-star text-warning"></i>
+                        <strong>兴趣小组：</strong>按兴趣爱好分组
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-star text-warning"></i>
+                        <strong>竞赛小组：</strong>用于各种竞赛活动
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-star text-warning"></i>
+                        <strong>值日小组：</strong>轮流负责班级事务
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('name');
+    const classInput = document.getElementById('class_name');
+    const colorInput = document.getElementById('color');
+    const preview = document.getElementById('preview');
+    const previewName = document.getElementById('previewName');
+    const previewClass = document.getElementById('previewClass');
+
+    function updatePreview() {
+        const name = nameInput.value || '小组名称';
+        const className = classInput.value || '班级名称';
+        const color = colorInput.value;
+
+        previewName.textContent = name;
+        previewClass.textContent = className;
+        preview.style.backgroundColor = color + '20';
+        preview.style.borderLeftColor = color;
+        preview.querySelector('i').style.color = color;
+    }
+
+    nameInput.addEventListener('input', updatePreview);
+    classInput.addEventListener('input', updatePreview);
+    colorInput.addEventListener('change', updatePreview);
+});
+
+function setColor(color) {
+    document.getElementById('color').value = color;
+    document.getElementById('color').dispatchEvent(new Event('change'));
+}
+</script>
+{% endblock %}
