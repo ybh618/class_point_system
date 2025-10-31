@@ -387,6 +387,27 @@ def points_records():
 
     return render_template('points_records.html', records=records, search=search)
 
+@app.route('/points/<int:record_id>/revert', methods=['POST'])
+def revert_points_record(record_id):
+    """撤回加分记录"""
+    record = PointsRecord.query.get_or_404(record_id)
+
+    if record.points <= 0:
+        flash('只能撤回加分记录。', 'error')
+        return redirect(request.referrer or url_for('points_records'))
+
+    student_name = record.student.name if record.student else '该学生'
+    db.session.delete(record)
+    db.session.commit()
+
+    flash(f'已撤回 {student_name} 的加分记录。', 'success')
+
+    page = request.args.get('page', type=int)
+    search = request.args.get('search', '')
+    if page:
+        return redirect(url_for('points_records', page=page, search=search))
+    return redirect(url_for('points_records', search=search))
+
 @app.route('/statistics')
 def statistics():
     """统计页面"""

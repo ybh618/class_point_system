@@ -109,7 +109,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-center p-3 bg-light rounded">
-                                <div class="h3 mb-0 text-success">%.1f</div>
+                                <div class="h3 mb-0 text-success">{{ '%.1f'|format(group.average_points()) }}</div>
                                 <small class="text-muted">平均积分</small>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between">
                         <span>平均积分</span>
-                        <strong class="text-success">%.1f分</strong>
+                        <strong class="text-success">{{ '%.1f'|format(group.average_points()) }}分</strong>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -163,7 +163,7 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between">
                         <span>本周平均</span>
-                        <strong class="text-warning">%.1f分</strong>
+                        <strong class="text-warning">{{ '%.1f'|format(group.week_average_points()) }}分</strong>
                     </div>
                 </div>
             </div>

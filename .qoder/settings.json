@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "ask": [
+      "Read(!/home/ybh/class_point_system/**)",
+      "Edit(!/home/ybh/class_point_system/**)"
+    ],
+    "allow": [
+      "Read(/home/ybh/class_point_system/**)",
+      "Edit(/home/ybh/class_point_system/**)"
+    ]
+  },
+  "memoryImport": {},
+  "monitoring": {}
+}
