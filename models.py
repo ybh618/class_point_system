@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
+
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from sqlalchemy import func
 
 db = SQLAlchemy()
 
@@ -64,26 +66,64 @@ class Student(db.Model):
 
     def total_points(self):
         """计算学生总积分"""
-        return sum(record.points for record in self.points_records)
+        if hasattr(self, '_total_points_cached'):
+            return self._total_points_cached
+
+        total = db.session.query(
+            func.coalesce(func.sum(PointsRecord.points), 0)
+        ).filter_by(student_id=self.id).scalar() or 0
+        self._total_points_cached = total
+        return total
 
     def week_points(self):
         """计算本周积分"""
-        from datetime import datetime, timedelta
+        if hasattr(self, '_week_points_cached'):
+            return self._week_points_cached
+
         now = datetime.utcnow()
         week_start = now - timedelta(days=now.weekday())
         week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
 
-        week_records = [record for record in self.points_records
-                       if record.created_at >= week_start]
-        return sum(record.points for record in week_records)
+        total = db.session.query(
+            func.coalesce(func.sum(PointsRecord.points), 0)
+        ).filter(
+            PointsRecord.student_id == self.id,
+            PointsRecord.created_at >= week_start
+        ).scalar() or 0
+
+        self._week_points_cached = total
+        return total
 
     def points_in_date_range(self, start_date, end_date):
         """计算指定日期区间内的积分"""
-        if start_date and end_date:
-            range_records = [record for record in self.points_records
-                           if start_date <= record.created_at.date() <= end_date]
-            return sum(record.points for record in range_records)
-        return 0
+        if not start_date or not end_date:
+            return 0
+
+        cache_key = (start_date, end_date)
+        if hasattr(self, '_range_points_cache') and cache_key in self._range_points_cache:
+            return self._range_points_cache[cache_key]
+
+        start_dt = datetime.combine(start_date, datetime.min.time())
+        end_dt = datetime.combine(end_date, datetime.max.time())
+
+        total = db.session.query(
+            func.coalesce(func.sum(PointsRecord.points), 0)
+        ).filter(
+            PointsRecord.student_id == self.id,
+            PointsRecord.created_at >= start_dt,
+            PointsRecord.created_at <= end_dt
+        ).scalar() or 0
+
+        if not hasattr(self, '_range_points_cache'):
+            self._range_points_cache = {}
+        self._range_points_cache[cache_key] = total
+        return total
+
+    @property
+    def records_count(self):
+        if hasattr(self, '_records_count_cached'):
+            return self._records_count_cached
+        return len(self.points_records)
 
     def __repr__(self):
         return f'<Student {self.name}({self.student_id})>'
@@ -113,3 +153,83 @@ class PointsCategory(db.Model):
 
     def __repr__(self):
         return f'<PointsCategory {self.name}>'
+
+
+def preload_student_points(students,
+                           include_week=False,
+                           date_range=None,
+                           include_records_count=False):
+    """批量预加载学生积分统计信息以避免重复查询"""
+    student_list = [student for student in students if student is not None]
+    if not student_list:
+        return
+
+    student_ids = {student.id for student in student_list if student.id is not None}
+    if not student_ids:
+        return
+
+    id_list = list(student_ids)
+
+    totals = dict(
+        db.session.query(
+            PointsRecord.student_id,
+            func.coalesce(func.sum(PointsRecord.points), 0)
+        ).filter(
+            PointsRecord.student_id.in_(id_list)
+        ).group_by(PointsRecord.student_id)
+    )
+
+    for student in student_list:
+        student._total_points_cached = totals.get(student.id, 0)
+
+    if include_week:
+        now = datetime.utcnow()
+        week_start = now - timedelta(days=now.weekday())
+        week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        week_totals = dict(
+            db.session.query(
+                PointsRecord.student_id,
+                func.coalesce(func.sum(PointsRecord.points), 0)
+            ).filter(
+                PointsRecord.student_id.in_(id_list),
+                PointsRecord.created_at >= week_start
+            ).group_by(PointsRecord.student_id)
+        )
+
+        for student in student_list:
+            student._week_points_cached = week_totals.get(student.id, 0)
+
+    if date_range and all(date_range):
+        start_date, end_date = date_range
+        start_dt = datetime.combine(start_date, datetime.min.time())
+        end_dt = datetime.combine(end_date, datetime.max.time())
+
+        range_totals = dict(
+            db.session.query(
+                PointsRecord.student_id,
+                func.coalesce(func.sum(PointsRecord.points), 0)
+            ).filter(
+                PointsRecord.student_id.in_(id_list),
+                PointsRecord.created_at >= start_dt,
+                PointsRecord.created_at <= end_dt
+            ).group_by(PointsRecord.student_id)
+        )
+
+        for student in student_list:
+            if not hasattr(student, '_range_points_cache'):
+                student._range_points_cache = {}
+            student._range_points_cache[(start_date, end_date)] = range_totals.get(student.id, 0)
+
+    if include_records_count:
+        counts = dict(
+            db.session.query(
+                PointsRecord.student_id,
+                func.count(PointsRecord.id)
+            ).filter(
+                PointsRecord.student_id.in_(id_list)
+            ).group_by(PointsRecord.student_id)
+        )
+
+        for student in student_list:
+            student._records_count_cached = counts.get(student.id, 0)

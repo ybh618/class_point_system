@@ -11,9 +11,6 @@ a = Analysis(
     datas=[
         # 包含模板文件
         ('templates/*.html', 'templates'),
-        # 包含迁移工具
-        ('database_migration.py', '.'),
-        ('DATABASE_MIGRATION_GUIDE.md', '.'),
         # 包含其他必要的文件
     ],
     hiddenimports=[

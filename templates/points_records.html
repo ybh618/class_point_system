@@ -91,16 +91,16 @@
                                             title="查看详情">
                                         <i class="bi bi-eye"></i>
                                     </button>
-                                    {% if record.points > 0 %}
+                                    {% set is_positive = record.points > 0 %}
                                     <form method="POST"
                                           action="{{ url_for('revert_points_record', record_id=record.id, page=records.page, search=search) }}"
                                           class="d-inline"
-                                          onsubmit="return confirm('确定要撤回这条加分记录吗？');">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="撤回加分">
+                                          onsubmit="return confirm('确定要撤回这条{{ '加分' if is_positive else '扣分' }}记录吗？');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="撤回{{ '加分' if is_positive else '扣分' }}">
                                             <i class="bi bi-arrow-counterclockwise"></i>
                                         </button>
                                     </form>
-                                    {% endif %}
                                 </div>
                             </td>
                         </tr>

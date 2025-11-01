@@ -1,16 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file
-from models import db, Student, PointsRecord, PointsCategory, Group
-from datetime import datetime
-import pandas as pd
 import io
 import os
+import sys
+from datetime import datetime
+
+import pandas as pd
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file
+from sqlalchemy.orm import selectinload
+
+from models import db, Student, PointsRecord, PointsCategory, Group, preload_student_points
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
-
-# 数据库配置 - 兼容开发环境和打包环境
-import os
-import sys
 
 def get_base_dir():
     """获取应用程序的基础目录"""
@@ -64,9 +64,10 @@ def students():
                            Student.student_id.contains(search) |
                            Student.class_name.contains(search))
 
-    students = query.paginate(page=page, per_page=20, error_out=False)
+    students_page = query.paginate(page=page, per_page=20, error_out=False)
+    preload_student_points(students_page.items, include_records_count=True)
 
-    return render_template('students.html', students=students, search=search)
+    return render_template('students.html', students=students_page, search=search)
 
 @app.route('/student/add', methods=['GET', 'POST'])
 def add_student():
@@ -139,6 +140,8 @@ def student_detail(id):
     student = Student.query.get_or_404(id)
     points_records = PointsRecord.query.filter_by(student_id=id).order_by(PointsRecord.created_at.desc()).all()
 
+    preload_student_points([student])
+
     return render_template('student_detail.html', student=student, records=points_records)
 
 @app.route('/points/add', methods=['GET', 'POST'])
@@ -182,37 +185,34 @@ def add_points():
     # GET 请求：获取所有学生及其当前积分，按小组组织
     groups_with_students = []
 
-    # 获取所有小组
-    all_groups = Group.query.all()
+    # 获取所有小组并预加载学生数据
+    all_groups = Group.query.options(selectinload(Group.students)).all()
+
+    ungrouped_students_raw = Student.query.filter(Student.group_id.is_(None)).all()
+
+    all_students_for_cache = []
+    for group in all_groups:
+        all_students_for_cache.extend(group.students)
+    all_students_for_cache.extend(ungrouped_students_raw)
+
+    preload_student_points(all_students_for_cache, include_week=True)
+
+    def build_student_data(student):
+        """组装学生积分数据"""
+        return {
+            'id': student.id,
+            'name': student.name,
+            'student_id': student.student_id,
+            'class_name': student.class_name,
+            'total_points': student.total_points(),
+            'week_points': student.week_points(),
+            'group': student.group,
+            'group_id': student.group_id
+        }
 
     # 为每个小组添加学生数据
     for group in all_groups:
-        group_students = []
-        for student in group.students:
-            # 计算学生的总积分
-            total_points = db.session.query(db.func.sum(PointsRecord.points)).filter_by(student_id=student.id).scalar() or 0
-
-            # 计算本周积分
-            from datetime import datetime, timedelta
-            now = datetime.now()
-            week_start = now - timedelta(days=now.weekday())
-            week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
-            week_points = db.session.query(db.func.sum(PointsRecord.points)).filter(
-                PointsRecord.student_id == student.id,
-                PointsRecord.created_at >= week_start
-            ).scalar() or 0
-
-            student_data = {
-                'id': student.id,
-                'name': student.name,
-                'student_id': student.student_id,
-                'class_name': student.class_name,
-                'total_points': total_points,
-                'week_points': week_points,
-                'group': student.group,
-                'group_id': student.group_id
-            }
-            group_students.append(student_data)
+        group_students = [build_student_data(student) for student in group.students]
 
         groups_with_students.append({
             'group': group,
@@ -220,33 +220,7 @@ def add_points():
         })
 
     # 获取未分组的学生
-    ungrouped_students = []
-    ungrouped = Student.query.filter(Student.group_id.is_(None)).all()
-    for student in ungrouped:
-        # 计算学生的总积分
-        total_points = db.session.query(db.func.sum(PointsRecord.points)).filter_by(student_id=student.id).scalar() or 0
-
-        # 计算本周积分
-        from datetime import datetime, timedelta
-        now = datetime.now()
-        week_start = now - timedelta(days=now.weekday())
-        week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
-        week_points = db.session.query(db.func.sum(PointsRecord.points)).filter(
-            PointsRecord.student_id == student.id,
-            PointsRecord.created_at >= week_start
-        ).scalar() or 0
-
-        student_data = {
-            'id': student.id,
-            'name': student.name,
-            'student_id': student.student_id,
-            'class_name': student.class_name,
-            'total_points': total_points,
-            'week_points': week_points,
-            'group': None,
-            'group_id': None
-        }
-        ungrouped_students.append(student_data)
+    ungrouped_students = [build_student_data(student) for student in ungrouped_students_raw]
 
     categories = PointsCategory.query.filter_by(is_active=True).all()
 
@@ -389,18 +363,23 @@ def points_records():
 
 @app.route('/points/<int:record_id>/revert', methods=['POST'])
 def revert_points_record(record_id):
-    """撤回加分记录"""
+    """撤回积分记录"""
     record = PointsRecord.query.get_or_404(record_id)
 
-    if record.points <= 0:
-        flash('只能撤回加分记录。', 'error')
-        return redirect(request.referrer or url_for('points_records'))
-
     student_name = record.student.name if record.student else '该学生'
+    points_value = record.points
+
     db.session.delete(record)
     db.session.commit()
 
-    flash(f'已撤回 {student_name} 的加分记录。', 'success')
+    if points_value > 0:
+        message = f'已撤回 {student_name} 的加分记录。'
+    elif points_value < 0:
+        message = f'已撤回 {student_name} 的扣分记录。'
+    else:
+        message = f'已撤回 {student_name} 的积分记录。'
+
+    flash(message, 'success')
 
     page = request.args.get('page', type=int)
     search = request.args.get('search', '')
@@ -425,21 +404,31 @@ def statistics():
         db.func.sum(PointsRecord.points).label('total_points')
     ).group_by(PointsRecord.category).all()
 
-    # 学生排行榜
-    student_ranking = []
-    students = Student.query.all()
-    for student in students:
-        total_points = student.total_points()
-        student_ranking.append({
+    total_points_expr = db.func.coalesce(db.func.sum(PointsRecord.points), 0)
+    student_totals = (
+        db.session.query(
+            Student,
+            total_points_expr.label('total_points')
+        )
+        .outerjoin(PointsRecord)
+        .group_by(Student.id)
+        .order_by(db.desc('total_points'))
+        .limit(20)
+        .all()
+    )
+
+    student_ranking = [
+        {
             'student': student,
             'total_points': total_points
-        })
-    student_ranking.sort(key=lambda x: x['total_points'], reverse=True)
+        }
+        for student, total_points in student_totals
+    ]
 
     return render_template('statistics.html',
                          class_stats=class_stats,
                          category_stats=category_stats,
-                         student_ranking=student_ranking[:20])
+                         student_ranking=student_ranking)
 
 @app.route('/categories')
 def categories():
@@ -505,7 +494,14 @@ def delete_category(id):
 @app.route('/groups')
 def groups():
     """小组管理"""
-    groups = Group.query.all()
+    groups = Group.query.options(selectinload(Group.students)).all()
+
+    all_students = []
+    for group in groups:
+        all_students.extend(group.students)
+
+    preload_student_points(all_students, include_week=True)
+
     return render_template('groups.html', groups=groups)
 
 @app.route('/group/add', methods=['GET', 'POST'])
@@ -534,7 +530,7 @@ def add_group():
 @app.route('/group/<int:id>/edit', methods=['GET', 'POST'])
 def edit_group(id):
     """编辑小组"""
-    group = Group.query.get_or_404(id)
+    group = Group.query.options(selectinload(Group.students)).get_or_404(id)
 
     if request.method == 'POST':
         group.name = request.form['name']
@@ -550,6 +546,9 @@ def edit_group(id):
     available_students = Student.query.filter(
         Student.class_name == group.class_name
     ).all()
+
+    preload_student_points(group.students, include_week=True)
+    preload_student_points(available_students, include_week=True)
 
     return render_template('edit_group.html', group=group, available_students=available_students)
 
@@ -635,41 +634,34 @@ def rankings():
         start_date = None
         end_date = None
 
-    # 总分排名
-    student_ranking = []
-    students = Student.query.all()
-    for student in students:
-        total_points = student.total_points()
-        week_points = student.week_points()
-        range_points = student.points_in_date_range(start_date, end_date) if start_date and end_date else 0
-        student_ranking.append({
-            'student': student,
-            'total_points': total_points,
-            'week_points': week_points,
-            'range_points': range_points
-        })
+    date_range = (start_date, end_date) if start_date and end_date else None
 
-    # 按总分排序
+    students = Student.query.options(selectinload(Student.group)).all()
+    preload_student_points(students, include_week=True, date_range=date_range)
+
+    student_ranking = [
+        {
+            'student': student,
+            'total_points': student.total_points(),
+            'week_points': student.week_points(),
+            'range_points': student.points_in_date_range(start_date, end_date) if date_range else 0
+        }
+        for student in students
+    ]
     student_ranking.sort(key=lambda x: x['total_points'], reverse=True)
 
-    # 小组平均分排名
+    groups = Group.query.options(selectinload(Group.students)).all()
     group_ranking = []
-    groups = Group.query.all()
     for group in groups:
-        if group.students:  # 只计算有学生的小组
-            avg_points = group.average_points()
-            week_avg_points = group.week_average_points()
-            avg_range_points = group.average_points_in_date_range(start_date, end_date) if start_date and end_date else 0
-            total_range_points = group.points_in_date_range(start_date, end_date) if start_date and end_date else 0
+        if group.students:
             group_ranking.append({
                 'group': group,
-                'average_points': avg_points,
-                'week_average_points': week_avg_points,
-                'avg_range_points': avg_range_points,
-                'total_range_points': total_range_points
+                'average_points': group.average_points(),
+                'week_average_points': group.week_average_points(),
+                'avg_range_points': group.average_points_in_date_range(start_date, end_date) if date_range else 0,
+                'total_range_points': group.points_in_date_range(start_date, end_date) if date_range else 0
             })
 
-    # 按平均分排序
     group_ranking.sort(key=lambda x: x['average_points'], reverse=True)
 
     return render_template('rankings.html',
@@ -688,23 +680,24 @@ def export_data():
     if format_type == 'excel':
         # 导出学生积分数据到Excel
         data = []
-        students = Student.query.all()
+        records = (
+            db.session.query(Student, PointsRecord)
+            .join(PointsRecord, PointsRecord.student_id == Student.id)
+            .order_by(PointsRecord.created_at)
+            .all()
+        )
 
-        for student in students:
-            total_points = student.total_points()
-            records = PointsRecord.query.filter_by(student_id=student.id).all()
-
-            for record in records:
-                data.append({
-                    '学号': student.student_id,
-                    '姓名': student.name,
-                    '班级': student.class_name,
-                    '积分': record.points,
-                    '事由': record.reason,
-                    '类别': record.category,
-                    '操作人': record.operator,
-                    '时间': record.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                })
+        for student, record in records:
+            data.append({
+                '学号': student.student_id,
+                '姓名': student.name,
+                '班级': student.class_name,
+                '积分': record.points,
+                '事由': record.reason,
+                '类别': record.category,
+                '操作人': record.operator,
+                '时间': record.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
 
         df = pd.DataFrame(data)
         output = io.BytesIO()
