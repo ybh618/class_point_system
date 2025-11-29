@@ -327,7 +327,6 @@
                                 <tbody>
                                     {% set week_student_ranking = student_ranking | sort(attribute='week_points', reverse=true) %}
                                     {% for item in week_student_ranking %}
-                                    {% if loop.index <= 10 %}
                                     <tr class="{% if loop.index <= 3 %}table-info{% endif %}">
                                         <td>
                                             {% if loop.index <= 3 %}
@@ -351,7 +350,6 @@
                                             </span>
                                         </td>
                                     </tr>
-                                    {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -380,7 +378,6 @@
                                 <tbody>
                                     {% set week_group_ranking = group_ranking | sort(attribute='week_average_points', reverse=true) %}
                                     {% for item in week_group_ranking %}
-                                    {% if loop.index <= 10 %}
                                     <tr class="{% if loop.index <= 3 %}table-warning{% endif %}">
                                         <td>
                                             {% if loop.index <= 3 %}
@@ -404,7 +401,6 @@
                                             </span>
                                         </td>
                                     </tr>
-                                    {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -440,7 +436,10 @@
                             <div class="col-md-3">
                                 <div class="text-center p-3 bg-light rounded">
                                     <div class="h4 mb-0 text-info">
-                                        {% set total_week_points = student_ranking | sum(attribute='week_points') %}
+                                        {% set total_week_points = 0 %}
+                                        {% for item in student_ranking %}
+                                            {% set total_week_points = total_week_points + item.week_points %}
+                                        {% endfor %}
                                         {{ total_week_points }}
                                     </div>
                                     <small class="text-muted">本周总积分</small>
@@ -449,8 +448,11 @@
                             <div class="col-md-3">
                                 <div class="text-center p-3 bg-light rounded">
                                     <div class="h4 mb-0 text-warning">
-                                        {% set avg_week_points = (total_week_points / (student_ranking|length)) if student_ranking else 0 %}
-                                        {{ "%.1f"|format(avg_week_points) }}
+                                        {% if student_ranking|length > 0 %}
+                                            {{ "%.1f"|format(total_week_points / (student_ranking|length)) }}
+                                        {% else %}
+                                            0.0
+                                        {% endif %}
                                     </div>
                                     <small class="text-muted">本周平均</small>
                                 </div>

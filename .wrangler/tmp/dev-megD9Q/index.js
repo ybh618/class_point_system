@@ -11927,59 +11927,54 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
           frame.set("loop.first", t_17 === 0);
           frame.set("loop.last", t_17 === t_18 - 1);
           frame.set("loop.length", t_18);
-          output += "\n                                    ";
-          if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 10) {
-            output += '\n                                    <tr class="';
-            if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
-              output += "table-info";
+          output += '\n                                    <tr class="';
+          if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
+            output += "table-info";
+            ;
+          }
+          output += '">\n                                        <td>\n                                            ';
+          if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
+            output += '\n                                            <span class="badge ';
+            if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 1) {
+              output += "bg-warning";
               ;
-            }
-            output += '">\n                                        <td>\n                                            ';
-            if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
-              output += '\n                                            <span class="badge ';
-              if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 1) {
-                output += "bg-warning";
+            } else {
+              if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 2) {
+                output += "bg-secondary";
                 ;
               } else {
-                if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 2) {
-                  output += "bg-secondary";
-                  ;
-                } else {
-                  output += "bg-dark";
-                  ;
-                }
+                output += "bg-dark";
                 ;
               }
-              output += '">\n                                                ';
-              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
-              output += "\n                                            </span>\n                                            ";
-              ;
-            } else {
-              output += "\n                                            ";
-              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
-              output += "\n                                            ";
-              ;
-            }
-            output += '\n                                        </td>\n                                        <td>\n                                            <a href="';
-            output += runtime2.suppressValue((lineno = 341, colno = 63, runtime2.callWrap(runtime2.contextOrFrameLookup(context2, frame, "url_for"), "url_for", context2, ["student_trend", runtime2.makeKeywordArgs({ "id": runtime2.memberLookup(runtime2.memberLookup(t_20, "student"), "id") })])), env3.opts.autoescape);
-            output += '" class="text-decoration-none">\n                                                <strong>';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_20, "student"), "name"), env3.opts.autoescape);
-            output += '</strong>\n                                            </a>\n                                            <br>\n                                            <small class="text-muted">';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_20, "student"), "class_name"), env3.opts.autoescape);
-            output += '</small>\n                                        </td>\n                                        <td>\n                                            <span class="badge ';
-            if (runtime2.memberLookup(t_20, "week_points") >= 0) {
-              output += "bg-success";
-              ;
-            } else {
-              output += "bg-danger";
               ;
             }
             output += '">\n                                                ';
-            output += runtime2.suppressValue(runtime2.memberLookup(t_20, "week_points"), env3.opts.autoescape);
-            output += "\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
+            output += "\n                                            </span>\n                                            ";
+            ;
+          } else {
+            output += "\n                                            ";
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
+            output += "\n                                            ";
             ;
           }
-          output += "\n                                    ";
+          output += '\n                                        </td>\n                                        <td>\n                                            <a href="';
+          output += runtime2.suppressValue((lineno = 340, colno = 63, runtime2.callWrap(runtime2.contextOrFrameLookup(context2, frame, "url_for"), "url_for", context2, ["student_trend", runtime2.makeKeywordArgs({ "id": runtime2.memberLookup(runtime2.memberLookup(t_20, "student"), "id") })])), env3.opts.autoescape);
+          output += '" class="text-decoration-none">\n                                                <strong>';
+          output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_20, "student"), "name"), env3.opts.autoescape);
+          output += '</strong>\n                                            </a>\n                                            <br>\n                                            <small class="text-muted">';
+          output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_20, "student"), "class_name"), env3.opts.autoescape);
+          output += '</small>\n                                        </td>\n                                        <td>\n                                            <span class="badge ';
+          if (runtime2.memberLookup(t_20, "week_points") >= 0) {
+            output += "bg-success";
+            ;
+          } else {
+            output += "bg-danger";
+            ;
+          }
+          output += '">\n                                                ';
+          output += runtime2.suppressValue(runtime2.memberLookup(t_20, "week_points"), env3.opts.autoescape);
+          output += "\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
           ;
         }
       }
@@ -12010,59 +12005,54 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
           frame.set("loop.first", t_22 === 0);
           frame.set("loop.last", t_22 === t_23 - 1);
           frame.set("loop.length", t_23);
-          output += "\n                                    ";
-          if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 10) {
-            output += '\n                                    <tr class="';
-            if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
-              output += "table-warning";
+          output += '\n                                    <tr class="';
+          if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
+            output += "table-warning";
+            ;
+          }
+          output += '">\n                                        <td>\n                                            ';
+          if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
+            output += '\n                                            <span class="badge ';
+            if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 1) {
+              output += "bg-warning";
               ;
-            }
-            output += '">\n                                        <td>\n                                            ';
-            if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
-              output += '\n                                            <span class="badge ';
-              if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 1) {
-                output += "bg-warning";
+            } else {
+              if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 2) {
+                output += "bg-secondary";
                 ;
               } else {
-                if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") == 2) {
-                  output += "bg-secondary";
-                  ;
-                } else {
-                  output += "bg-dark";
-                  ;
-                }
+                output += "bg-dark";
                 ;
               }
-              output += '">\n                                                ';
-              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
-              output += "\n                                            </span>\n                                            ";
-              ;
-            } else {
-              output += "\n                                            ";
-              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
-              output += "\n                                            ";
-              ;
-            }
-            output += '\n                                        </td>\n                                        <td>\n                                            <div class="d-flex align-items-center">\n                                                <div class="rounded me-2" style="width: 16px; height: 16px; background-color: ';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_25, "group"), "color"), env3.opts.autoescape);
-            output += ';"></div>\n                                                <strong>';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_25, "group"), "name"), env3.opts.autoescape);
-            output += '</strong>\n                                            </div>\n                                            <small class="text-muted">';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_25, "group"), "class_name"), env3.opts.autoescape);
-            output += '</small>\n                                        </td>\n                                        <td>\n                                            <span class="badge ';
-            if (runtime2.memberLookup(t_25, "week_average_points") >= 0) {
-              output += "bg-success";
-              ;
-            } else {
-              output += "bg-danger";
               ;
             }
             output += '">\n                                                ';
-            output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.memberLookup(t_25, "week_average_points")), env3.opts.autoescape);
-            output += "\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
+            output += "\n                                            </span>\n                                            ";
+            ;
+          } else {
+            output += "\n                                            ";
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index"), env3.opts.autoescape);
+            output += "\n                                            ";
             ;
           }
-          output += "\n                                    ";
+          output += '\n                                        </td>\n                                        <td>\n                                            <div class="d-flex align-items-center">\n                                                <div class="rounded me-2" style="width: 16px; height: 16px; background-color: ';
+          output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_25, "group"), "color"), env3.opts.autoescape);
+          output += ';"></div>\n                                                <strong>';
+          output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_25, "group"), "name"), env3.opts.autoescape);
+          output += '</strong>\n                                            </div>\n                                            <small class="text-muted">';
+          output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_25, "group"), "class_name"), env3.opts.autoescape);
+          output += '</small>\n                                        </td>\n                                        <td>\n                                            <span class="badge ';
+          if (runtime2.memberLookup(t_25, "week_average_points") >= 0) {
+            output += "bg-success";
+            ;
+          } else {
+            output += "bg-danger";
+            ;
+          }
+          output += '">\n                                                ';
+          output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.memberLookup(t_25, "week_average_points")), env3.opts.autoescape);
+          output += "\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
           ;
         }
       }
@@ -12073,7 +12063,7 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
       output += runtime2.suppressValue(env3.getFilter("length").call(context2, runtime2.contextOrFrameLookup(context2, frame, "group_ranking")), env3.opts.autoescape);
       output += '</div>\n                                    <small class="text-muted">\u6D3B\u8DC3\u5C0F\u7EC4</small>\n                                </div>\n                            </div>\n                            <div class="col-md-3">\n                                <div class="text-center p-3 bg-light rounded">\n                                    <div class="h4 mb-0 text-info">\n                                        ';
       var t_26;
-      t_26 = env3.getFilter("sum").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking"), runtime2.makeKeywordArgs({ "attribute": "week_points" }));
+      t_26 = 0;
       frame.set("total_week_points", t_26, true);
       if (frame.topLevel) {
         context2.setVariable("total_week_points", t_26);
@@ -12082,47 +12072,76 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
         context2.addExport("total_week_points", t_26);
       }
       output += "\n                                        ";
+      frame = frame.push();
+      var t_29 = runtime2.contextOrFrameLookup(context2, frame, "student_ranking");
+      if (t_29) {
+        t_29 = runtime2.fromIterator(t_29);
+        var t_28 = t_29.length;
+        for (var t_27 = 0; t_27 < t_29.length; t_27++) {
+          var t_30 = t_29[t_27];
+          frame.set("item", t_30);
+          frame.set("loop.index", t_27 + 1);
+          frame.set("loop.index0", t_27);
+          frame.set("loop.revindex", t_28 - t_27);
+          frame.set("loop.revindex0", t_28 - t_27 - 1);
+          frame.set("loop.first", t_27 === 0);
+          frame.set("loop.last", t_27 === t_28 - 1);
+          frame.set("loop.length", t_28);
+          output += "\n                                            ";
+          var t_31;
+          t_31 = runtime2.contextOrFrameLookup(context2, frame, "total_week_points") + runtime2.memberLookup(t_30, "week_points");
+          frame.set("total_week_points", t_31, true);
+          if (frame.topLevel) {
+            context2.setVariable("total_week_points", t_31);
+          }
+          if (frame.topLevel) {
+            context2.addExport("total_week_points", t_31);
+          }
+          output += "\n                                        ";
+          ;
+        }
+      }
+      frame = frame.pop();
+      output += "\n                                        ";
       output += runtime2.suppressValue(runtime2.contextOrFrameLookup(context2, frame, "total_week_points"), env3.opts.autoescape);
       output += '\n                                    </div>\n                                    <small class="text-muted">\u672C\u5468\u603B\u79EF\u5206</small>\n                                </div>\n                            </div>\n                            <div class="col-md-3">\n                                <div class="text-center p-3 bg-light rounded">\n                                    <div class="h4 mb-0 text-warning">\n                                        ';
-      var t_27;
-      t_27 = runtime2.contextOrFrameLookup(context2, frame, "student_ranking") ? runtime2.contextOrFrameLookup(context2, frame, "total_week_points") / env3.getFilter("length").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking")) : 0;
-      frame.set("avg_week_points", t_27, true);
-      if (frame.topLevel) {
-        context2.setVariable("avg_week_points", t_27);
+      if (env3.getFilter("length").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking")) > 0) {
+        output += "\n                                            ";
+        output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.contextOrFrameLookup(context2, frame, "total_week_points") / env3.getFilter("length").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking"))), env3.opts.autoescape);
+        output += "\n                                        ";
+        ;
+      } else {
+        output += "\n                                            0.0\n                                        ";
+        ;
       }
-      if (frame.topLevel) {
-        context2.addExport("avg_week_points", t_27);
-      }
-      output += "\n                                        ";
-      output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.contextOrFrameLookup(context2, frame, "avg_week_points")), env3.opts.autoescape);
       output += '\n                                    </div>\n                                    <small class="text-muted">\u672C\u5468\u5E73\u5747</small>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- \u533A\u95F4\u6392\u884C -->\n    ';
       if (runtime2.contextOrFrameLookup(context2, frame, "start_date") && runtime2.contextOrFrameLookup(context2, frame, "end_date")) {
         output += '\n    <div class="tab-pane fade" id="range" role="tabpanel">\n        <div class="row">\n            <!-- \u533A\u95F4\u5B66\u751F\u6392\u884C -->\n            <div class="col-lg-6 mb-4">\n                <div class="card">\n                    <div class="card-header">\n                        <h5 class="mb-0">\n                            <i class="bi bi-person-fill text-success"></i> \u533A\u95F4\u5B66\u751F\u6392\u884C\n                        </h5>\n                    </div>\n                    <div class="card-body">\n                        <div class="table-responsive">\n                            <table class="table table-hover">\n                                <thead class="table-light">\n                                    <tr>\n                                        <th width="80">\u6392\u540D</th>\n                                        <th>\u5B66\u751F\u4FE1\u606F</th>\n                                        <th>\u73ED\u7EA7</th>\n                                        <th width="120">\u533A\u95F4\u79EF\u5206</th>\n                                        <th width="100">\u5C0F\u7EC4</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ';
-        var t_28;
-        t_28 = env3.getFilter("sort").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking"), runtime2.makeKeywordArgs({ "attribute": "range_points", "reverse": true }));
-        frame.set("range_student_ranking", t_28, true);
+        var t_32;
+        t_32 = env3.getFilter("sort").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking"), runtime2.makeKeywordArgs({ "attribute": "range_points", "reverse": true }));
+        frame.set("range_student_ranking", t_32, true);
         if (frame.topLevel) {
-          context2.setVariable("range_student_ranking", t_28);
+          context2.setVariable("range_student_ranking", t_32);
         }
         if (frame.topLevel) {
-          context2.addExport("range_student_ranking", t_28);
+          context2.addExport("range_student_ranking", t_32);
         }
         output += "\n                                    ";
         frame = frame.push();
-        var t_31 = runtime2.contextOrFrameLookup(context2, frame, "range_student_ranking");
-        if (t_31) {
-          t_31 = runtime2.fromIterator(t_31);
-          var t_30 = t_31.length;
-          for (var t_29 = 0; t_29 < t_31.length; t_29++) {
-            var t_32 = t_31[t_29];
-            frame.set("item", t_32);
-            frame.set("loop.index", t_29 + 1);
-            frame.set("loop.index0", t_29);
-            frame.set("loop.revindex", t_30 - t_29);
-            frame.set("loop.revindex0", t_30 - t_29 - 1);
-            frame.set("loop.first", t_29 === 0);
-            frame.set("loop.last", t_29 === t_30 - 1);
-            frame.set("loop.length", t_30);
+        var t_35 = runtime2.contextOrFrameLookup(context2, frame, "range_student_ranking");
+        if (t_35) {
+          t_35 = runtime2.fromIterator(t_35);
+          var t_34 = t_35.length;
+          for (var t_33 = 0; t_33 < t_35.length; t_33++) {
+            var t_36 = t_35[t_33];
+            frame.set("item", t_36);
+            frame.set("loop.index", t_33 + 1);
+            frame.set("loop.index0", t_33);
+            frame.set("loop.revindex", t_34 - t_33);
+            frame.set("loop.revindex0", t_34 - t_33 - 1);
+            frame.set("loop.first", t_33 === 0);
+            frame.set("loop.last", t_33 === t_34 - 1);
+            frame.set("loop.length", t_34);
             output += '\n                                    <tr class="';
             if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
               output += "table-success";
@@ -12151,17 +12170,17 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
               ;
             }
             output += '\n                                        </td>\n                                        <td>\n                                            <div class="d-flex align-items-center">\n                                                <div class="avatar-circle bg-gradient-success text-white me-3" style="width: 40px; height: 40px; font-size: 16px;">\n                                                    ';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "name"), 0), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "name"), 0), env3.opts.autoescape);
             output += '\n                                                </div>\n                                                <div>\n                                                    <a href="';
-            output += runtime2.suppressValue((lineno = 509, colno = 71, runtime2.callWrap(runtime2.contextOrFrameLookup(context2, frame, "url_for"), "url_for", context2, ["student_trend", runtime2.makeKeywordArgs({ "id": runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "id") })])), env3.opts.autoescape);
+            output += runtime2.suppressValue((lineno = 511, colno = 71, runtime2.callWrap(runtime2.contextOrFrameLookup(context2, frame, "url_for"), "url_for", context2, ["student_trend", runtime2.makeKeywordArgs({ "id": runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "id") })])), env3.opts.autoescape);
             output += '" class="text-decoration-none">\n                                                        <strong>';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "name"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "name"), env3.opts.autoescape);
             output += '</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class="text-muted">';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "student_id"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "student_id"), env3.opts.autoescape);
             output += "</small>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "class_name"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "class_name"), env3.opts.autoescape);
             output += '</td>\n                                        <td>\n                                            <span class="badge ';
-            if (runtime2.memberLookup(t_32, "range_points") >= 0) {
+            if (runtime2.memberLookup(t_36, "range_points") >= 0) {
               output += "bg-success";
               ;
             } else {
@@ -12169,13 +12188,13 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
               ;
             }
             output += ' fs-6">\n                                                ';
-            output += runtime2.suppressValue(runtime2.memberLookup(t_32, "range_points"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(t_36, "range_points"), env3.opts.autoescape);
             output += "\u5206\n                                            </span>\n                                        </td>\n                                        <td>\n                                            ";
-            if (runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "group")) {
+            if (runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "group")) {
               output += '\n                                            <span class="badge" style="background-color: ';
-              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "group"), "color"), env3.opts.autoescape);
+              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "group"), "color"), env3.opts.autoescape);
               output += ';">\n                                                ';
-              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(runtime2.memberLookup(t_32, "student"), "group"), "name"), env3.opts.autoescape);
+              output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(runtime2.memberLookup(t_36, "student"), "group"), "name"), env3.opts.autoescape);
               output += "\n                                            </span>\n                                            ";
               ;
             } else {
@@ -12188,31 +12207,31 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
         }
         frame = frame.pop();
         output += '\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <!-- \u533A\u95F4\u5C0F\u7EC4\u6392\u884C -->\n            <div class="col-lg-6 mb-4">\n                <div class="card">\n                    <div class="card-header">\n                        <h5 class="mb-0">\n                            <i class="bi bi-collection-fill text-primary"></i> \u533A\u95F4\u5C0F\u7EC4\u6392\u884C\n                        </h5>\n                    </div>\n                    <div class="card-body">\n                        <div class="table-responsive">\n                            <table class="table table-hover">\n                                <thead class="table-light">\n                                    <tr>\n                                        <th width="80">\u6392\u540D</th>\n                                        <th>\u5C0F\u7EC4\u4FE1\u606F</th>\n                                        <th width="120">\u533A\u95F4\u5E73\u5747\u5206</th>\n                                        <th width="120">\u533A\u95F4\u603B\u5206</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ';
-        var t_33;
-        t_33 = env3.getFilter("sort").call(context2, runtime2.contextOrFrameLookup(context2, frame, "group_ranking"), runtime2.makeKeywordArgs({ "attribute": "avg_range_points", "reverse": true }));
-        frame.set("range_group_ranking", t_33, true);
+        var t_37;
+        t_37 = env3.getFilter("sort").call(context2, runtime2.contextOrFrameLookup(context2, frame, "group_ranking"), runtime2.makeKeywordArgs({ "attribute": "avg_range_points", "reverse": true }));
+        frame.set("range_group_ranking", t_37, true);
         if (frame.topLevel) {
-          context2.setVariable("range_group_ranking", t_33);
+          context2.setVariable("range_group_ranking", t_37);
         }
         if (frame.topLevel) {
-          context2.addExport("range_group_ranking", t_33);
+          context2.addExport("range_group_ranking", t_37);
         }
         output += "\n                                    ";
         frame = frame.push();
-        var t_36 = runtime2.contextOrFrameLookup(context2, frame, "range_group_ranking");
-        if (t_36) {
-          t_36 = runtime2.fromIterator(t_36);
-          var t_35 = t_36.length;
-          for (var t_34 = 0; t_34 < t_36.length; t_34++) {
-            var t_37 = t_36[t_34];
-            frame.set("item", t_37);
-            frame.set("loop.index", t_34 + 1);
-            frame.set("loop.index0", t_34);
-            frame.set("loop.revindex", t_35 - t_34);
-            frame.set("loop.revindex0", t_35 - t_34 - 1);
-            frame.set("loop.first", t_34 === 0);
-            frame.set("loop.last", t_34 === t_35 - 1);
-            frame.set("loop.length", t_35);
+        var t_40 = runtime2.contextOrFrameLookup(context2, frame, "range_group_ranking");
+        if (t_40) {
+          t_40 = runtime2.fromIterator(t_40);
+          var t_39 = t_40.length;
+          for (var t_38 = 0; t_38 < t_40.length; t_38++) {
+            var t_41 = t_40[t_38];
+            frame.set("item", t_41);
+            frame.set("loop.index", t_38 + 1);
+            frame.set("loop.index0", t_38);
+            frame.set("loop.revindex", t_39 - t_38);
+            frame.set("loop.revindex0", t_39 - t_38 - 1);
+            frame.set("loop.first", t_38 === 0);
+            frame.set("loop.last", t_38 === t_39 - 1);
+            frame.set("loop.length", t_39);
             output += '\n                                    <tr class="';
             if (runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "loop"), "index") <= 3) {
               output += "table-primary";
@@ -12241,15 +12260,15 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
               ;
             }
             output += '\n                                        </td>\n                                        <td>\n                                            <div class="d-flex align-items-center">\n                                                <div class="rounded me-2" style="width: 16px; height: 16px; background-color: ';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_37, "group"), "color"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_41, "group"), "color"), env3.opts.autoescape);
             output += ';"></div>\n                                                <div>\n                                                    <strong>';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_37, "group"), "name"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_41, "group"), "name"), env3.opts.autoescape);
             output += '</strong>\n                                                    <br>\n                                                    <small class="text-muted">';
-            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_37, "group"), "class_name"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(runtime2.memberLookup(t_41, "group"), "class_name"), env3.opts.autoescape);
             output += '</small>\n                                                </div>\n                                            </div>\n                                            <small class="text-muted">\n                                                <i class="bi bi-people-fill"></i> ';
-            output += runtime2.suppressValue(env3.getFilter("length").call(context2, runtime2.memberLookup(runtime2.memberLookup(t_37, "group"), "students")), env3.opts.autoescape);
+            output += runtime2.suppressValue(env3.getFilter("length").call(context2, runtime2.memberLookup(runtime2.memberLookup(t_41, "group"), "students")), env3.opts.autoescape);
             output += '\u540D\u6210\u5458\n                                            </small>\n                                        </td>\n                                        <td>\n                                            <span class="badge ';
-            if (runtime2.memberLookup(t_37, "avg_range_points") >= 0) {
+            if (runtime2.memberLookup(t_41, "avg_range_points") >= 0) {
               output += "bg-success";
               ;
             } else {
@@ -12257,9 +12276,9 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
               ;
             }
             output += ' fs-6">\n                                                ';
-            output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.memberLookup(t_37, "avg_range_points")), env3.opts.autoescape);
+            output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.memberLookup(t_41, "avg_range_points")), env3.opts.autoescape);
             output += '\u5206\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span class="badge ';
-            if (runtime2.memberLookup(t_37, "total_range_points") >= 0) {
+            if (runtime2.memberLookup(t_41, "total_range_points") >= 0) {
               output += "bg-info";
               ;
             } else {
@@ -12267,57 +12286,57 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
               ;
             }
             output += '">\n                                                ';
-            output += runtime2.suppressValue(runtime2.memberLookup(t_37, "total_range_points"), env3.opts.autoescape);
+            output += runtime2.suppressValue(runtime2.memberLookup(t_41, "total_range_points"), env3.opts.autoescape);
             output += "\u5206\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
             ;
           }
         }
         frame = frame.pop();
         output += '\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- \u533A\u95F4\u7EDF\u8BA1\u6458\u8981 -->\n        <div class="row">\n            <div class="col-12">\n                <div class="card">\n                    <div class="card-header">\n                        <h5 class="mb-0">\n                            <i class="bi bi-bar-chart-fill"></i> \u533A\u95F4\u7EDF\u8BA1\u6458\u8981\n                        </h5>\n                    </div>\n                    <div class="card-body">\n                        <div class="row">\n                            <div class="col-md-3 mb-3">\n                                <div class="text-center p-3 bg-primary text-white rounded">\n                                    <div class="h4 mb-0">\n                                        ';
-        var t_38;
-        t_38 = env3.getFilter("sum").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking"), runtime2.makeKeywordArgs({ "attribute": "range_points" }));
-        frame.set("total_range_points", t_38, true);
+        var t_42;
+        t_42 = env3.getFilter("sum").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking"), runtime2.makeKeywordArgs({ "attribute": "range_points" }));
+        frame.set("total_range_points", t_42, true);
         if (frame.topLevel) {
-          context2.setVariable("total_range_points", t_38);
+          context2.setVariable("total_range_points", t_42);
         }
         if (frame.topLevel) {
-          context2.addExport("total_range_points", t_38);
+          context2.addExport("total_range_points", t_42);
         }
         output += "\n                                        ";
         output += runtime2.suppressValue(runtime2.contextOrFrameLookup(context2, frame, "total_range_points"), env3.opts.autoescape);
         output += '\n                                    </div>\n                                    <small>\u533A\u95F4\u603B\u79EF\u5206</small>\n                                </div>\n                            </div>\n                            <div class="col-md-3 mb-3">\n                                <div class="text-center p-3 bg-success text-white rounded">\n                                    <div class="h4 mb-0">\n                                        ';
-        var t_39;
-        t_39 = runtime2.contextOrFrameLookup(context2, frame, "student_ranking") ? runtime2.contextOrFrameLookup(context2, frame, "total_range_points") / env3.getFilter("length").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking")) : 0;
-        frame.set("avg_range_points", t_39, true);
+        var t_43;
+        t_43 = runtime2.contextOrFrameLookup(context2, frame, "student_ranking") ? runtime2.contextOrFrameLookup(context2, frame, "total_range_points") / env3.getFilter("length").call(context2, runtime2.contextOrFrameLookup(context2, frame, "student_ranking")) : 0;
+        frame.set("avg_range_points", t_43, true);
         if (frame.topLevel) {
-          context2.setVariable("avg_range_points", t_39);
+          context2.setVariable("avg_range_points", t_43);
         }
         if (frame.topLevel) {
-          context2.addExport("avg_range_points", t_39);
+          context2.addExport("avg_range_points", t_43);
         }
         output += "\n                                        ";
         output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.contextOrFrameLookup(context2, frame, "avg_range_points")), env3.opts.autoescape);
         output += '\n                                    </div>\n                                    <small>\u533A\u95F4\u5E73\u5747\u5206</small>\n                                </div>\n                            </div>\n                            <div class="col-md-3 mb-3">\n                                <div class="text-center p-3 bg-info text-white rounded">\n                                    <div class="h4 mb-0">\n                                        ';
-        var t_40;
-        t_40 = runtime2.contextOrFrameLookup(context2, frame, "range_group_ranking") ? runtime2.memberLookup(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "range_group_ranking"), 0), "avg_range_points") : 0;
-        frame.set("top_group_avg", t_40, true);
+        var t_44;
+        t_44 = runtime2.contextOrFrameLookup(context2, frame, "range_group_ranking") ? runtime2.memberLookup(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "range_group_ranking"), 0), "avg_range_points") : 0;
+        frame.set("top_group_avg", t_44, true);
         if (frame.topLevel) {
-          context2.setVariable("top_group_avg", t_40);
+          context2.setVariable("top_group_avg", t_44);
         }
         if (frame.topLevel) {
-          context2.addExport("top_group_avg", t_40);
+          context2.addExport("top_group_avg", t_44);
         }
         output += "\n                                        ";
         output += runtime2.suppressValue(env3.getFilter("format").call(context2, "%.1f", runtime2.contextOrFrameLookup(context2, frame, "top_group_avg")), env3.opts.autoescape);
         output += '\n                                    </div>\n                                    <small>\u6700\u9AD8\u5C0F\u7EC4\u5E73\u5747\u5206</small>\n                                </div>\n                            </div>\n                            <div class="col-md-3 mb-3">\n                                <div class="text-center p-3 bg-warning text-white rounded">\n                                    <div class="h4 mb-0">\n                                        ';
-        var t_41;
-        t_41 = runtime2.contextOrFrameLookup(context2, frame, "range_student_ranking") ? runtime2.memberLookup(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "range_student_ranking"), 0), "range_points") : 0;
-        frame.set("top_student_points", t_41, true);
+        var t_45;
+        t_45 = runtime2.contextOrFrameLookup(context2, frame, "range_student_ranking") ? runtime2.memberLookup(runtime2.memberLookup(runtime2.contextOrFrameLookup(context2, frame, "range_student_ranking"), 0), "range_points") : 0;
+        frame.set("top_student_points", t_45, true);
         if (frame.topLevel) {
-          context2.setVariable("top_student_points", t_41);
+          context2.setVariable("top_student_points", t_45);
         }
         if (frame.topLevel) {
-          context2.addExport("top_student_points", t_41);
+          context2.addExport("top_student_points", t_45);
         }
         output += "\n                                        ";
         output += runtime2.suppressValue(runtime2.contextOrFrameLookup(context2, frame, "top_student_points"), env3.opts.autoescape);
@@ -12333,7 +12352,7 @@ precompiledTemplates["rankings.html"] = /* @__PURE__ */ function() {
   }
   __name(b_content, "b_content");
   function b_scripts(env3, context2, frame, runtime2, cb) {
-    var lineno = 665;
+    var lineno = 667;
     var colno = 3;
     var output = "";
     try {

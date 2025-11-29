@@ -1905,8 +1905,6 @@ frame.set("loop.revindex0", t_18 - t_17 - 1);
 frame.set("loop.first", t_17 === 0);
 frame.set("loop.last", t_17 === t_18 - 1);
 frame.set("loop.length", t_18);
-output += "\n                                    ";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 10) {
 output += "\n                                    <tr class=\"";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3) {
 output += "table-info";
@@ -1942,7 +1940,7 @@ output += "\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <a href=\"";
-output += runtime.suppressValue((lineno = 341, colno = 63, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_20),"student")),"id")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 340, colno = 63, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_20),"student")),"id")})])), env.opts.autoescape);
 output += "\" class=\"text-decoration-none\">\n                                                <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_20),"student")),"name"), env.opts.autoescape);
 output += "</strong>\n                                            </a>\n                                            <br>\n                                            <small class=\"text-muted\">";
@@ -1959,9 +1957,6 @@ output += "bg-danger";
 output += "\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((t_20),"week_points"), env.opts.autoescape);
 output += "\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
-;
-}
-output += "\n                                    ";
 ;
 }
 }
@@ -1991,8 +1986,6 @@ frame.set("loop.revindex0", t_23 - t_22 - 1);
 frame.set("loop.first", t_22 === 0);
 frame.set("loop.last", t_22 === t_23 - 1);
 frame.set("loop.length", t_23);
-output += "\n                                    ";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 10) {
 output += "\n                                    <tr class=\"";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3) {
 output += "table-warning";
@@ -2047,9 +2040,6 @@ output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",run
 output += "\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
 ;
 }
-output += "\n                                    ";
-;
-}
 }
 frame = frame.pop();
 output += "\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- 统计摘要 -->\n        <div class=\"row mt-4\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h6 class=\"mb-0\">\n                            <i class=\"bi bi-bar-chart-fill\"></i> 本周统计摘要\n                        </h6>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"row\">\n                            <div class=\"col-md-3\">\n                                <div class=\"text-center p-3 bg-light rounded\">\n                                    <div class=\"h4 mb-0 text-primary\">";
@@ -2058,7 +2048,7 @@ output += "</div>\n                                    <small class=\"text-muted
 output += runtime.suppressValue(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "group_ranking")), env.opts.autoescape);
 output += "</div>\n                                    <small class=\"text-muted\">活跃小组</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\">\n                                <div class=\"text-center p-3 bg-light rounded\">\n                                    <div class=\"h4 mb-0 text-info\">\n                                        ";
 var t_26;
-t_26 = env.getFilter("sum").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"),runtime.makeKeywordArgs({"attribute": "week_points"}));
+t_26 = 0;
 frame.set("total_week_points", t_26, true);
 if(frame.topLevel) {
 context.setVariable("total_week_points", t_26);
@@ -2067,46 +2057,75 @@ if(frame.topLevel) {
 context.addExport("total_week_points", t_26);
 }
 output += "\n                                        ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_week_points"), env.opts.autoescape);
-output += "\n                                    </div>\n                                    <small class=\"text-muted\">本周总积分</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\">\n                                <div class=\"text-center p-3 bg-light rounded\">\n                                    <div class=\"h4 mb-0 text-warning\">\n                                        ";
-var t_27;
-t_27 = (runtime.contextOrFrameLookup(context, frame, "student_ranking")?(runtime.contextOrFrameLookup(context, frame, "total_week_points") / (env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking")))):0);
-frame.set("avg_week_points", t_27, true);
+frame = frame.push();
+var t_29 = runtime.contextOrFrameLookup(context, frame, "student_ranking");
+if(t_29) {t_29 = runtime.fromIterator(t_29);
+var t_28 = t_29.length;
+for(var t_27=0; t_27 < t_29.length; t_27++) {
+var t_30 = t_29[t_27];
+frame.set("item", t_30);
+frame.set("loop.index", t_27 + 1);
+frame.set("loop.index0", t_27);
+frame.set("loop.revindex", t_28 - t_27);
+frame.set("loop.revindex0", t_28 - t_27 - 1);
+frame.set("loop.first", t_27 === 0);
+frame.set("loop.last", t_27 === t_28 - 1);
+frame.set("loop.length", t_28);
+output += "\n                                            ";
+var t_31;
+t_31 = runtime.contextOrFrameLookup(context, frame, "total_week_points") + runtime.memberLookup((t_30),"week_points");
+frame.set("total_week_points", t_31, true);
 if(frame.topLevel) {
-context.setVariable("avg_week_points", t_27);
+context.setVariable("total_week_points", t_31);
 }
 if(frame.topLevel) {
-context.addExport("avg_week_points", t_27);
+context.addExport("total_week_points", t_31);
 }
 output += "\n                                        ";
-output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.contextOrFrameLookup(context, frame, "avg_week_points")), env.opts.autoescape);
+;
+}
+}
+frame = frame.pop();
+output += "\n                                        ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_week_points"), env.opts.autoescape);
+output += "\n                                    </div>\n                                    <small class=\"text-muted\">本周总积分</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\">\n                                <div class=\"text-center p-3 bg-light rounded\">\n                                    <div class=\"h4 mb-0 text-warning\">\n                                        ";
+if(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking")) > 0) {
+output += "\n                                            ";
+output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.contextOrFrameLookup(context, frame, "total_week_points") / (env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking")))), env.opts.autoescape);
+output += "\n                                        ";
+;
+}
+else {
+output += "\n                                            0.0\n                                        ";
+;
+}
 output += "\n                                    </div>\n                                    <small class=\"text-muted\">本周平均</small>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- 区间排行 -->\n    ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
 output += "\n    <div class=\"tab-pane fade\" id=\"range\" role=\"tabpanel\">\n        <div class=\"row\">\n            <!-- 区间学生排行 -->\n            <div class=\"col-lg-6 mb-4\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-person-fill text-success\"></i> 区间学生排行\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"120\">区间积分</th>\n                                        <th width=\"100\">小组</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ";
-var t_28;
-t_28 = env.getFilter("sort").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"),runtime.makeKeywordArgs({"attribute": "range_points","reverse": true}));
-frame.set("range_student_ranking", t_28, true);
+var t_32;
+t_32 = env.getFilter("sort").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"),runtime.makeKeywordArgs({"attribute": "range_points","reverse": true}));
+frame.set("range_student_ranking", t_32, true);
 if(frame.topLevel) {
-context.setVariable("range_student_ranking", t_28);
+context.setVariable("range_student_ranking", t_32);
 }
 if(frame.topLevel) {
-context.addExport("range_student_ranking", t_28);
+context.addExport("range_student_ranking", t_32);
 }
 output += "\n                                    ";
 frame = frame.push();
-var t_31 = runtime.contextOrFrameLookup(context, frame, "range_student_ranking");
-if(t_31) {t_31 = runtime.fromIterator(t_31);
-var t_30 = t_31.length;
-for(var t_29=0; t_29 < t_31.length; t_29++) {
-var t_32 = t_31[t_29];
-frame.set("item", t_32);
-frame.set("loop.index", t_29 + 1);
-frame.set("loop.index0", t_29);
-frame.set("loop.revindex", t_30 - t_29);
-frame.set("loop.revindex0", t_30 - t_29 - 1);
-frame.set("loop.first", t_29 === 0);
-frame.set("loop.last", t_29 === t_30 - 1);
-frame.set("loop.length", t_30);
+var t_35 = runtime.contextOrFrameLookup(context, frame, "range_student_ranking");
+if(t_35) {t_35 = runtime.fromIterator(t_35);
+var t_34 = t_35.length;
+for(var t_33=0; t_33 < t_35.length; t_33++) {
+var t_36 = t_35[t_33];
+frame.set("item", t_36);
+frame.set("loop.index", t_33 + 1);
+frame.set("loop.index0", t_33);
+frame.set("loop.revindex", t_34 - t_33);
+frame.set("loop.revindex0", t_34 - t_33 - 1);
+frame.set("loop.first", t_33 === 0);
+frame.set("loop.last", t_33 === t_34 - 1);
+frame.set("loop.length", t_34);
 output += "\n                                    <tr class=\"";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3) {
 output += "table-success";
@@ -2138,17 +2157,17 @@ output += "</span>\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"avatar-circle bg-gradient-success text-white me-3\" style=\"width: 40px; height: 40px; font-size: 16px;\">\n                                                    ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_32),"student")),"name")),0), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name")),0), env.opts.autoescape);
 output += "\n                                                </div>\n                                                <div>\n                                                    <a href=\"";
-output += runtime.suppressValue((lineno = 509, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_32),"student")),"id")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 511, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")})])), env.opts.autoescape);
 output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_32),"student")),"name"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name"), env.opts.autoescape);
 output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_32),"student")),"student_id"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"student_id"), env.opts.autoescape);
 output += "</small>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_32),"student")),"class_name"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"class_name"), env.opts.autoescape);
 output += "</td>\n                                        <td>\n                                            <span class=\"badge ";
-if(runtime.memberLookup((t_32),"range_points") >= 0) {
+if(runtime.memberLookup((t_36),"range_points") >= 0) {
 output += "bg-success";
 ;
 }
@@ -2157,13 +2176,13 @@ output += "bg-danger";
 ;
 }
 output += " fs-6\">\n                                                ";
-output += runtime.suppressValue(runtime.memberLookup((t_32),"range_points"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((t_36),"range_points"), env.opts.autoescape);
 output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            ";
-if(runtime.memberLookup((runtime.memberLookup((t_32),"student")),"group")) {
+if(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"group")) {
 output += "\n                                            <span class=\"badge\" style=\"background-color: ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_32),"student")),"group")),"color"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_36),"student")),"group")),"color"), env.opts.autoescape);
 output += ";\">\n                                                ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_32),"student")),"group")),"name"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_36),"student")),"group")),"name"), env.opts.autoescape);
 output += "\n                                            </span>\n                                            ";
 ;
 }
@@ -2177,30 +2196,30 @@ output += "\n                                        </td>\n                    
 }
 frame = frame.pop();
 output += "\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <!-- 区间小组排行 -->\n            <div class=\"col-lg-6 mb-4\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-collection-fill text-primary\"></i> 区间小组排行\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">排名</th>\n                                        <th>小组信息</th>\n                                        <th width=\"120\">区间平均分</th>\n                                        <th width=\"120\">区间总分</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ";
-var t_33;
-t_33 = env.getFilter("sort").call(context, runtime.contextOrFrameLookup(context, frame, "group_ranking"),runtime.makeKeywordArgs({"attribute": "avg_range_points","reverse": true}));
-frame.set("range_group_ranking", t_33, true);
+var t_37;
+t_37 = env.getFilter("sort").call(context, runtime.contextOrFrameLookup(context, frame, "group_ranking"),runtime.makeKeywordArgs({"attribute": "avg_range_points","reverse": true}));
+frame.set("range_group_ranking", t_37, true);
 if(frame.topLevel) {
-context.setVariable("range_group_ranking", t_33);
+context.setVariable("range_group_ranking", t_37);
 }
 if(frame.topLevel) {
-context.addExport("range_group_ranking", t_33);
+context.addExport("range_group_ranking", t_37);
 }
 output += "\n                                    ";
 frame = frame.push();
-var t_36 = runtime.contextOrFrameLookup(context, frame, "range_group_ranking");
-if(t_36) {t_36 = runtime.fromIterator(t_36);
-var t_35 = t_36.length;
-for(var t_34=0; t_34 < t_36.length; t_34++) {
-var t_37 = t_36[t_34];
-frame.set("item", t_37);
-frame.set("loop.index", t_34 + 1);
-frame.set("loop.index0", t_34);
-frame.set("loop.revindex", t_35 - t_34);
-frame.set("loop.revindex0", t_35 - t_34 - 1);
-frame.set("loop.first", t_34 === 0);
-frame.set("loop.last", t_34 === t_35 - 1);
-frame.set("loop.length", t_35);
+var t_40 = runtime.contextOrFrameLookup(context, frame, "range_group_ranking");
+if(t_40) {t_40 = runtime.fromIterator(t_40);
+var t_39 = t_40.length;
+for(var t_38=0; t_38 < t_40.length; t_38++) {
+var t_41 = t_40[t_38];
+frame.set("item", t_41);
+frame.set("loop.index", t_38 + 1);
+frame.set("loop.index0", t_38);
+frame.set("loop.revindex", t_39 - t_38);
+frame.set("loop.revindex0", t_39 - t_38 - 1);
+frame.set("loop.first", t_38 === 0);
+frame.set("loop.last", t_38 === t_39 - 1);
+frame.set("loop.length", t_39);
 output += "\n                                    <tr class=\"";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3) {
 output += "table-primary";
@@ -2232,15 +2251,15 @@ output += "</span>\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"rounded me-2\" style=\"width: 16px; height: 16px; background-color: ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_37),"group")),"color"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_41),"group")),"color"), env.opts.autoescape);
 output += ";\"></div>\n                                                <div>\n                                                    <strong>";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_37),"group")),"name"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_41),"group")),"name"), env.opts.autoescape);
 output += "</strong>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_37),"group")),"class_name"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_41),"group")),"class_name"), env.opts.autoescape);
 output += "</small>\n                                                </div>\n                                            </div>\n                                            <small class=\"text-muted\">\n                                                <i class=\"bi bi-people-fill\"></i> ";
-output += runtime.suppressValue(env.getFilter("length").call(context, runtime.memberLookup((runtime.memberLookup((t_37),"group")),"students")), env.opts.autoescape);
+output += runtime.suppressValue(env.getFilter("length").call(context, runtime.memberLookup((runtime.memberLookup((t_41),"group")),"students")), env.opts.autoescape);
 output += "名成员\n                                            </small>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
-if(runtime.memberLookup((t_37),"avg_range_points") >= 0) {
+if(runtime.memberLookup((t_41),"avg_range_points") >= 0) {
 output += "bg-success";
 ;
 }
@@ -2249,9 +2268,9 @@ output += "bg-danger";
 ;
 }
 output += " fs-6\">\n                                                ";
-output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_37),"avg_range_points")), env.opts.autoescape);
+output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_41),"avg_range_points")), env.opts.autoescape);
 output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
-if(runtime.memberLookup((t_37),"total_range_points") >= 0) {
+if(runtime.memberLookup((t_41),"total_range_points") >= 0) {
 output += "bg-info";
 ;
 }
@@ -2260,57 +2279,57 @@ output += "bg-warning";
 ;
 }
 output += "\">\n                                                ";
-output += runtime.suppressValue(runtime.memberLookup((t_37),"total_range_points"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((t_41),"total_range_points"), env.opts.autoescape);
 output += "分\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
 ;
 }
 }
 frame = frame.pop();
 output += "\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- 区间统计摘要 -->\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-bar-chart-fill\"></i> 区间统计摘要\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"row\">\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"text-center p-3 bg-primary text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
-var t_38;
-t_38 = env.getFilter("sum").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"),runtime.makeKeywordArgs({"attribute": "range_points"}));
-frame.set("total_range_points", t_38, true);
+var t_42;
+t_42 = env.getFilter("sum").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"),runtime.makeKeywordArgs({"attribute": "range_points"}));
+frame.set("total_range_points", t_42, true);
 if(frame.topLevel) {
-context.setVariable("total_range_points", t_38);
+context.setVariable("total_range_points", t_42);
 }
 if(frame.topLevel) {
-context.addExport("total_range_points", t_38);
+context.addExport("total_range_points", t_42);
 }
 output += "\n                                        ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_range_points"), env.opts.autoescape);
 output += "\n                                    </div>\n                                    <small>区间总积分</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"text-center p-3 bg-success text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
-var t_39;
-t_39 = (runtime.contextOrFrameLookup(context, frame, "student_ranking")?(runtime.contextOrFrameLookup(context, frame, "total_range_points") / env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"))):0);
-frame.set("avg_range_points", t_39, true);
+var t_43;
+t_43 = (runtime.contextOrFrameLookup(context, frame, "student_ranking")?(runtime.contextOrFrameLookup(context, frame, "total_range_points") / env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking"))):0);
+frame.set("avg_range_points", t_43, true);
 if(frame.topLevel) {
-context.setVariable("avg_range_points", t_39);
+context.setVariable("avg_range_points", t_43);
 }
 if(frame.topLevel) {
-context.addExport("avg_range_points", t_39);
+context.addExport("avg_range_points", t_43);
 }
 output += "\n                                        ";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.contextOrFrameLookup(context, frame, "avg_range_points")), env.opts.autoescape);
 output += "\n                                    </div>\n                                    <small>区间平均分</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"text-center p-3 bg-info text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
-var t_40;
-t_40 = (runtime.contextOrFrameLookup(context, frame, "range_group_ranking")?runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "range_group_ranking")),0)),"avg_range_points"):0);
-frame.set("top_group_avg", t_40, true);
+var t_44;
+t_44 = (runtime.contextOrFrameLookup(context, frame, "range_group_ranking")?runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "range_group_ranking")),0)),"avg_range_points"):0);
+frame.set("top_group_avg", t_44, true);
 if(frame.topLevel) {
-context.setVariable("top_group_avg", t_40);
+context.setVariable("top_group_avg", t_44);
 }
 if(frame.topLevel) {
-context.addExport("top_group_avg", t_40);
+context.addExport("top_group_avg", t_44);
 }
 output += "\n                                        ";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.contextOrFrameLookup(context, frame, "top_group_avg")), env.opts.autoescape);
 output += "\n                                    </div>\n                                    <small>最高小组平均分</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"text-center p-3 bg-warning text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
-var t_41;
-t_41 = (runtime.contextOrFrameLookup(context, frame, "range_student_ranking")?runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "range_student_ranking")),0)),"range_points"):0);
-frame.set("top_student_points", t_41, true);
+var t_45;
+t_45 = (runtime.contextOrFrameLookup(context, frame, "range_student_ranking")?runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "range_student_ranking")),0)),"range_points"):0);
+frame.set("top_student_points", t_45, true);
 if(frame.topLevel) {
-context.setVariable("top_student_points", t_41);
+context.setVariable("top_student_points", t_45);
 }
 if(frame.topLevel) {
-context.addExport("top_student_points", t_41);
+context.addExport("top_student_points", t_45);
 }
 output += "\n                                        ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "top_student_points"), env.opts.autoescape);
@@ -2325,7 +2344,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 665;
+var lineno = 667;
 var colno = 3;
 var output = "";
 try {
