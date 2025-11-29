@@ -1,0 +1,33 @@
+{
+  "name": "class-points-cloudflare",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "wrangler d1 migrations apply class_points_d1 --local",
+    "db:seed": "wrangler d1 execute class_points_d1 --local --file class_point_d1_data_only.sql",
+    "db:init": "npm run db:migrate && npm run db:seed",
+    "db:reset": "rm -rf .wrangler/state/v3/d1 && npm run db:init",
+    "db:generate": "wrangler d1 migrations create class_points_d1 --name",
+    "db:test": "bash scripts/init_test_db.sh",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.11",
+    "hono": "^4.4.7",
+    "nanoid": "^5.0.7",
+    "nunjucks": "^3.2.4",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205",
+    "@types/node": "^20.11.30",
+    "@types/nunjucks": "^3.2.6",
+    "typescript": "^5.5.4",
+    "wrangler": "^4.47.0"
+  }
+}

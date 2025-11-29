@@ -1,0 +1,10 @@
+name = "class-points-cloudflare"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "class_points_d1"
+database_id = "5b99b8c2-a169-4a61-8c86-21968a601040"
+migrations_dir = "migrations"

@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h2">积分记录</h1>
+            <a href="{{ url_for('add_points') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> 添加记录
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control me-2"
+                   placeholder="搜索学生姓名、学号或事由..." value="{{ search }}">
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
+    <div class="col-md-6 text-end">
+        <span class="text-muted">
+            共找到 {{ records.total }} 条记录
+        </span>
+    </div>
+</div>
+
+{% if records.items %}
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>学生信息</th>
+                            <th>积分</th>
+                            <th>事由</th>
+                            <th>类别</th>
+                            <th>操作人</th>
+                            <th>时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records.items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <i class="bi bi-person-circle fs-4 text-muted"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">{{ record.student.name }}</div>
+                                        <small class="text-muted">{{ record.student.student_id }} | {{ record.student.class_name }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if record.points > 0 %}
+                                    <span class="badge bg-success fs-6">+{{ record.points }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger fs-6">{{ record.points }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span title="{{ record.reason or (record.category + '积分记录') }}">
+                                    {% set display_reason = record.reason or (record.category + '积分记录') %}
+                                    {{ display_reason | truncate(20, True, '') }}{% if display_reason|length > 20 %}...{% endif %}
+                                </span>
+                            </td>
+                            <td><span class="badge bg-secondary">{{ record.category }}</span></td>
+                            <td>{{ record.operator or '-' }}</td>
+                            <td>
+                                <div class="small">
+                                    <div>{{ record.created_at.strftime('%m-%d %H:%M') }}</div>
+                                    <div class="text-muted">{{ record.created_at.strftime('%Y-%m-%d') }}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('student_detail', id=record.student.id) }}"
+                                       class="btn btn-outline-primary" title="查看学生详情">
+                                        <i class="bi bi-person"></i>
+                                    </a>
+                                    <button class="btn btn-outline-info"
+                                            onclick="showRecordDetail({{ record.id }})"
+                                            title="查看详情">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    {% set is_positive = record.points > 0 %}
+                                    <form method="POST"
+                                          action="{{ url_for('revert_points_record', record_id=record.id, page=records.page, search=search) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('确定要撤回这条{{ '加分' if is_positive else '扣分' }}记录吗？');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="撤回{{ '加分' if is_positive else '扣分' }}">
+                                            <i class="bi bi-arrow-counterclockwise"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分页 -->
+    {% if records.pages > 1 %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if records.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('points_records', page=records.prev_num, search=search) }}">上一页</a>
+                </li>
+            {% endif %}
+
+            {% for page_num in records.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num != records.page %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('points_records', page=page_num, search=search) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ page_num }}</span>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if records.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('points_records', page=records.next_num, search=search) }}">下一页</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% else %}
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-inbox fs-1 text-muted"></i>
+            <h5 class="mt-3 text-muted">暂无积分记录</h5>
+            <p class="text-muted">开始添加积分记录来追踪学生表现</p>
+            <a href="{{ url_for('add_points') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle-fill"></i> 添加第一条记录
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+<!-- 记录详情模态框 -->
+<div class="modal fade" id="recordDetailModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">积分记录详情</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="recordDetailContent">
+                <!-- 动态加载内容 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function showRecordDetail(recordId) {
+    try {
+        const response = await fetch(`/api/record/${recordId}`);
+        const record = await response.json();
+
+        const pointsClass = record.points >= 0 ? 'points-positive' : 'points-negative';
+        const pointsSign = record.points >= 0 ? '+' : '';
+
+        document.getElementById('recordDetailContent').innerHTML = `
+            <div class="row">
+                <div class="col-sm-4"><strong>学生姓名：</strong></div>
+                <div class="col-sm-8">${record.student_name}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>学号：</strong></div>
+                <div class="col-sm-8">${record.student_id}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>班级：</strong></div>
+                <div class="col-sm-8">${record.class_name}</div>
+            </div>
+            <hr>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>积分：</strong></div>
+                <div class="col-sm-8"><span class="${pointsClass}">${pointsSign}${record.points}</span></div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>类别：</strong></div>
+                <div class="col-sm-8">${record.category}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>事由：</strong></div>
+                <div class="col-sm-8">${record.reason}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>操作人：</strong></div>
+                <div class="col-sm-8">${record.operator}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-4"><strong>记录时间：</strong></div>
+                <div class="col-sm-8">${record.created_at}</div>
+            </div>
+        `;
+
+        new bootstrap.Modal(document.getElementById('recordDetailModal')).show();
+    } catch (error) {
+        console.error('获取记录详情失败:', error);
+        alert('获取记录详情失败，请稍后重试');
+    }
+}
+</script>
+{% endblock %}

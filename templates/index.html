@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h2">系统概览</h1>
+        <p class="text-muted">欢迎使用班级积分管理系统</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card stats-card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-0">学生总数</h5>
+                        <h2 class="mb-0">{{ total_students }}</h2>
+                    </div>
+                    <div class="fs-1 opacity-50">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stats-card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-0">积分记录</h5>
+                        <h2 class="mb-0">{{ total_records }}</h2>
+                    </div>
+                    <div class="fs-1 opacity-50">
+                        <i class="bi bi-list-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stats-card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-0">今日记录</h5>
+                        <h2 class="mb-0">
+                            {{ today_records }}
+                        </h2>
+                    </div>
+                    <div class="fs-1 opacity-50">
+                        <i class="bi bi-calendar-day"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history"></i> 最近积分记录
+                </h5>
+                <a href="{{ url_for('points_records') }}" class="btn btn-sm btn-outline-primary">查看全部</a>
+            </div>
+            <div class="card-body">
+                {% if recent_records %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>学生</th>
+                                    <th>积分</th>
+                                    <th>事由</th>
+                                    <th>类别</th>
+                                    <th>时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in recent_records %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url_for('student_detail', id=record.student.id) }}"
+                                           class="text-decoration-none">
+                                            {{ record.student.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if record.points > 0 %}
+                                            <span class="points-positive">+{{ record.points }}</span>
+                                        {% else %}
+                                            <span class="points-negative">{{ record.points }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ record.reason }}</td>
+                                    <td><span class="badge bg-secondary">{{ record.category }}</span></td>
+                                    <td>{{ record.created_at.strftime('%m-%d %H:%M') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-1"></i>
+                        <p class="mt-2">暂无积分记录</p>
+                        <a href="{{ url_for('add_points') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> 添加第一条记录
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightning-fill"></i> 快速操作
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('add_student') }}" class="btn btn-primary">
+                        <i class="bi bi-person-plus-fill"></i> 添加学生
+                    </a>
+                    <a href="{{ url_for('add_points') }}" class="btn btn-success">
+                        <i class="bi bi-plus-circle-fill"></i> 录入积分
+                    </a>
+                    <a href="{{ url_for('export_data') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-download"></i> 导出数据
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-trophy-fill"></i> 积分排行榜
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="leaderboard">
+                    <div class="text-muted text-center py-3">
+                        <small>查看完整排行榜请访问统计页面</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

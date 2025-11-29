@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2">
+                    <i class="bi bi-graph-up"></i> 积分趋势分析
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('rankings') }}">排名统计</a></li>
+                        <li class="breadcrumb-item active">{{ student.name }} - 趋势分析</li>
+                    </ol>
+                </nav>
+            </div>
+            <div>
+                <a href="{{ url_for('rankings') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> 返回排名
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 学生基本信息 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="avatar-circle bg-gradient-primary text-white mx-auto mb-3" style="width: 80px; height: 80px; font-size: 32px;">
+                    {{ student.name[0] }}
+                </div>
+                <h5>{{ student.name }}</h5>
+                <p class="text-muted mb-0">{{ student.student_id }}</p>
+                <p class="text-muted">{{ student.class_name }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="p-3">
+                            <div class="h3 mb-1 {% if student.total_points >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                {{ student.total_points }}
+                            </div>
+                            <small class="text-muted">总积分</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3">
+                            <div class="h3 mb-1 text-primary">{{ stats.rank }}</div>
+                            <small class="text-muted">班级排名</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3">
+                            <div class="h3 mb-1 text-info">{{ stats.records_count }}</div>
+                            <small class="text-muted">记录数</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3">
+                            <div class="h3 mb-1 text-warning">{{ "%.1f"|format(stats.avg_points) }}</div>
+                            <small class="text-muted">平均每次</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 趋势图表 -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-graph-up-arrow"></i> 累计积分趋势
+        </h5>
+    </div>
+    <div class="card-body">
+        <canvas id="trendChart" height="80"></canvas>
+    </div>
+</div>
+
+<!-- 统计对比 -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-bar-chart"></i> 班级统计对比
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>个人积分</span>
+                        <strong class="{% if student.total_points >= 0 %}text-success{% else %}text-danger{% endif %}">
+                            {{ student.total_points }}
+                        </strong>
+                    </div>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar {% if student.total_points >= 0 %}bg-success{% else %}bg-danger{% endif %}"
+                             style="width: {{ stats.percentile }}%">
+                            {{ "%.0f"|format(stats.percentile) }}%
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="text-muted small">班级平均</div>
+                        <div class="h5 mb-0">{{ "%.1f"|format(class_stats.avg) }}</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-muted small">中位数</div>
+                        <div class="h5 mb-0">{{ "%.1f"|format(class_stats.median) }}</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-muted small">最高分</div>
+                        <div class="h5 mb-0">{{ class_stats.max }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 最近记录 -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-clock-history"></i> 最近积分记录
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if recent_records %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th width="100">积分</th>
+                        <th>事由</th>
+                        <th>类别</th>
+                        <th>操作人</th>
+                        <th width="150">时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in recent_records %}
+                    <tr>
+                        <td>
+                            <span class="badge {% if record.points > 0 %}bg-success{% else %}bg-danger{% endif %} fs-6">
+                                {% if record.points > 0 %}+{% endif %}{{ record.points }}
+                            </span>
+                        </td>
+                        <td>{{ record.reason or '无' }}</td>
+                        <td><span class="badge bg-secondary">{{ record.category }}</span></td>
+                        <td>{{ record.operator or '系统' }}</td>
+                        <td>{{ record.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+            <p class="text-muted mt-2">暂无积分记录</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// 趋势图数据
+const trendData = {{ trend_data | tojson }};
+const classAvgData = {{ class_avg_data | tojson }};
+const classQ1Data = {{ class_q1_data | tojson }};
+const classQ3Data = {{ class_q3_data | tojson }};
+const classMedianData = {{ class_median_data | tojson }};
+
+// 累计积分趋势图
+const trendCtx = document.getElementById('trendChart').getContext('2d');
+new Chart(trendCtx, {
+    type: 'line',
+    data: {
+        labels: trendData.map(d => d.date),
+        datasets: [
+            {
+                label: '个人累计积分',
+                data: trendData.map(d => d.cumulative),
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                tension: 0.4,
+                fill: true,
+                borderWidth: 3
+            },
+            {
+                label: '班级平均分',
+                data: classAvgData.map(d => d.avg),
+                borderColor: 'rgb(255, 159, 64)',
+                backgroundColor: 'transparent',
+                tension: 0.4,
+                borderWidth: 2,
+                borderDash: [5, 5]
+            },
+            {
+                label: '上四分位数',
+                data: classQ3Data.map(d => d.q3),
+                borderColor: 'rgb(153, 102, 255)',
+                backgroundColor: 'transparent',
+                tension: 0.4,
+                borderWidth: 1,
+                borderDash: [3, 3]
+            },
+            {
+                label: '中位数',
+                data: classMedianData.map(d => d.median),
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'transparent',
+                tension: 0.4,
+                borderWidth: 2,
+                borderDash: [5, 5]
+            },
+            {
+                label: '下四分位数',
+                data: classQ1Data.map(d => d.q1),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'transparent',
+                tension: 0.4,
+                borderWidth: 1,
+                borderDash: [3, 3]
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: {
+            mode: 'index',
+            intersect: false
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '分';
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: false,
+                title: {
+                    display: true,
+                    text: '积分'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: '日期'
+                }
+            }
+        }
+    }
+});
+
+
+</script>
+{% endblock %}

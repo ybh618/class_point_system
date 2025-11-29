@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h2">
+            <i class="bi bi-pencil-fill text-primary"></i> 编辑小组
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-collection-fill"></i> 小组信息
+                </h5>
+            </div>
+            <form method="POST">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">小组名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                               value="{{ group.name }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="class_name" class="form-label">所属班级 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="class_name" name="class_name" required
+                               value="{{ group.class_name }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">小组描述</label>
+                        <textarea class="form-control" id="description" name="description" rows="3">{{ group.description or '' }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="color" class="form-label">小组颜色</label>
+                        <div class="d-flex align-items-center">
+                            <input type="color" class="form-control form-control-color me-3"
+                                   id="color" name="color" value="{{ group.color }}" style="width: 60px;">
+                            <div class="flex-grow-1">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button type="button" class="btn btn-sm" style="background-color: #007bff;"
+                                            onclick="setColor('#007bff')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #28a745;"
+                                            onclick="setColor('#28a745')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #dc3545;"
+                                            onclick="setColor('#dc3545')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #ffc107;"
+                                            onclick="setColor('#ffc107')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #6f42c1;"
+                                            onclick="setColor('#6f42c1')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #fd7e14;"
+                                            onclick="setColor('#fd7e14')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #20c997;"
+                                            onclick="setColor('#20c997')">&nbsp;</button>
+                                    <button type="button" class="btn btn-sm" style="background-color: #e83e8c;"
+                                            onclick="setColor('#e83e8c')">&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 小组成员 -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">小组成员 ({{ group.students|length }}人)</h6>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="showAddStudentModal()">
+                                <i class="bi bi-person-plus"></i> 添加成员
+                            </button>
+                        </div>
+                        <div class="member-list" style="max-height: 300px; overflow-y: auto;">
+                            {% if group.students %}
+                                {% for student in group.students %}
+                                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+                                    <div>
+                                        <strong>{{ student.name }}</strong>
+                                        <small class="text-muted ms-2">{{ student.student_id }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="badge bg-primary">{{ student.total_points() }}分</div>
+                                        <div class="badge bg-success ms-1">{{ student.week_points() }}分</div>
+                                        <form method="POST" action="{{ url_for('set_student_group', id=student.id) }}" class="d-inline">
+                                            <input type="hidden" name="group_id" value="">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger ms-1"
+                                                    onclick="return confirm('确定要将 {{ student.name }} 移出小组吗？')">
+                                                <i class="bi bi-dash-circle"></i> 移除
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                            <p class="text-muted text-center">暂无成员</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 统计信息 -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="text-center p-3 bg-light rounded">
+                                <div class="h3 mb-0 text-primary">{{ group.total_points() }}</div>
+                                <small class="text-muted">小组总积分</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3 bg-light rounded">
+                                <div class="h3 mb-0 text-success">{{ '%.1f'|format(group.average_points()) }}</div>
+                                <small class="text-muted">平均积分</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> 保存修改
+                    </button>
+                    <a href="{{ url_for('groups') }}" class="btn btn-secondary ms-2">
+                        <i class="bi bi-x-circle"></i> 取消
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-graph-up"></i> 小组统计
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>成员数量</span>
+                        <strong>{{ group.students|length }}人</strong>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>总积分</span>
+                        <strong class="text-primary">{{ group.total_points() }}分</strong>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>平均积分</span>
+                        <strong class="text-success">{{ '%.1f'|format(group.average_points()) }}分</strong>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>本周积分</span>
+                        <strong class="text-info">{{ group.week_points() }}分</strong>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>本周平均</span>
+                        <strong class="text-warning">{{ '%.1f'|format(group.week_average_points()) }}分</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加学生模态框 -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-person-plus"></i> 添加学生到小组
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ url_for('add_students_to_group', id=group.id) }}">
+                    <div class="modal-body">
+                        {% if available_students %}
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <p class="text-muted mb-0">选择要添加到小组的学生：</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="selectAll">
+                                    <label class="form-check-label small" for="selectAll">全选</label>
+                                </div>
+                            </div>
+                            <div class="available-students" style="max-height: 400px; overflow-y: auto;">
+                                {% for student in available_students %}
+                                <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
+                                    <div class="d-flex align-items-center">
+                                        <input class="form-check-input me-3 student-checkbox" type="checkbox"
+                                               name="student_ids" value="{{ student.id }}" id="student_{{ student.id }}">
+                                        <div>
+                                            <strong>{{ student.name }}</strong>
+                                            <small class="text-muted ms-2">{{ student.student_id }}</small>
+                                            {% if student.group %}
+                                                <span class="badge bg-secondary ms-2">当前: {{ student.group.name }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="badge bg-primary">{{ student.total_points() }}分</div>
+                                        <div class="badge bg-success ms-1">{{ student.week_points() }}分</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-3 p-2 bg-light rounded">
+                                <small class="text-muted">
+                                    <i class="bi bi-info-circle"></i>
+                                    已选择 <span id="selectedCount">0</span> 名学生
+                                </small>
+                            </div>
+                        {% else %}
+                            <div class="text-center text-muted py-4">
+                                <i class="bi bi-inbox fs-1"></i>
+                                <p class="mt-2">暂无可添加的学生</p>
+                                <p class="small">该班级没有学生或所有学生已在小组中</p>
+                                <a href="{{ url_for('students') }}" class="btn btn-primary btn-sm mt-2">
+                                    <i class="bi bi-person-plus"></i> 添加学生
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        {% if available_students %}
+                            <button type="submit" class="btn btn-primary" id="addSelectedBtn" disabled>
+                                <i class="bi bi-plus-circle"></i> 添加选中学生
+                            </button>
+                        {% endif %}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function setColor(color) {
+    document.getElementById('color').value = color;
+}
+
+function showAddStudentModal() {
+    const modal = new bootstrap.Modal(document.getElementById('addStudentModal'));
+    modal.show();
+}
+
+// 多选功能
+function updateSelectedCount() {
+    const checkboxes = document.querySelectorAll('.student-checkbox:checked');
+    const selectedCount = checkboxes.length;
+    document.getElementById('selectedCount').textContent = selectedCount;
+
+    const addButton = document.getElementById('addSelectedBtn');
+    addButton.disabled = selectedCount === 0;
+}
+
+function toggleSelectAll() {
+    const selectAll = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.student-checkbox');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAll.checked;
+    });
+
+    updateSelectedCount();
+}
+
+// 确保Bootstrap已加载
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof bootstrap === 'undefined') {
+        console.error('Bootstrap is not loaded');
+    }
+
+    // 初始化多选功能
+    const selectAll = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.student-checkbox');
+
+    if (selectAll) {
+        selectAll.addEventListener('change', toggleSelectAll);
+    }
+
+    if (checkboxes.length > 0) {
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+    }
+
+    // 初始化选中计数
+    updateSelectedCount();
+});
+</script>
+{% endblock %}

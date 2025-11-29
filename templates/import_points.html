@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- 页面头部 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h2 mb-1">
+                        <i class="bi bi-file-earmark-spreadsheet text-primary"></i> 批量导入分数
+                    </h1>
+                    <p class="text-muted mb-0">通过Excel表格批量导入学生分数</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('add_points') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> 返回积分录入
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入说明 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle text-primary"></i> 导入说明
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>文件格式要求：</h6>
+                            <ul class="mb-0">
+                                <li>支持 .xlsx 和 .xls 格式的Excel文件</li>
+                                <li>第一列必须是<strong>学生姓名</strong></li>
+                                <li>第二列必须是<strong>分数</strong>（整数）</li>
+                                <li>从第二行开始为数据行（第一行可以是标题）</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>示例格式：</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>姓名</th>
+                                            <th>分数</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>张三</td>
+                                            <td>10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>李四</td>
+                                            <td>-5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>王五</td>
+                                            <td>8</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入表单 -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-upload text-primary"></i> 上传文件
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data" id="importForm">
+                        <div class="mb-4">
+                            <label for="file" class="form-label">
+                                <strong>选择Excel文件</strong>
+                            </label>
+                            <input type="file" class="form-control form-control-lg" id="file" name="file"
+                                   accept=".xlsx,.xls" required>
+                            <div class="form-text">
+                                请选择符合格式要求的Excel文件
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="category" class="form-label">积分类别</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">请选择类别</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.name }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                    <option value="批量导入">批量导入</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reason" class="form-label">积分事由</label>
+                                <input type="text" class="form-control" id="reason" name="reason"
+                                       placeholder="请输入积分事由" value="批量导入" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="operator" class="form-label">操作人</label>
+                                <input type="text" class="form-control" id="operator" name="operator"
+                                       placeholder="请输入操作人姓名">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="skip_not_found" class="form-label">处理方式</label>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="skip_not_found" name="skip_not_found" checked>
+                                    <label class="form-check-label" for="skip_not_found">
+                                        跳过系统中不存在的学生
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <i class="bi bi-upload"></i> 开始导入
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- 导入统计 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-graph-up text-success"></i> 导入统计
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-file-earmark-spreadsheet display-4 text-primary"></i>
+                        </div>
+                        <h4 id="importStatus">等待导入</h4>
+                        <div class="progress mb-3" style="height: 8px;">
+                            <div id="importProgress" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="border-end">
+                                    <h5 id="totalCount" class="mb-0">0</h5>
+                                    <small class="text-muted">总记录</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="border-end">
+                                    <h5 id="successCount" class="mb-0 text-success">0</h5>
+                                    <small class="text-muted">成功</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div>
+                                    <h5 id="failedCount" class="mb-0 text-danger">0</h5>
+                                    <small class="text-muted">失败</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 注意事项 -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-exclamation-triangle text-warning"></i> 注意事项
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <small>确保学生姓名与系统中一致</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <small>分数可以是正数（加分）或负数（扣分）</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <small>建议先导出学生名单核对姓名</small>
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle text-success"></i>
+                            <small>导入前建议备份数据</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入结果 -->
+    <div class="row mt-4" id="importResults" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-list-check text-primary"></i> 导入结果
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="resultsTable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const importForm = document.getElementById('importForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const importStatus = document.getElementById('importStatus');
+    const importProgress = document.getElementById('importProgress');
+    const totalCount = document.getElementById('totalCount');
+    const successCount = document.getElementById('successCount');
+    const failedCount = document.getElementById('failedCount');
+    const importResults = document.getElementById('importResults');
+    const resultsTable = document.getElementById('resultsTable');
+
+    importForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        // 禁用提交按钮
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> 导入中...';
+
+        // 重置统计信息
+        importStatus.textContent = '正在导入...';
+        importStatus.className = 'text-warning';
+        importProgress.style.width = '0%';
+        totalCount.textContent = '0';
+        successCount.textContent = '0';
+        failedCount.textContent = '0';
+        importResults.style.display = 'none';
+
+        fetch('{{ url_for("import_points") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 更新统计信息
+                totalCount.textContent = data.total_records || 0;
+                successCount.textContent = data.success_count || 0;
+                failedCount.textContent = data.failed_count || 0;
+
+                // 更新进度条
+                const total = data.total_records || 1;
+                const success = data.success_count || 0;
+                const progress = Math.round((success / total) * 100);
+                importProgress.style.width = progress + '%';
+
+                // 显示结果
+                if (data.failed_records && data.failed_records.length > 0) {
+                    importStatus.textContent = '导入完成（有部分失败）';
+                    importStatus.className = 'text-warning';
+
+                    // 显示失败记录
+                    let tableHtml = `
+                        <h6 class="text-danger">失败记录（${data.failed_records.length}条）：</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>分数</th>
+                                        <th>失败原因</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    data.failed_records.forEach(record => {
+                        tableHtml += `
+                            <tr>
+                                <td>${record.name}</td>
+                                <td>${record.points}</td>
+                                <td class="text-danger">${record.error}</td>
+                            </tr>
+                        `;
+                    });
+
+                    tableHtml += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+                    resultsTable.innerHTML = tableHtml;
+                    importResults.style.display = 'block';
+                } else {
+                    importStatus.textContent = '导入成功';
+                    importStatus.className = 'text-success';
+                    importProgress.style.width = '100%';
+                }
+
+                showNotification(`导入完成！成功 ${data.success_count} 条，失败 ${data.failed_count} 条`, 'success');
+            } else {
+                importStatus.textContent = '导入失败';
+                importStatus.className = 'text-danger';
+                showNotification(data.message || '导入失败，请检查文件格式', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            importStatus.textContent = '导入失败';
+            importStatus.className = 'text-danger';
+            showNotification('网络错误，请重试', 'error');
+        })
+        .finally(() => {
+            // 恢复提交按钮
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-upload"></i> 开始导入';
+        });
+    });
+
+    // 显示通知
+    function showNotification(message, type = 'success') {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+
+        const notification = document.createElement('div');
+        notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+        notification.style.zIndex = '9999';
+        notification.innerHTML = `
+            <i class="bi ${icon}"></i> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+});
+</script>
+{% endblock %}

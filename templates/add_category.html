@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h2">添加类别</h1>
+            <a href="{{ url_for('categories') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> 返回类别列表
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-plus-circle-fill"></i> 类别信息
+                </h5>
+            </div>
+            <form method="POST">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">类别名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                               placeholder="请输入类别名称，如：作业、考试、纪律等">
+                        <div class="form-text">类别名称应该简洁明了，便于识别</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">类别描述</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"
+                                  placeholder="请详细描述这个类别包含的内容和标准..."></textarea>
+                        <div class="form-text">详细描述有助于统一积分标准</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="default_points" class="form-label">默认积分值 <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="default_points" name="default_points" required
+                               placeholder="请输入默认积分值">
+                        <div class="form-text">
+                            <span class="text-success">正数</span> 表示默认加分，
+                            <span class="text-danger">负数</span> 表示默认扣分
+                        </div>
+                    </div>
+
+                    <!-- 积分建议 -->
+                    <div class="alert alert-info">
+                        <h6>常见类别积分建议：</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>作业完成：</span>
+                                    <span>+5 分</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>作业未交：</span>
+                                    <span class="text-danger">-3 分</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>考试成绩优秀：</span>
+                                    <span>+10 分</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>课堂积极表现：</span>
+                                    <span>+2 分</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>纪律良好：</span>
+                                    <span>+3 分</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>违反纪律：</span>
+                                    <span class="text-danger">-5 分</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> 创建类别
+                    </button>
+                    <a href="{{ url_for('categories') }}" class="btn btn-secondary ms-2">
+                        <i class="bi bi-x-circle"></i> 取消
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-info-circle-fill"></i> 使用说明
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle text-success"></i>
+                        类别名称不能重复
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle text-success"></i>
+                        默认积分会在添加记录时自动填入
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle text-success"></i>
+                        描述信息有助于规范化管理
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-info-circle text-info"></i>
+                        创建后可以编辑和删除类别
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-lightbulb-fill"></i> 最佳实践
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <small>
+                        <strong>建议：</strong><br>
+                        • 类别名称简洁明了<br>
+                        • 积分值设置合理<br>
+                        • 描述详细具体<br>
+                        • 标准统一执行
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

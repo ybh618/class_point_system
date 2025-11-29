@@ -1,0 +1,724 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2">
+                    <i class="bi bi-trophy-fill text-warning"></i> 积分排名统计
+                </h1>
+                <p class="text-muted">查看学生个人积分排名和小组平均分排名，支持日期区间筛选</p>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" onclick="refreshData()">
+                    <i class="bi bi-arrow-clockwise"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 日期筛选表单 -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-calendar-check"></i> 日期区间筛选
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('rankings') }}" class="row g-3">
+            <div class="col-md-4">
+                <label for="start_date" class="form-label">开始日期</label>
+                <input type="date" class="form-control" id="start_date" name="start_date"
+                       value="{{ start_date }}">
+            </div>
+            <div class="col-md-4">
+                <label for="end_date" class="form-label">结束日期</label>
+                <input type="date" class="form-control" id="end_date" name="end_date"
+                       value="{{ end_date }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> 应用筛选
+                    </button>
+                    <a href="{{ url_for('rankings') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> 清除
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        {% if start_date and end_date %}
+        <div class="mt-3 p-3 bg-light rounded">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="h5 mb-1 text-primary">{{ start_date }} 至 {{ end_date }}</div>
+                    <small class="text-muted">筛选区间</small>
+                </div>
+                <div class="col-md-4">
+                    <div class="h5 mb-1 text-success">{{ student_ranking|length }}</div>
+                    <small class="text-muted">参与学生</small>
+                </div>
+                <div class="col-md-4">
+                    <div class="h5 mb-1 text-info">{{ group_ranking|length }}</div>
+                    <small class="text-muted">活跃小组</small>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 排名切换标签 -->
+<div class="row mb-4">
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="rankingTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab">
+                    <i class="bi bi-person-fill"></i> 学生排名
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="group-tab" data-bs-toggle="tab" data-bs-target="#group" type="button" role="tab">
+                    <i class="bi bi-collection-fill"></i> 小组排名
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="week-tab" data-bs-toggle="tab" data-bs-target="#week" type="button" role="tab">
+                    <i class="bi bi-calendar-week"></i> 本周排行
+                </button>
+            </li>
+            {% if start_date and end_date %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="range-tab" data-bs-toggle="tab" data-bs-target="#range" type="button" role="tab">
+                    <i class="bi bi-calendar-range"></i> 区间排行
+                </button>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<div class="tab-content" id="rankingTabsContent">
+    <!-- 学生排名 -->
+    <div class="tab-pane fade show active" id="student" role="tabpanel">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-trophy-fill text-warning"></i> 学生总积分排名
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="80">排名</th>
+                                        <th>学生信息</th>
+                                        <th>班级</th>
+                                        <th width="120">总积分</th>
+                                        <th width="120">本周积分</th>
+                                        {% if start_date and end_date %}
+                                        <th width="120">区间积分</th>
+                                        {% endif %}
+                                        <th width="100">小组</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in student_ranking %}
+                                    <tr class="{% if loop.index <= 3 %}table-warning{% endif %}">
+                                        <td>
+                                            {% if loop.index == 1 %}
+                                            <i class="bi bi-award-fill text-warning fs-4"></i>
+                                            {% elif loop.index == 2 %}
+                                            <i class="bi bi-award-fill text-secondary fs-4"></i>
+                                            {% elif loop.index == 3 %}
+                                            <i class="bi bi-award-fill" style="color: #CD7F32;" class="fs-4"></i>
+                                            {% else %}
+                                            <span class="badge bg-secondary">{{ loop.index }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle bg-gradient-primary text-white me-3" style="width: 40px; height: 40px; font-size: 16px;">
+                                                    {{ item.student.name[0] }}
+                                                </div>
+                                                <div>
+                                                    <a href="{{ url_for('student_trend', id=item.student.id) }}" class="text-decoration-none">
+                                                        <strong>{{ item.student.name }}</strong>
+                                                    </a>
+                                                    <br>
+                                                    <small class="text-muted">{{ item.student.student_id }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ item.student.class_name }}</td>
+                                        <td>
+                                            <span class="badge {% if item.total_points >= 0 %}bg-success{% else %}bg-danger{% endif %} fs-6">
+                                                {{ item.total_points }}分
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if item.week_points >= 0 %}bg-info{% else %}bg-warning{% endif %}">
+                                                {{ item.week_points }}分
+                                            </span>
+                                        </td>
+                                        {% if start_date and end_date %}
+                                        <td>
+                                            <span class="badge {% if item.range_points >= 0 %}bg-success{% else %}bg-danger{% endif %}">
+                                                {{ item.range_points }}分
+                                            </span>
+                                        </td>
+                                        {% endif %}
+                                        <td>
+                                            {% if item.student.group %}
+                                            <span class="badge" style="background-color: {{ item.student.group.color }};">
+                                                {{ item.student.group.name }}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-muted">无</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if not student_ranking %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted">暂无学生数据</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 小组排名 -->
+    <div class="tab-pane fade" id="group" role="tabpanel">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-collection-fill text-primary"></i> 小组平均分排名
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for item in group_ranking %}
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100 border-0 shadow-sm group-ranking-card">
+                                    <div class="card-header d-flex justify-content-between align-items-center"
+                                         style="background-color: {{ item.group.color }}20; border-left: 4px solid {{ item.group.color }};">
+                                        <div class="d-flex align-items-center">
+                                            {% if loop.index == 1 %}
+                                            <i class="bi bi-award-fill text-warning me-2 fs-4"></i>
+                                            {% elif loop.index == 2 %}
+                                            <i class="bi bi-award-fill text-secondary me-2 fs-4"></i>
+                                            {% elif loop.index == 3 %}
+                                            <i class="bi bi-award-fill me-2 fs-4" style="color: #CD7F32;"></i>
+                                            {% else %}
+                                            <span class="badge bg-secondary me-2">{{ loop.index }}</span>
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-0">{{ item.group.name }}</h6>
+                                                <small class="text-muted">{{ item.group.class_name }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <div class="h4 mb-0 text-primary">{{ "%.1f"|format(item.average_points) }}</div>
+                                                    <small class="text-muted">平均积分</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <div class="h4 mb-0 text-success">{{ item.group.total_points() }}</div>
+                                                    <small class="text-muted">总积分</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div>
+                                                    <div class="h5 mb-0 text-info">{{ "%.1f"|format(item.week_average_points) }}</div>
+                                                    <small class="text-muted">本周平均</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div>
+                                                    <div class="h5 mb-0 text-warning">{{ item.group.week_points() }}</div>
+                                                    <small class="text-muted">本周总分</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if start_date and end_date %}
+                                        <div class="row mt-2">
+                                            <div class="col-6">
+                                                <div>
+                                                    <div class="h5 mb-0 text-success">{{ "%.1f"|format(item.avg_range_points) }}</div>
+                                                    <small class="text-muted">区间平均</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div>
+                                                    <div class="h5 mb-0 text-primary">{{ item.total_range_points }}</div>
+                                                    <small class="text-muted">区间总分</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <hr>
+                                        <div class="text-start">
+                                            <small class="text-muted">
+                                                <i class="bi bi-people-fill"></i> {{ item.group.students|length }}名成员
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if not group_ranking %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-collection text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted">暂无小组数据</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 本周排行 -->
+    <div class="tab-pane fade" id="week" role="tabpanel">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="bi bi-calendar-week text-info"></i> 本周学生排行
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="60">排名</th>
+                                        <th>学生</th>
+                                        <th width="80">本周积分</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set week_student_ranking = student_ranking | sort(attribute='week_points', reverse=true) %}
+                                    {% for item in week_student_ranking %}
+                                    {% if loop.index <= 10 %}
+                                    <tr class="{% if loop.index <= 3 %}table-info{% endif %}">
+                                        <td>
+                                            {% if loop.index <= 3 %}
+                                            <span class="badge {% if loop.index == 1 %}bg-warning{% elif loop.index == 2 %}bg-secondary{% else %}bg-dark{% endif %}">
+                                                {{ loop.index }}
+                                            </span>
+                                            {% else %}
+                                            {{ loop.index }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ url_for('student_trend', id=item.student.id) }}" class="text-decoration-none">
+                                                <strong>{{ item.student.name }}</strong>
+                                            </a>
+                                            <br>
+                                            <small class="text-muted">{{ item.student.class_name }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if item.week_points >= 0 %}bg-success{% else %}bg-danger{% endif %}">
+                                                {{ item.week_points }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="bi bi-collection-fill text-warning"></i> 本周小组排行
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="60">排名</th>
+                                        <th>小组</th>
+                                        <th width="80">本周平均</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set week_group_ranking = group_ranking | sort(attribute='week_average_points', reverse=true) %}
+                                    {% for item in week_group_ranking %}
+                                    {% if loop.index <= 10 %}
+                                    <tr class="{% if loop.index <= 3 %}table-warning{% endif %}">
+                                        <td>
+                                            {% if loop.index <= 3 %}
+                                            <span class="badge {% if loop.index == 1 %}bg-warning{% elif loop.index == 2 %}bg-secondary{% else %}bg-dark{% endif %}">
+                                                {{ loop.index }}
+                                            </span>
+                                            {% else %}
+                                            {{ loop.index }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded me-2" style="width: 16px; height: 16px; background-color: {{ item.group.color }};"></div>
+                                                <strong>{{ item.group.name }}</strong>
+                                            </div>
+                                            <small class="text-muted">{{ item.group.class_name }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if item.week_average_points >= 0 %}bg-success{% else %}bg-danger{% endif %}">
+                                                {{ "%.1f"|format(item.week_average_points) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 统计摘要 -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="bi bi-bar-chart-fill"></i> 本周统计摘要
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 mb-0 text-primary">{{ student_ranking|length }}</div>
+                                    <small class="text-muted">参与学生</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 mb-0 text-success">{{ group_ranking|length }}</div>
+                                    <small class="text-muted">活跃小组</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 mb-0 text-info">
+                                        {% set total_week_points = student_ranking | sum(attribute='week_points') %}
+                                        {{ total_week_points }}
+                                    </div>
+                                    <small class="text-muted">本周总积分</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 mb-0 text-warning">
+                                        {% set avg_week_points = (total_week_points / (student_ranking|length)) if student_ranking else 0 %}
+                                        {{ "%.1f"|format(avg_week_points) }}
+                                    </div>
+                                    <small class="text-muted">本周平均</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 区间排行 -->
+    {% if start_date and end_date %}
+    <div class="tab-pane fade" id="range" role="tabpanel">
+        <div class="row">
+            <!-- 区间学生排行 -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-person-fill text-success"></i> 区间学生排行
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="80">排名</th>
+                                        <th>学生信息</th>
+                                        <th>班级</th>
+                                        <th width="120">区间积分</th>
+                                        <th width="100">小组</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set range_student_ranking = student_ranking | sort(attribute='range_points', reverse=true) %}
+                                    {% for item in range_student_ranking %}
+                                    <tr class="{% if loop.index <= 3 %}table-success{% endif %}">
+                                        <td>
+                                            {% if loop.index == 1 %}
+                                            <i class="bi bi-award-fill text-warning fs-4"></i>
+                                            {% elif loop.index == 2 %}
+                                            <i class="bi bi-award-fill text-secondary fs-4"></i>
+                                            {% elif loop.index == 3 %}
+                                            <i class="bi bi-award-fill" style="color: #CD7F32;" class="fs-4"></i>
+                                            {% else %}
+                                            <span class="badge bg-secondary">{{ loop.index }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle bg-gradient-success text-white me-3" style="width: 40px; height: 40px; font-size: 16px;">
+                                                    {{ item.student.name[0] }}
+                                                </div>
+                                                <div>
+                                                    <a href="{{ url_for('student_trend', id=item.student.id) }}" class="text-decoration-none">
+                                                        <strong>{{ item.student.name }}</strong>
+                                                    </a>
+                                                    <br>
+                                                    <small class="text-muted">{{ item.student.student_id }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ item.student.class_name }}</td>
+                                        <td>
+                                            <span class="badge {% if item.range_points >= 0 %}bg-success{% else %}bg-danger{% endif %} fs-6">
+                                                {{ item.range_points }}分
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if item.student.group %}
+                                            <span class="badge" style="background-color: {{ item.student.group.color }};">
+                                                {{ item.student.group.name }}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-muted">无</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 区间小组排行 -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-collection-fill text-primary"></i> 区间小组排行
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="80">排名</th>
+                                        <th>小组信息</th>
+                                        <th width="120">区间平均分</th>
+                                        <th width="120">区间总分</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set range_group_ranking = group_ranking | sort(attribute='avg_range_points', reverse=true) %}
+                                    {% for item in range_group_ranking %}
+                                    <tr class="{% if loop.index <= 3 %}table-primary{% endif %}">
+                                        <td>
+                                            {% if loop.index == 1 %}
+                                            <i class="bi bi-award-fill text-warning fs-4"></i>
+                                            {% elif loop.index == 2 %}
+                                            <i class="bi bi-award-fill text-secondary fs-4"></i>
+                                            {% elif loop.index == 3 %}
+                                            <i class="bi bi-award-fill" style="color: #CD7F32;" class="fs-4"></i>
+                                            {% else %}
+                                            <span class="badge bg-secondary">{{ loop.index }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded me-2" style="width: 16px; height: 16px; background-color: {{ item.group.color }};"></div>
+                                                <div>
+                                                    <strong>{{ item.group.name }}</strong>
+                                                    <br>
+                                                    <small class="text-muted">{{ item.group.class_name }}</small>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted">
+                                                <i class="bi bi-people-fill"></i> {{ item.group.students|length }}名成员
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if item.avg_range_points >= 0 %}bg-success{% else %}bg-danger{% endif %} fs-6">
+                                                {{ "%.1f"|format(item.avg_range_points) }}分
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if item.total_range_points >= 0 %}bg-info{% else %}bg-warning{% endif %}">
+                                                {{ item.total_range_points }}分
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 区间统计摘要 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-bar-chart-fill"></i> 区间统计摘要
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center p-3 bg-primary text-white rounded">
+                                    <div class="h4 mb-0">
+                                        {% set total_range_points = student_ranking | sum(attribute='range_points') %}
+                                        {{ total_range_points }}
+                                    </div>
+                                    <small>区间总积分</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center p-3 bg-success text-white rounded">
+                                    <div class="h4 mb-0">
+                                        {% set avg_range_points = (total_range_points / student_ranking|length) if student_ranking else 0 %}
+                                        {{ "%.1f"|format(avg_range_points) }}
+                                    </div>
+                                    <small>区间平均分</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center p-3 bg-info text-white rounded">
+                                    <div class="h4 mb-0">
+                                        {% set top_group_avg = range_group_ranking[0].avg_range_points if range_group_ranking else 0 %}
+                                        {{ "%.1f"|format(top_group_avg) }}
+                                    </div>
+                                    <small>最高小组平均分</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="text-center p-3 bg-warning text-white rounded">
+                                    <div class="h4 mb-0">
+                                        {% set top_student_points = range_student_ranking[0].range_points if range_student_ranking else 0 %}
+                                        {{ top_student_points }}
+                                    </div>
+                                    <small>最高个人积分</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function refreshData() {
+    location.reload();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 设置默认日期为最近一个月
+    const today = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+
+    // 格式化日期为 YYYY-MM-DD
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // 如果没有选择日期，设置默认日期
+    if (!document.getElementById('start_date').value) {
+        document.getElementById('start_date').value = formatDate(oneMonthAgo);
+    }
+    if (!document.getElementById('end_date').value) {
+        document.getElementById('end_date').value = formatDate(today);
+    }
+
+    // 添加动画效果
+    const tabs = document.querySelectorAll('#rankingTabs button');
+    tabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function() {
+            // 添加淡入动画
+            const target = document.querySelector(this.dataset.bsTarget);
+            target.classList.add('fade-in');
+        });
+    });
+});
+</script>
+
+<style>
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.group-ranking-card {
+    transition: transform 0.2s ease;
+}
+
+.group-ranking-card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}
