@@ -83,6 +83,13 @@ env.addGlobal('url_for', (name: string, kwargs?: Record<string, unknown>) => {
   return resolveRoute(name, kwargs)
 })
 
+// 生成随机头像 URL (使用 DiceBear API)
+env.addGlobal('avatar_url', (seed: string | number, style?: string) => {
+  const avatarStyle = style || 'adventurer'
+  const seedStr = String(seed)
+  return `https://api.dicebear.com/7.x/${avatarStyle}/svg?seed=${encodeURIComponent(seedStr)}`
+})
+
 env.addFilter('format', (pattern: string, value: unknown) => {
   if (typeof pattern !== 'string') {
     return value ?? ''

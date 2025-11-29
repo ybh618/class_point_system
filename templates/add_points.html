@@ -94,9 +94,7 @@
                                     <div class="card-body text-center p-3">
                                         <!-- 学生头像 -->
                                         <div class="student-avatar mb-2">
-                                            <div class="avatar-circle bg-gradient-primary text-white d-inline-flex align-items-center justify-content-center">
-                                                {{ student.name[0] }}
-                                            </div>
+                                            <img src="{{ avatar_url(student.id) }}" alt="{{ student.name }}" class="avatar avatar-lg">
                                         </div>
 
                                         <!-- 学生信息 -->
@@ -179,9 +177,7 @@
                                     <div class="card-body text-center p-3">
                                         <!-- 学生头像 -->
                                         <div class="student-avatar mb-2">
-                                            <div class="avatar-circle bg-gradient-primary text-white d-inline-flex align-items-center justify-content-center">
-                                                {{ student.name[0] }}
-                                            </div>
+                                            <img src="{{ avatar_url(student.id) }}" alt="{{ student.name }}" class="avatar avatar-lg">
                                         </div>
 
                                         <!-- 学生信息 -->

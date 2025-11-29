@@ -215,9 +215,11 @@ output += "\"\n                             data-current-points=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"total_points") || 0, env.opts.autoescape);
 output += "\"\n                             data-group-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"group_id") || "", env.opts.autoescape);
-output += "\"\n                             data-filter-type=\"grouped\">\n                            <div class=\"student-card h-100\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-2\">\n                                            <div class=\"avatar-circle bg-gradient-primary text-white d-inline-flex align-items-center justify-content-center\">\n                                                ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_15),"name")),0), env.opts.autoescape);
-output += "\n                                            </div>\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1\">";
+output += "\"\n                             data-filter-type=\"grouped\">\n                            <div class=\"student-card h-100\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-2\">\n                                            <img src=\"";
+output += runtime.suppressValue((lineno = 96, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_15),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_15),"name"), env.opts.autoescape);
+output += "\" class=\"avatar avatar-lg\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1\">";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"name"), env.opts.autoescape);
 output += "</h6>\n                                        <small class=\"text-muted student-id\">";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"student_id"), env.opts.autoescape);
@@ -273,9 +275,11 @@ output += "\"\n                             data-student-name=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"name"), env.opts.autoescape);
 output += "\"\n                             data-current-points=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"total_points") || 0, env.opts.autoescape);
-output += "\"\n                             data-group-id=\"\"\n                             data-filter-type=\"ungrouped\">\n                            <div class=\"student-card h-100\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-2\">\n                                            <div class=\"avatar-circle bg-gradient-primary text-white d-inline-flex align-items-center justify-content-center\">\n                                                ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_19),"name")),0), env.opts.autoescape);
-output += "\n                                            </div>\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1\">";
+output += "\"\n                             data-group-id=\"\"\n                             data-filter-type=\"ungrouped\">\n                            <div class=\"student-card h-100\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-2\">\n                                            <img src=\"";
+output += runtime.suppressValue((lineno = 179, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_19),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_19),"name"), env.opts.autoescape);
+output += "\" class=\"avatar avatar-lg\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1\">";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"name"), env.opts.autoescape);
 output += "</h6>\n                                        <small class=\"text-muted student-id\">";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"student_id"), env.opts.autoescape);
@@ -457,13 +461,13 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 459;
+var lineno = 455;
 var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
 output += "\n<style>\n/* 学生卡片样式 */\n.student-card {\n    cursor: pointer;\n    transition: all 0.3s ease;\n}\n\n.student-card:hover .student-card-inner {\n    transform: translateY(-5px);\n    box-shadow: 0 8px 25px rgba(0,0,0,0.15);\n}\n\n.student-card.selected .student-card-inner {\n    border: 2px solid #0d6efd;\n    transform: translateY(-3px);\n}\n\n.avatar-circle {\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    font-size: 24px;\n    font-weight: bold;\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n}\n\n.bg-gradient-primary {\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n}\n\n.points-animation {\n    animation: pointsChange 0.6s ease-in-out;\n}\n\n@keyframes pointsChange {\n    0% { transform: scale(1); }\n    50% { transform: scale(1.3); color: #28a745; }\n    100% { transform: scale(1); }\n}\n\n.points-negative-animation {\n    animation: pointsNegativeChange 0.6s ease-in-out;\n}\n\n@keyframes pointsNegativeChange {\n    0% { transform: scale(1); }\n    50% { transform: scale(1.3); color: #dc3545; }\n    100% { transform: scale(1); }\n}\n\n.quick-points-btn:hover {\n    transform: scale(1.1);\n    transition: all 0.2s ease;\n}\n\n/* 小组头部样式 */\n.group-header {\n    transition: all 0.3s ease;\n}\n\n.group-header:hover {\n    transform: translateY(-2px);\n    box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n}\n\n.group-controls {\n    opacity: 0.7;\n    transition: opacity 0.3s ease;\n}\n\n.group-section:hover .group-controls {\n    opacity: 1;\n}\n\n/* 响应式调整 */\n@media (max-width: 768px) {\n    .avatar-circle {\n        width: 50px;\n        height: 50px;\n        font-size: 20px;\n    }\n\n    .group-header {\n        padding: 1rem !important;\n    }\n\n    .group-header h5 {\n        font-size: 1.1rem;\n    }\n}\n</style>\n\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\n    let selectedStudents = new Set();\n    let currentFilter = 'all';\n\n    const quickPointsModal = new bootstrap.Modal(document.getElementById('quickPointsModal'));\n    const traditionalModal = new bootstrap.Modal(document.getElementById('traditionalModal'));\n\n    // 自定义积分值设定\n    document.getElementById('setCustomPoints').addEventListener('click', function() {\n        const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n        if (points !== 0) {\n            showNotification(`已设定积分值：${points > 0 ? '+' : ''}${points}分`, 'success');\n        }\n    });\n\n\n    // 筛选按钮事件\n    document.querySelectorAll('[data-filter]').forEach(btn => {\n        btn.addEventListener('click', function() {\n            const filter = this.dataset.filter;\n            currentFilter = filter;\n\n            // 更新按钮状态\n            document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));\n            this.classList.add('active');\n\n            // 筛选学生卡片\n            filterStudents(filter);\n        });\n    });\n\n    // 筛选学生函数\n    function filterStudents(filter) {\n        const sections = document.querySelectorAll('.group-section');\n        const cards = document.querySelectorAll('.student-card-wrapper');\n\n        sections.forEach(section => {\n            if (filter === 'all') {\n                section.style.display = 'block';\n            } else if (filter === 'grouped') {\n                section.style.display = section.dataset.groupId !== 'ungrouped' ? 'block' : 'none';\n            } else if (filter === 'ungrouped') {\n                section.style.display = section.dataset.groupId === 'ungrouped' ? 'block' : 'none';\n            }\n        });\n\n        // 同时更新单个卡片的显示状态，确保筛选一致性\n        cards.forEach(card => {\n            if (filter === 'all') {\n                card.style.display = 'block';\n            } else if (filter === 'grouped') {\n                card.style.display = card.dataset.groupId ? 'block' : 'none';\n            } else if (filter === 'ungrouped') {\n                card.style.display = card.dataset.groupId ? 'none' : 'block';\n            }\n        });\n    }\n\n    // 全选按钮\n    document.getElementById('selectAllBtn').addEventListener('click', function() {\n        const visibleCards = document.querySelectorAll('.student-card-wrapper:not([style*=\"display: none\"]) .student-checkbox');\n        visibleCards.forEach(checkbox => {\n            checkbox.checked = true;\n            const studentId = checkbox.value;\n            selectedStudents.add(studentId);\n        });\n        updateSelectedInfo();\n    });\n\n    // 全选本组按钮\n    document.querySelectorAll('.group-select-all').forEach(btn => {\n        btn.addEventListener('click', function() {\n            const groupId = this.dataset.groupId;\n            let checkboxes;\n\n            if (groupId === 'ungrouped') {\n                checkboxes = document.querySelectorAll('.student-card-wrapper[data-filter-type=\"ungrouped\"] .student-checkbox');\n            } else {\n                checkboxes = document.querySelectorAll(`.student-card-wrapper[data-group-id=\"${groupId}\"] .student-checkbox`);\n            }\n\n            checkboxes.forEach(checkbox => {\n                checkbox.checked = true;\n                const studentId = checkbox.value;\n                selectedStudents.add(studentId);\n            });\n            updateSelectedInfo();\n            showNotification(`已全选本组学生`, 'success');\n        });\n    });\n\n    // 清除所有选择\n    document.getElementById('clearAllBtn').addEventListener('click', function() {\n        document.querySelectorAll('.student-checkbox').forEach(checkbox => {\n            checkbox.checked = false;\n        });\n        selectedStudents.clear();\n        updateSelectedInfo();\n    });\n\n    // 学生复选框事件\n    document.querySelectorAll('.student-checkbox').forEach(checkbox => {\n        checkbox.addEventListener('change', function() {\n            const studentId = this.value;\n            const card = this.closest('.student-card-wrapper');\n\n            if (this.checked) {\n                selectedStudents.add(studentId);\n                card.querySelector('.student-card-inner').classList.add('selected');\n            } else {\n                selectedStudents.delete(studentId);\n                card.querySelector('.student-card-inner').classList.remove('selected');\n            }\n\n            updateSelectedInfo();\n        });\n    });\n\n    // 快速加分按钮\n    document.getElementById('quickAddBtn').addEventListener('click', function() {\n        applyQuickOperation(true);\n    });\n\n    // 快速扣分按钮\n    document.getElementById('quickMinusBtn').addEventListener('click', function() {\n        applyQuickOperation(false);\n    });\n\n    // 应用快速操作\n    function applyQuickOperation(isAdd) {\n        const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n        const category = document.getElementById('quickCategory').value || '自定义';\n        const reason = document.getElementById('quickReason').value || (isAdd ? '自定义加分' : '自定义扣分');\n        const actualPoints = isAdd ? Math.abs(points) : -Math.abs(points);\n\n        if (points === 0) {\n            showNotification('请先设定积分值', 'warning');\n            return;\n        }\n\n        if (selectedStudents.size === 0) {\n            showNotification('请先选择学生', 'warning');\n            return;\n        }\n\n        const studentIds = Array.from(selectedStudents);\n\n        // 批量提交\n        let completed = 0;\n        studentIds.forEach(studentId => {\n            submitPoints(studentId, actualPoints, category, reason, '', function() {\n                completed++;\n                if (completed === studentIds.length) {\n                    // 清除选择\n                    document.querySelectorAll('.student-checkbox:checked').forEach(checkbox => {\n                        checkbox.checked = false;\n                    });\n                    selectedStudents.clear();\n                    updateSelectedInfo();\n                    showNotification(`成功为${studentIds.length}名学生${isAdd ? '加分' : '扣分'} ${Math.abs(actualPoints)}分`, 'success');\n                }\n            });\n        });\n    }\n\n\n    // 更新选中信息显示\n    function updateSelectedInfo() {\n        const selectedCount = document.getElementById('selectedCount');\n        selectedCount.textContent = selectedStudents.size;\n    }\n\n    // 打开快速积分模态框\n    function openQuickPointsModal(studentId, defaultPoints) {\n        const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n        const studentName = card.dataset.studentName;\n        const currentPoints = card.dataset.currentPoints;\n\n        document.getElementById('modalStudentId').value = studentId;\n        document.getElementById('modalStudentName').textContent = studentName;\n        document.getElementById('modalCurrentPoints').textContent = currentPoints;\n        document.getElementById('customPoints').value = defaultPoints !== 0 ? defaultPoints : '';\n\n        quickPointsModal.show();\n    }\n\n    // 快捷积分按钮\n    document.querySelectorAll('.quick-add-points').forEach(btn => {\n        btn.addEventListener('click', function() {\n            const points = parseInt(this.dataset.points);\n            document.getElementById('customPoints').value = points;\n        });\n    });\n\n    // 提交快速积分\n    document.getElementById('submitQuickPoints').addEventListener('click', function() {\n        const studentId = document.getElementById('modalStudentId').value;\n        const points = parseInt(document.getElementById('customPoints').value) || 0;\n        const category = document.getElementById('modalCategory').value || '快捷操作';\n        const reason = document.getElementById('modalReason').value || '无具体事由';\n        const operator = document.getElementById('modalOperator').value;\n\n        if (points === 0) {\n            alert('请输入积分值');\n            return;\n        }\n\n        submitPoints(studentId, points, category, reason, operator);\n        quickPointsModal.hide();\n    });\n\n    // 提交传统表单\n    document.getElementById('submitTraditional').addEventListener('click', function() {\n        const form = document.getElementById('traditionalForm');\n        const formData = new FormData(form);\n\n        const studentId = formData.get('student_id');\n        const points = parseInt(formData.get('points')) || 0;\n        const category = formData.get('category') || '其他';\n        const reason = formData.get('reason') || '无具体事由';\n        const operator = formData.get('operator');\n\n        if (!studentId || points === 0 || !category) {\n            alert('请填写必要信息');\n            return;\n        }\n\n        submitPoints(studentId, points, category, reason, operator);\n        traditionalModal.hide();\n        form.reset();\n    });\n\n    // 提交积分数据\n    function submitPoints(studentId, points, category, reason, operator = '', callback) {\n        const formData = new FormData();\n        formData.append('student_id', studentId);\n        formData.append('points', points);\n        formData.append('category', category);\n        formData.append('reason', reason);\n        if (operator) {\n            formData.append('operator', operator);\n        }\n\n        fetch('";
-output += runtime.suppressValue((lineno = 796, colno = 25, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 792, colno = 25, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
 output += "', {\n            method: 'POST',\n            headers: {\n                'X-Requested-With': 'XMLHttpRequest'\n            },\n            body: formData\n        })\n        .then(response => response.json())\n        .then(data => {\n            if (data.success) {\n                // 更新学生积分显示\n                updateStudentPoints(studentId, data.new_total_points);\n\n                // 添加动画效果\n                addPointsAnimation(studentId, points);\n\n                // 执行回调\n                if (callback) callback();\n            } else {\n                showNotification(data.message || '录入失败', 'error');\n                if (callback) callback();\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            showNotification('网络错误，请重试', 'error');\n            if (callback) callback();\n        });\n    }\n\n    // 更新学生积分显示\n    function updateStudentPoints(studentId, newPoints) {\n        const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n        if (card) {\n            card.dataset.currentPoints = newPoints;\n            const pointsValue = card.querySelector('.points-value');\n            if (pointsValue) {\n                pointsValue.textContent = newPoints;\n            }\n        }\n    }\n\n    // 添加积分变化动画\n    function addPointsAnimation(studentId, points) {\n        const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n        if (card) {\n            const pointsValue = card.querySelector('.points-value');\n            if (pointsValue) {\n                pointsValue.classList.add(points > 0 ? 'points-animation' : 'points-negative-animation');\n                setTimeout(() => {\n                    pointsValue.classList.remove('points-animation', 'points-negative-animation');\n                }, 600);\n            }\n        }\n    }\n\n    // 显示通知\n    function showNotification(message, type = 'success') {\n        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';\n        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';\n\n        const notification = document.createElement('div');\n        notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;\n        notification.style.zIndex = '9999';\n        notification.innerHTML = `\n            <i class=\"bi ${icon}\"></i> ${message}\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n        `;\n\n        document.body.appendChild(notification);\n\n        setTimeout(() => {\n            notification.remove();\n        }, 3000);\n    }\n\n    // 页面顶部添加传统表单按钮\n    const headerDiv = document.querySelector('.d-flex.justify-content-between.align-items-center .d-flex');\n    const traditionalBtn = document.createElement('button');\n    traditionalBtn.type = 'button';\n    traditionalBtn.className = 'btn btn-outline-secondary';\n    traditionalBtn.innerHTML = '<i class=\"bi bi-pencil-square\"></i> 传统录入';\n    traditionalBtn.addEventListener('click', () => traditionalModal.show());\n    headerDiv.appendChild(traditionalBtn);\n});\n</script>\n";
 cb(null, output);
 ;
@@ -533,27 +537,27 @@ var colno = 0;
 var output = "";
 try {
 var parentTemplate = null;
-output += "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>班级积分管理系统</title>\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css\" rel=\"stylesheet\">\n    <style>\n        .navbar-brand {\n            font-weight: bold;\n        }\n        .card {\n            box-shadow: 0 0 10px rgba(0,0,0,0.1);\n        }\n        .stats-card {\n            transition: transform 0.2s;\n        }\n        .stats-card:hover {\n            transform: translateY(-5px);\n        }\n        .points-positive {\n            color: #198754;\n            font-weight: bold;\n        }\n        .points-negative {\n            color: #dc3545;\n            font-weight: bold;\n        }\n        .footer {\n            background-color: #f8f9fa;\n            padding: 20px 0;\n            margin-top: 50px;\n        }\n    </style>\n</head>\n<body>\n    <nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\">\n        <div class=\"container\">\n            <a class=\"navbar-brand\" href=\"";
-output += runtime.suppressValue((lineno = 39, colno = 52, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
+output += "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>班级积分管理系统</title>\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css\" rel=\"stylesheet\">\n    <style>\n        .navbar-brand {\n            font-weight: bold;\n        }\n        .card {\n            box-shadow: 0 0 10px rgba(0,0,0,0.1);\n        }\n        .stats-card {\n            transition: transform 0.2s;\n        }\n        .stats-card:hover {\n            transform: translateY(-5px);\n        }\n        .points-positive {\n            color: #198754;\n            font-weight: bold;\n        }\n        .points-negative {\n            color: #dc3545;\n            font-weight: bold;\n        }\n        .footer {\n            background-color: #f8f9fa;\n            padding: 20px 0;\n            margin-top: 50px;\n        }\n        /* 头像样式 */\n        .avatar {\n            width: 40px;\n            height: 40px;\n            border-radius: 50%;\n            object-fit: cover;\n            background-color: #e9ecef;\n        }\n        .avatar-sm {\n            width: 32px;\n            height: 32px;\n        }\n        .avatar-lg {\n            width: 60px;\n            height: 60px;\n        }\n        .avatar-circle {\n            display: inline-flex;\n            align-items: center;\n            justify-content: center;\n            border-radius: 50%;\n            font-weight: bold;\n        }\n    </style>\n</head>\n<body>\n    <nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\">\n        <div class=\"container\">\n            <a class=\"navbar-brand\" href=\"";
+output += runtime.suppressValue((lineno = 62, colno = 52, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
 output += "\">\n                <i class=\"bi bi-trophy-fill\"></i> 班级积分管理系统\n            </a>\n            <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarNav\">\n                <span class=\"navbar-toggler-icon\"></span>\n            </button>\n            <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n                <ul class=\"navbar-nav me-auto\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 48, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 71, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-house-fill\"></i> 首页\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 53, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 76, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-people-fill\"></i> 学生管理\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 58, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["groups"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 81, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["groups"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-collection-fill\"></i> 小组管理\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 63, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 86, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-plus-circle-fill\"></i> 录入积分\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 68, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 91, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-list-ul\"></i> 积分记录\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 73, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 96, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-trophy-fill\"></i> 排名统计\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 78, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["categories"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 101, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["categories"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-tags-fill\"></i> 类别管理\n                        </a>\n                    </li>\n                </ul>\n                <ul class=\"navbar-nav\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 85, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["export_data"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 108, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["export_data"])), env.opts.autoescape);
 output += "\">\n                            <i class=\"bi bi-download\"></i> 导出数据\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </nav>\n\n    <main class=\"container mt-4\">\n        ";
 var t_1;
-t_1 = (lineno = 95, colno = 46, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "get_flashed_messages"), "get_flashed_messages", context, [runtime.makeKeywordArgs({"with_categories": true})]));
+t_1 = (lineno = 118, colno = 46, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "get_flashed_messages"), "get_flashed_messages", context, [runtime.makeKeywordArgs({"with_categories": true})]));
 frame.set("messages", t_1, true);
 if(frame.topLevel) {
 context.setVariable("messages", t_1);
@@ -637,7 +641,7 @@ cb(null, output);
 }
 }
 function b_content(env, context, frame, runtime, cb) {
-var lineno = 105;
+var lineno = 128;
 var colno = 11;
 var output = "";
 try {
@@ -649,7 +653,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 115;
+var lineno = 138;
 var colno = 7;
 var output = "";
 try {
@@ -1682,7 +1686,7 @@ if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.context
 output += "\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"range-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#range\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-calendar-range\"></i> 区间排行\n                </button>\n            </li>\n            ";
 ;
 }
-output += "\n        </ul>\n    </div>\n</div>\n\n<div class=\"tab-content\" id=\"rankingTabsContent\">\n    <!-- 学生排名 -->\n    <div class=\"tab-pane fade show active\" id=\"student\" role=\"tabpanel\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-trophy-fill text-warning\"></i> 学生总积分排名\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"120\">总积分</th>\n                                        <th width=\"120\">本周积分</th>\n                                        ";
+output += "\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"progress-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#progress\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-graph-up-arrow\"></i> 进步榜\n                </button>\n            </li>\n        </ul>\n    </div>\n</div>\n\n<div class=\"tab-content\" id=\"rankingTabsContent\">\n    <!-- 学生排名 -->\n    <div class=\"tab-pane fade show active\" id=\"student\" role=\"tabpanel\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-trophy-fill text-warning\"></i> 学生总积分排名\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"120\">总积分</th>\n                                        <th width=\"120\">本周积分</th>\n                                        ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
 output += "\n                                        <th width=\"120\">区间积分</th>\n                                        ";
 ;
@@ -1732,10 +1736,12 @@ output += "</span>\n                                            ";
 }
 ;
 }
-output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"avatar-circle bg-gradient-primary text-white me-3\" style=\"width: 40px; height: 40px; font-size: 16px;\">\n                                                    ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_11),"student")),"name")),0), env.opts.autoescape);
-output += "\n                                                </div>\n                                                <div>\n                                                    <a href=\"";
-output += runtime.suppressValue((lineno = 151, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
+output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <img src=\"";
+output += runtime.suppressValue((lineno = 152, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"name"), env.opts.autoescape);
+output += "\" class=\"avatar me-3\">\n                                                <div>\n                                                    <a href=\"";
+output += runtime.suppressValue((lineno = 154, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
 output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"name"), env.opts.autoescape);
 output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
@@ -1854,11 +1860,11 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_15
 output += "</small>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"card-body text-center\">\n                                        <div class=\"row\">\n                                            <div class=\"col-6\">\n                                                <div class=\"mb-3\">\n                                                    <div class=\"h4 mb-0 text-primary\">";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_15),"average_points")), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">平均积分</small>\n                                                </div>\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <div class=\"mb-3\">\n                                                    <div class=\"h4 mb-0 text-success\">";
-output += runtime.suppressValue((lineno = 247, colno = 112, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"total_points"), "item[\"group\"][\"total_points\"]", context, [])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 250, colno = 112, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"total_points"), "item[\"group\"][\"total_points\"]", context, [])), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">总积分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-info\">";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_15),"week_average_points")), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">本周平均</small>\n                                                </div>\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-warning\">";
-output += runtime.suppressValue((lineno = 261, colno = 111, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"week_points"), "item[\"group\"][\"week_points\"]", context, [])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 264, colno = 111, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"week_points"), "item[\"group\"][\"week_points\"]", context, [])), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">本周总分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
 output += "\n                                        <div class=\"row mt-2\">\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-success\">";
@@ -1940,7 +1946,7 @@ output += "\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <a href=\"";
-output += runtime.suppressValue((lineno = 340, colno = 63, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_20),"student")),"id")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 343, colno = 63, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_20),"student")),"id")})])), env.opts.autoescape);
 output += "\" class=\"text-decoration-none\">\n                                                <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_20),"student")),"name"), env.opts.autoescape);
 output += "</strong>\n                                            </a>\n                                            <br>\n                                            <small class=\"text-muted\">";
@@ -2156,10 +2162,12 @@ output += "</span>\n                                            ";
 }
 ;
 }
-output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"avatar-circle bg-gradient-success text-white me-3\" style=\"width: 40px; height: 40px; font-size: 16px;\">\n                                                    ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name")),0), env.opts.autoescape);
-output += "\n                                                </div>\n                                                <div>\n                                                    <a href=\"";
-output += runtime.suppressValue((lineno = 511, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")})])), env.opts.autoescape);
+output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <img src=\"";
+output += runtime.suppressValue((lineno = 510, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name"), env.opts.autoescape);
+output += "\" class=\"avatar me-3\">\n                                                <div>\n                                                    <a href=\"";
+output += runtime.suppressValue((lineno = 512, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")})])), env.opts.autoescape);
 output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name"), env.opts.autoescape);
 output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
@@ -2336,7 +2344,222 @@ output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "to
 output += "\n                                    </div>\n                                    <small>最高个人积分</small>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    ";
 ;
 }
-output += "\n</div>\n";
+output += "\n\n    <!-- 进步榜 -->\n    <div class=\"tab-pane fade\" id=\"progress\" role=\"tabpanel\">\n        <div class=\"row mb-4\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-sliders\"></i> 进步榜时间区间设置\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <form method=\"GET\" action=\"";
+output += runtime.suppressValue((lineno = 677, colno = 61, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"row g-3\">\n                            <!-- 保留原有筛选参数 -->\n                            <input type=\"hidden\" name=\"start_date\" value=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "start_date"), env.opts.autoescape);
+output += "\">\n                            <input type=\"hidden\" name=\"end_date\" value=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "end_date"), env.opts.autoescape);
+output += "\">\n                            \n                            <div class=\"col-12\">\n                                <div class=\"alert alert-info mb-3\">\n                                    <i class=\"bi bi-info-circle\"></i> \n                                    进步榜对比学生在两个时间区间内的排名变化。选择A区间（基准期）和B区间（对比期），系统将计算学生在B区间相对于A区间的排名进步情况。\n                                </div>\n                            </div>\n                            \n                            <div class=\"col-md-6\">\n                                <div class=\"card bg-light\">\n                                    <div class=\"card-header\">\n                                        <strong><i class=\"bi bi-calendar-check text-secondary\"></i> A区间（基准期）</strong>\n                                    </div>\n                                    <div class=\"card-body\">\n                                        <div class=\"row g-2\">\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_a_start\" class=\"form-label\">开始日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_a_start\" name=\"progress_a_start\"\n                                                       value=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_start"), env.opts.autoescape);
+output += "\">\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_a_end\" class=\"form-label\">结束日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_a_end\" name=\"progress_a_end\"\n                                                       value=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_end"), env.opts.autoescape);
+output += "\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                            \n                            <div class=\"col-md-6\">\n                                <div class=\"card bg-light\">\n                                    <div class=\"card-header\">\n                                        <strong><i class=\"bi bi-calendar-check text-primary\"></i> B区间（对比期）</strong>\n                                    </div>\n                                    <div class=\"card-body\">\n                                        <div class=\"row g-2\">\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_b_start\" class=\"form-label\">开始日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_b_start\" name=\"progress_b_start\"\n                                                       value=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_start"), env.opts.autoescape);
+output += "\">\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_b_end\" class=\"form-label\">结束日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_b_end\" name=\"progress_b_end\"\n                                                       value=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_end"), env.opts.autoescape);
+output += "\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                            \n                            <div class=\"col-12 text-center mt-3\">\n                                <button type=\"submit\" class=\"btn btn-primary\">\n                                    <i class=\"bi bi-search\"></i> 计算进步榜\n                                </button>\n                                <a href=\"";
+output += runtime.suppressValue((lineno = 737, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"btn btn-outline-secondary\">\n                                    <i class=\"bi bi-x-circle\"></i> 清除\n                                </a>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        ";
+if(runtime.contextOrFrameLookup(context, frame, "progress_ranking") && env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "progress_ranking")) > 0) {
+output += "\n        <!-- 进步榜统计摘要 -->\n        <div class=\"row mb-4\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-bar-chart-fill\"></i> 进步榜统计\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"row text-center\">\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-success text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
+var t_46;
+t_46 = env.getFilter("length").call(context, env.getFilter("list").call(context, env.getFilter("selectattr").call(context, runtime.contextOrFrameLookup(context, frame, "progress_ranking"),"rank_change","gt",0)));
+frame.set("improved_count", t_46, true);
+if(frame.topLevel) {
+context.setVariable("improved_count", t_46);
+}
+if(frame.topLevel) {
+context.addExport("improved_count", t_46);
+}
+output += "\n                                        ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "improved_count"), env.opts.autoescape);
+output += "\n                                    </div>\n                                    <small>进步学生数</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-danger text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
+var t_47;
+t_47 = env.getFilter("length").call(context, env.getFilter("list").call(context, env.getFilter("selectattr").call(context, runtime.contextOrFrameLookup(context, frame, "progress_ranking"),"rank_change","lt",0)));
+frame.set("declined_count", t_47, true);
+if(frame.topLevel) {
+context.setVariable("declined_count", t_47);
+}
+if(frame.topLevel) {
+context.addExport("declined_count", t_47);
+}
+output += "\n                                        ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "declined_count"), env.opts.autoescape);
+output += "\n                                    </div>\n                                    <small>退步学生数</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-secondary text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
+var t_48;
+t_48 = env.getFilter("length").call(context, env.getFilter("list").call(context, env.getFilter("selectattr").call(context, runtime.contextOrFrameLookup(context, frame, "progress_ranking"),"rank_change","eq",0)));
+frame.set("unchanged_count", t_48, true);
+if(frame.topLevel) {
+context.setVariable("unchanged_count", t_48);
+}
+if(frame.topLevel) {
+context.addExport("unchanged_count", t_48);
+}
+output += "\n                                        ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "unchanged_count"), env.opts.autoescape);
+output += "\n                                    </div>\n                                    <small>排名不变</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-primary text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
+if(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "progress_ranking")) > 0) {
+output += "\n                                        ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "progress_ranking")),0)),"rank_change"), env.opts.autoescape);
+output += "\n                                        ";
+;
+}
+else {
+output += "\n                                        0\n                                        ";
+;
+}
+output += "\n                                    </div>\n                                    <small>最大进步名次</small>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- 进步榜排名表格 -->\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header d-flex justify-content-between align-items-center\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-graph-up-arrow text-success\"></i> 学生进步排名\n                        </h5>\n                        <span class=\"badge bg-info\">\n                            A区间: ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_start"), env.opts.autoescape);
+output += " ~ ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_end"), env.opts.autoescape);
+output += " | \n                            B区间: ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_start"), env.opts.autoescape);
+output += " ~ ";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_end"), env.opts.autoescape);
+output += "\n                        </span>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">进步排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"100\">小组</th>\n                                        <th width=\"100\">A区间排名</th>\n                                        <th width=\"100\">B区间排名</th>\n                                        <th width=\"120\">排名变化</th>\n                                        <th width=\"100\">A区间积分</th>\n                                        <th width=\"100\">B区间积分</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ";
+frame = frame.push();
+var t_51 = runtime.contextOrFrameLookup(context, frame, "progress_ranking");
+if(t_51) {t_51 = runtime.fromIterator(t_51);
+var t_50 = t_51.length;
+for(var t_49=0; t_49 < t_51.length; t_49++) {
+var t_52 = t_51[t_49];
+frame.set("item", t_52);
+frame.set("loop.index", t_49 + 1);
+frame.set("loop.index0", t_49);
+frame.set("loop.revindex", t_50 - t_49);
+frame.set("loop.revindex0", t_50 - t_49 - 1);
+frame.set("loop.first", t_49 === 0);
+frame.set("loop.last", t_49 === t_50 - 1);
+frame.set("loop.length", t_50);
+output += "\n                                    <tr class=\"";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3 && runtime.memberLookup((t_52),"rank_change") > 0) {
+output += "table-success";
+;
+}
+else {
+if(runtime.memberLookup((t_52),"rank_change") < 0) {
+output += "table-danger";
+;
+}
+;
+}
+output += "\">\n                                        <td>\n                                            ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") == 1 && runtime.memberLookup((t_52),"rank_change") > 0) {
+output += "\n                                            <i class=\"bi bi-award-fill text-warning fs-4\"></i>\n                                            ";
+;
+}
+else {
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") == 2 && runtime.memberLookup((t_52),"rank_change") > 0) {
+output += "\n                                            <i class=\"bi bi-award-fill text-secondary fs-4\"></i>\n                                            ";
+;
+}
+else {
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") == 3 && runtime.memberLookup((t_52),"rank_change") > 0) {
+output += "\n                                            <i class=\"bi bi-award-fill\" style=\"color: #CD7F32;\" class=\"fs-4\"></i>\n                                            ";
+;
+}
+else {
+output += "\n                                            <span class=\"badge bg-secondary\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index"), env.opts.autoescape);
+output += "</span>\n                                            ";
+;
+}
+;
+}
+;
+}
+output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <img src=\"";
+output += runtime.suppressValue((lineno = 849, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_52),"student")),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"name"), env.opts.autoescape);
+output += "\" class=\"avatar me-3\">\n                                                <div>\n                                                    <a href=\"";
+output += runtime.suppressValue((lineno = 851, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_52),"student")),"id")})])), env.opts.autoescape);
+output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"name"), env.opts.autoescape);
+output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"student_id"), env.opts.autoescape);
+output += "</small>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"class_name"), env.opts.autoescape);
+output += "</td>\n                                        <td>\n                                            ";
+if(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"group")) {
+output += "\n                                            <span class=\"badge\" style=\"background-color: ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_52),"student")),"group")),"color"), env.opts.autoescape);
+output += ";\">\n                                                ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_52),"student")),"group")),"name"), env.opts.autoescape);
+output += "\n                                            </span>\n                                            ";
+;
+}
+else {
+output += "\n                                            <span class=\"text-muted\">无</span>\n                                            ";
+;
+}
+output += "\n                                        </td>\n                                        <td>\n                                            <span class=\"badge bg-secondary\">第";
+output += runtime.suppressValue(runtime.memberLookup((t_52),"rank_a"), env.opts.autoescape);
+output += "名</span>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge bg-primary\">第";
+output += runtime.suppressValue(runtime.memberLookup((t_52),"rank_b"), env.opts.autoescape);
+output += "名</span>\n                                        </td>\n                                        <td>\n                                            ";
+if(runtime.memberLookup((t_52),"rank_change") > 0) {
+output += "\n                                            <span class=\"badge bg-success fs-6\">\n                                                <i class=\"bi bi-arrow-up\"></i> +";
+output += runtime.suppressValue(runtime.memberLookup((t_52),"rank_change"), env.opts.autoescape);
+output += "\n                                            </span>\n                                            ";
+;
+}
+else {
+if(runtime.memberLookup((t_52),"rank_change") < 0) {
+output += "\n                                            <span class=\"badge bg-danger fs-6\">\n                                                <i class=\"bi bi-arrow-down\"></i> ";
+output += runtime.suppressValue(runtime.memberLookup((t_52),"rank_change"), env.opts.autoescape);
+output += "\n                                            </span>\n                                            ";
+;
+}
+else {
+output += "\n                                            <span class=\"badge bg-secondary fs-6\">\n                                                <i class=\"bi bi-dash\"></i> 0\n                                            </span>\n                                            ";
+;
+}
+;
+}
+output += "\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+if(runtime.memberLookup((t_52),"points_a") >= 0) {
+output += "bg-outline-secondary";
+;
+}
+else {
+output += "bg-warning";
+;
+}
+output += "\">\n                                                ";
+output += runtime.suppressValue(runtime.memberLookup((t_52),"points_a"), env.opts.autoescape);
+output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+if(runtime.memberLookup((t_52),"points_b") >= 0) {
+output += "bg-info";
+;
+}
+else {
+output += "bg-warning";
+;
+}
+output += "\">\n                                                ";
+output += runtime.suppressValue(runtime.memberLookup((t_52),"points_b"), env.opts.autoescape);
+output += "分\n                                            </span>\n                                        </td>\n                                    </tr>\n                                    ";
+;
+}
+}
+frame = frame.pop();
+output += "\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        ";
+;
+}
+else {
+if(runtime.contextOrFrameLookup(context, frame, "progress_a_start") && runtime.contextOrFrameLookup(context, frame, "progress_a_end") && runtime.contextOrFrameLookup(context, frame, "progress_b_start") && runtime.contextOrFrameLookup(context, frame, "progress_b_end")) {
+output += "\n        <div class=\"text-center py-5\">\n            <i class=\"bi bi-emoji-frown text-muted\" style=\"font-size: 3rem;\"></i>\n            <p class=\"text-muted\">暂无进步数据</p>\n        </div>\n        ";
+;
+}
+else {
+output += "\n        <div class=\"text-center py-5\">\n            <i class=\"bi bi-calendar-range text-muted\" style=\"font-size: 3rem;\"></i>\n            <p class=\"text-muted\">请选择A区间和B区间的时间范围来计算进步榜</p>\n        </div>\n        ";
+;
+}
+;
+}
+output += "\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -2344,7 +2567,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 667;
+var lineno = 924;
 var colno = 3;
 var output = "";
 try {
@@ -2405,16 +2628,20 @@ output += "\">学生管理</a></li>\n                        <li class=\"breadcr
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
 output += "</li>\n                    </ol>\n                </nav>\n            </div>\n            <div>\n                <button class=\"btn btn-success\" onclick=\"quickAddPoints()\">\n                    <i class=\"bi bi-plus-circle\"></i> 快速添加积分\n                </button>\n                <a href=\"";
 output += runtime.suppressValue((lineno = 19, colno = 35, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                    <i class=\"bi bi-arrow-left\"></i> 返回列表\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 学生信息卡片 -->\n<div class=\"row mb-4\">\n    <div class=\"col-md-6\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-person-fill\"></i> 基本信息\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"row\">\n                    <div class=\"col-sm-4\"><strong>姓名：</strong></div>\n                    <div class=\"col-sm-8\">";
+output += "\" class=\"btn btn-outline-secondary\">\n                    <i class=\"bi bi-arrow-left\"></i> 返回列表\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 学生信息卡片 -->\n<div class=\"row mb-4\">\n    <div class=\"col-md-6\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-person-fill\"></i> 基本信息\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"text-center mb-3\">\n                    <img src=\"";
+output += runtime.suppressValue((lineno = 38, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
+output += "\" class=\"avatar avatar-lg\">\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-4\"><strong>姓名：</strong></div>\n                    <div class=\"col-sm-8\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
 output += "</div>\n                </div>\n                <div class=\"row mt-2\">\n                    <div class=\"col-sm-4\"><strong>学号：</strong></div>\n                    <div class=\"col-sm-8\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"student_id"), env.opts.autoescape);
 output += "</div>\n                </div>\n                <div class=\"row mt-2\">\n                    <div class=\"col-sm-4\"><strong>班级：</strong></div>\n                    <div class=\"col-sm-8\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"class_name"), env.opts.autoescape);
 output += "</div>\n                </div>\n                <div class=\"row mt-2\">\n                    <div class=\"col-sm-4\"><strong>注册时间：</strong></div>\n                    <div class=\"col-sm-8\">";
-output += runtime.suppressValue((lineno = 51, colno = 72, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d %H:%M:%S"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 54, colno = 72, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d %H:%M:%S"])), env.opts.autoescape);
 output += "</div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"col-md-6\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-bar-chart-fill\"></i> 积分统计\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"row\">\n                    <div class=\"col-sm-6\">\n                        <div class=\"text-center\">\n                            <div class=\"h2 ";
-if((lineno = 68, colno = 69, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"total_points"), "student[\"total_points\"]", context, [])) >= 0) {
+if((lineno = 71, colno = 69, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"total_points"), "student[\"total_points\"]", context, [])) >= 0) {
 output += "text-success";
 ;
 }
@@ -2424,7 +2651,7 @@ output += "text-danger";
 }
 output += "\">\n                                ";
 var t_8;
-t_8 = (lineno = 69, colno = 67, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"total_points"), "student[\"total_points\"]", context, []));
+t_8 = (lineno = 72, colno = 67, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"total_points"), "student[\"total_points\"]", context, []));
 frame.set("total", t_8, true);
 if(frame.topLevel) {
 context.setVariable("total", t_8);
@@ -2483,7 +2710,7 @@ output += runtime.suppressValue(runtime.memberLookup((t_12),"category"), env.opt
 output += "</span></td>\n                            <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_12),"operator"), env.opts.autoescape);
 output += "</td>\n                            <td>\n                                <div class=\"small\">\n                                    ";
-output += runtime.suppressValue((lineno = 142, colno = 65, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_12),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%m-%d %H:%M"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 145, colno = 65, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_12),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%m-%d %H:%M"])), env.opts.autoescape);
 output += "\n                                </div>\n                            </td>\n                            <td>\n                                <button class=\"btn btn-sm btn-outline-info\"\n                                        onclick=\"showRecordDetail(";
 output += runtime.suppressValue(runtime.memberLookup((t_12),"id"), env.opts.autoescape);
 output += ")\">\n                                    <i class=\"bi bi-eye\"></i>\n                                </button>\n                            </td>\n                        </tr>\n                        ";
@@ -2499,7 +2726,7 @@ output += "\n        <div class=\"card-body text-center py-5\">\n            <i 
 ;
 }
 output += "\n</div>\n\n<!-- 快速添加积分模态框 -->\n<div class=\"modal fade\" id=\"quickAddModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">快速添加积分</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <form method=\"POST\" action=\"";
-output += runtime.suppressValue((lineno = 177, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 180, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
 output += "\">\n                <div class=\"modal-body\">\n                    <input type=\"hidden\" name=\"student_id\" value=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"id"), env.opts.autoescape);
 output += "\">\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">学生</label>\n                        <input type=\"text\" class=\"form-control\" value=\"";
@@ -2514,7 +2741,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 226;
+var lineno = 229;
 var colno = 3;
 var output = "";
 try {
@@ -2576,9 +2803,11 @@ output += "\">排名统计</a></li>\n                        <li class=\"breadcr
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
 output += " - 趋势分析</li>\n                    </ol>\n                </nav>\n            </div>\n            <div>\n                <a href=\"";
 output += runtime.suppressValue((lineno = 18, colno = 35, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                    <i class=\"bi bi-arrow-left\"></i> 返回排名\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 学生基本信息 -->\n<div class=\"row mb-4\">\n    <div class=\"col-md-3\">\n        <div class=\"card text-center\">\n            <div class=\"card-body\">\n                <div class=\"avatar-circle bg-gradient-primary text-white mx-auto mb-3\" style=\"width: 80px; height: 80px; font-size: 32px;\">\n                    ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name")),0), env.opts.autoescape);
-output += "\n                </div>\n                <h5>";
+output += "\" class=\"btn btn-outline-secondary\">\n                    <i class=\"bi bi-arrow-left\"></i> 返回排名\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 学生基本信息 -->\n<div class=\"row mb-4\">\n    <div class=\"col-md-3\">\n        <div class=\"card text-center\">\n            <div class=\"card-body\">\n                <img src=\"";
+output += runtime.suppressValue((lineno = 31, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
+output += "\" class=\"avatar mx-auto mb-3\" style=\"width: 80px; height: 80px;\">\n                <h5>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
 output += "</h5>\n                <p class=\"text-muted mb-0\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"student_id"), env.opts.autoescape);
@@ -2670,7 +2899,7 @@ output += runtime.suppressValue(runtime.memberLookup((t_11),"category"), env.opt
 output += "</span></td>\n                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"operator") || "系统", env.opts.autoescape);
 output += "</td>\n                        <td>";
-output += runtime.suppressValue((lineno = 163, colno = 57, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d %H:%M"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 161, colno = 57, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d %H:%M"])), env.opts.autoescape);
 output += "</td>\n                    </tr>\n                    ";
 ;
 }
@@ -2691,7 +2920,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 179;
+var lineno = 177;
 var colno = 3;
 var output = "";
 try {
@@ -2782,15 +3011,19 @@ frame.set("loop.last", t_8 === t_9 - 1);
 frame.set("loop.length", t_9);
 output += "\n                        <tr>\n                            <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"student_id"), env.opts.autoescape);
-output += "</td>\n                            <td>\n                                <a href=\"";
-output += runtime.suppressValue((lineno = 51, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
-output += "\"\n                                   class=\"text-decoration-none fw-bold\">\n                                    ";
+output += "</td>\n                            <td>\n                                <div class=\"d-flex align-items-center\">\n                                    <img src=\"";
+output += runtime.suppressValue((lineno = 52, colno = 59, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_11),"id")])), env.opts.autoescape);
+output += "\" alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"name"), env.opts.autoescape);
-output += "\n                                </a>\n                            </td>\n                            <td>";
+output += "\" class=\"avatar avatar-sm me-2\">\n                                    <a href=\"";
+output += runtime.suppressValue((lineno = 53, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
+output += "\"\n                                       class=\"text-decoration-none fw-bold\">\n                                        ";
+output += runtime.suppressValue(runtime.memberLookup((t_11),"name"), env.opts.autoescape);
+output += "\n                                    </a>\n                                </div>\n                            </td>\n                            <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"class_name"), env.opts.autoescape);
 output += "</td>\n                            <td>\n                                ";
 var t_12;
-t_12 = (lineno = 58, colno = 67, runtime.callWrap(runtime.memberLookup((t_11),"total_points"), "student[\"total_points\"]", context, []));
+t_12 = (lineno = 61, colno = 67, runtime.callWrap(runtime.memberLookup((t_11),"total_points"), "student[\"total_points\"]", context, []));
 frame.set("total", t_12, true);
 if(frame.topLevel) {
 context.setVariable("total", t_12);
@@ -2814,9 +3047,9 @@ output += "</span>\n                                ";
 output += "\n                            </td>\n                            <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"records_count"), env.opts.autoescape);
 output += "</td>\n                            <td>";
-output += runtime.suppressValue((lineno = 66, colno = 62, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 69, colno = 62, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d"])), env.opts.autoescape);
 output += "</td>\n                            <td>\n                                <div class=\"btn-group btn-group-sm\">\n                                    <a href=\"";
-output += runtime.suppressValue((lineno = 69, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 72, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
 output += "\"\n                                       class=\"btn btn-outline-primary\">\n                                        <i class=\"bi bi-eye\"></i>\n                                    </a>\n                                    <button class=\"btn btn-outline-success\"\n                                            onclick=\"quickAddPoints(";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"id"), env.opts.autoescape);
 output += ", '";
@@ -2831,13 +3064,13 @@ if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students"
 output += "\n    <nav class=\"mt-4\">\n        <ul class=\"pagination justify-content-center\">\n            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"has_prev")) {
 output += "\n                <li class=\"page-item\">\n                    <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 93, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"prev_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 96, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"prev_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
 output += "\">上一页</a>\n                </li>\n            ";
 ;
 }
 output += "\n\n            ";
 frame = frame.push();
-var t_15 = (lineno = 97, colno = 50, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"iter_pages"), "students[\"iter_pages\"]", context, []));
+var t_15 = (lineno = 100, colno = 50, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"iter_pages"), "students[\"iter_pages\"]", context, []));
 if(t_15) {t_15 = runtime.fromIterator(t_15);
 var t_14 = t_15.length;
 for(var t_13=0; t_13 < t_15.length; t_13++) {
@@ -2855,7 +3088,7 @@ if(t_16) {
 output += "\n                    ";
 if(t_16 != runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"page")) {
 output += "\n                        <li class=\"page-item\">\n                            <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 101, colno = 65, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": t_16,"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 104, colno = 65, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": t_16,"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
 output += "\">";
 output += runtime.suppressValue(t_16, env.opts.autoescape);
 output += "</a>\n                        </li>\n                    ";
@@ -2882,7 +3115,7 @@ frame = frame.pop();
 output += "\n\n            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"has_next")) {
 output += "\n                <li class=\"page-item\">\n                    <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 117, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"next_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 120, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"next_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
 output += "\">下一页</a>\n                </li>\n            ";
 ;
 }
@@ -2894,12 +3127,12 @@ output += "\n";
 }
 else {
 output += "\n    <div class=\"card\">\n        <div class=\"card-body text-center py-5\">\n            <i class=\"bi bi-person-x fs-1 text-muted\"></i>\n            <h5 class=\"mt-3 text-muted\">暂无学生数据</h5>\n            <p class=\"text-muted\">开始添加学生来使用系统</p>\n            <a href=\"";
-output += runtime.suppressValue((lineno = 129, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_student"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 132, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_student"])), env.opts.autoescape);
 output += "\" class=\"btn btn-primary\">\n                <i class=\"bi bi-person-plus-fill\"></i> 添加第一个学生\n            </a>\n        </div>\n    </div>\n";
 ;
 }
 output += "\n\n<!-- 快速添加积分模态框 -->\n<div class=\"modal fade\" id=\"quickAddModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">快速添加积分</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <form method=\"POST\" action=\"";
-output += runtime.suppressValue((lineno = 144, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 147, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
 output += "\">\n                <div class=\"modal-body\">\n                    <input type=\"hidden\" id=\"quickStudentId\" name=\"student_id\">\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">学生</label>\n                        <input type=\"text\" class=\"form-control\" id=\"quickStudentName\" readonly>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">积分值</label>\n                        <input type=\"number\" name=\"points\" class=\"form-control\" required\n                               placeholder=\"正数为加分，负数为扣分\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">事由</label>\n                        <input type=\"text\" name=\"reason\" class=\"form-control\"\n                               placeholder=\"选填，如不填写将使用类别作为默认事由\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">类别</label>\n                        <select name=\"category\" class=\"form-select\" required>\n                            <option value=\"\">请选择类别</option>\n                            ";
 frame = frame.push();
 var t_19 = runtime.contextOrFrameLookup(context, frame, "categories");
@@ -2932,7 +3165,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 191;
+var lineno = 194;
 var colno = 3;
 var output = "";
 try {

@@ -12,6 +12,12 @@ export function registerRankingRoutes(app: Hono<Env>) {
   app.get('/rankings', async (c) => {
     const startDateStr = c.req.query('start_date') ?? ''
     const endDateStr = c.req.query('end_date') ?? ''
+    // 进步榜参数
+    const progressAStartStr = c.req.query('progress_a_start') ?? ''
+    const progressAEndStr = c.req.query('progress_a_end') ?? ''
+    const progressBStartStr = c.req.query('progress_b_start') ?? ''
+    const progressBEndStr = c.req.query('progress_b_end') ?? ''
+
     let rangeStart: string | null = null
     let rangeEnd: string | null = null
 
@@ -24,8 +30,38 @@ export function registerRankingRoutes(app: Hono<Env>) {
       }
     }
 
+    // 解析进步榜时间区间
+    let progressARangeStart: string | null = null
+    let progressARangeEnd: string | null = null
+    let progressBRangeStart: string | null = null
+    let progressBRangeEnd: string | null = null
+
+    if (progressAStartStr && progressAEndStr && progressBStartStr && progressBEndStr) {
+      const aStart = dayjs(progressAStartStr, 'YYYY-MM-DD', true)
+      const aEnd = dayjs(progressAEndStr, 'YYYY-MM-DD', true)
+      const bStart = dayjs(progressBStartStr, 'YYYY-MM-DD', true)
+      const bEnd = dayjs(progressBEndStr, 'YYYY-MM-DD', true)
+      if (aStart.isValid() && aEnd.isValid() && bStart.isValid() && bEnd.isValid() &&
+          !aStart.isAfter(aEnd) && !bStart.isAfter(bEnd)) {
+        progressARangeStart = toStartOfDayIso(aStart.toDate())
+        progressARangeEnd = toEndOfDayIso(aEnd.toDate())
+        progressBRangeStart = toStartOfDayIso(bStart.toDate())
+        progressBRangeEnd = toEndOfDayIso(bEnd.toDate())
+      }
+    }
+
     const students = await fetchStudentsWithStats(c.env.DB, { orderBy: 'total_points DESC' })
     const rangeMap = await fetchRangePoints(c.env.DB, rangeStart, rangeEnd)
+
+    // 计算进步榜数据
+    const progressRanking = await calculateProgressRanking(
+      c.env.DB,
+      students,
+      progressARangeStart,
+      progressARangeEnd,
+      progressBRangeStart,
+      progressBRangeEnd
+    )
 
     const studentRanking = students
       .map((student) => ({
@@ -82,7 +118,12 @@ export function registerRankingRoutes(app: Hono<Env>) {
           student_ranking: studentRanking,
           group_ranking: groupRanking,
           start_date: startDateStr,
-          end_date: endDateStr
+          end_date: endDateStr,
+          progress_ranking: progressRanking,
+          progress_a_start: progressAStartStr,
+          progress_a_end: progressAEndStr,
+          progress_b_start: progressBStartStr,
+          progress_b_end: progressBEndStr
         }
       })
     )
@@ -99,4 +140,83 @@ async function fetchRangePoints(db: D1Database, start: string | null, end: strin
     [start, end]
   )
   return new Map(rows.map((row) => [row.student_id, row.total]))
+}
+
+type ProgressItem = {
+  student: {
+    id: number
+    name: string
+    student_id: string
+    class_name: string
+    group?: {
+      id: number
+      name: string
+      color: string
+    }
+  }
+  rank_a: number
+  rank_b: number
+  rank_change: number // 正数表示进步（排名上升）
+  points_a: number
+  points_b: number
+}
+
+async function calculateProgressRanking(
+  db: D1Database,
+  students: Awaited<ReturnType<typeof fetchStudentsWithStats>>,
+  aStart: string | null,
+  aEnd: string | null,
+  bStart: string | null,
+  bEnd: string | null
+): Promise<ProgressItem[]> {
+  if (!aStart || !aEnd || !bStart || !bEnd) {
+    return []
+  }
+
+  // 获取A区间和B区间的积分
+  const aMap = await fetchRangePoints(db, aStart, aEnd)
+  const bMap = await fetchRangePoints(db, bStart, bEnd)
+
+  // 计算A区间排名
+  const aRanking = students
+    .map((s) => ({ id: s.id, points: aMap.get(s.id) ?? 0 }))
+    .sort((a, b) => b.points - a.points)
+  const aRankMap = new Map<number, number>()
+  aRanking.forEach((item, index) => {
+    aRankMap.set(item.id, index + 1)
+  })
+
+  // 计算B区间排名
+  const bRanking = students
+    .map((s) => ({ id: s.id, points: bMap.get(s.id) ?? 0 }))
+    .sort((a, b) => b.points - a.points)
+  const bRankMap = new Map<number, number>()
+  bRanking.forEach((item, index) => {
+    bRankMap.set(item.id, index + 1)
+  })
+
+  // 计算进步榜
+  const progressList: ProgressItem[] = students.map((student) => {
+    const rankA = aRankMap.get(student.id) ?? students.length
+    const rankB = bRankMap.get(student.id) ?? students.length
+    const rankChange = rankA - rankB // A排名 - B排名，正数表示进步
+
+    return {
+      student: {
+        id: student.id,
+        name: student.name,
+        student_id: student.student_id,
+        class_name: student.class_name,
+        group: student.group
+      },
+      rank_a: rankA,
+      rank_b: rankB,
+      rank_change: rankChange,
+      points_a: aMap.get(student.id) ?? 0,
+      points_b: bMap.get(student.id) ?? 0
+    }
+  })
+
+  // 按进步幅度排序（进步最多的排前面）
+  return progressList.sort((a, b) => b.rank_change - a.rank_change)
 }
