@@ -19,5 +19,14 @@ export function redirectWithFlash(c: Context, location: string, flash: FlashStat
     url.searchParams.set('status', flash.status)
     url.searchParams.set('message', flash.message)
   }
-  return c.redirect(url.pathname + (url.search ? url.search : ''))
+  const redirectUrl = url.pathname + (url.search ? url.search : '')
+  // 设置 no-cache 头，确保重定向后浏览器重新获取页面
+  return new Response(null, {
+    status: 302,
+    headers: {
+      'Location': redirectUrl,
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      'Pragma': 'no-cache',
+    },
+  })
 }

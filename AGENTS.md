@@ -1,38 +1,26 @@
-# Repository Guidelines
-使用中文输出spec
-请你需要时使用v0 MCP来构建更美观的前端页面
-## Project Structure & Module Organization
-- `src/` holds the Worker entry point (`index.ts`), route modules (`routes/`), shared helpers (`lib/`), and the Nunjucks renderer that mirrors the Flask templates.
-- `migrations/` stores the D1 migration files run by `wrangler d1 migrations`; keep SQL in sync with the SQLite schema when altering models.
-- `scripts/` contains tooling such as `generate_templates.cjs` and `export_sqlite_to_d1.py` so the Worker can reuse UI templates and migrate historical data.
-- UI templates live at `templates/` and are mirrored into `src/templates.generated.ts` via the generator script; update both the HTML source and regenerate when needed.
-- Assets (e.g., `wrangler.toml`, `tsconfig.json`) define the Cloudflare build and TypeScript config, while `d1_seed.sql` provides a sample seeding path.
+# 班级积分管理系统 - AI 代理指南 (AGENTS.md)
+该项目是基于 Cloudflare Workers 和 D1 数据库构建的班级积分管理系统。
+## 1. 项目核心概览
+- **技术栈**: Hono, D1 (SQLite 数据库), Nunjucks, TypeScript.
+- **双端支持**:
+  - Web 端：直接由 Workers 渲染 HTML (通过 `src/views` 和 `templates`)。
+  - 移动端：Android 原生应用，通过 `/api/v1/` 接口进行数据交互。
+## 2. 核心开发工作流
+### 2.1 修改界面 (Templates)
+1. **编辑** `templates/` 下的 HTML 文件。
+2. **运行生成脚本**: `node scripts/generate_templates.cjs`。
+### 2.3 类型检查
+- 提交前务必运行 `npm run typecheck`。项目采用严格模式，类型定义存放在 `src/lib/types.ts`。
+## 3. 编码规范与约定
+- **命名**: 
+  - 变量/函数: `camelCase`
+  - 类/接口: `PascalCase`
+  - 路由文件: 小写并以连字符分隔 (`points-history.ts`)
+- **路由分发**: 新功能应在 `src/routes/` 下创建独立模块，并在 `src/index.ts` 中注册。
+- **API 设计**: 移动端 API 统一前缀为 `/api/v1/`，遵循 RESTful 风格。
+## 4. 故障排除与常见问题
+- **Android Gradle 兼容性**: 
+  - 如果遇到 `DependencyHandler.module(java.lang.Object)` 错误，通常是 Gradle 版本（如 9.0+）过高与 AGP/Kotlin 插件不匹配导致。
+  - 建议回退 `gradle-wrapper.properties` 中的 Gradle 版本至 8.x 系列，或升级 AGP 插件版本。
+- **模板未生效**: 记得运行模板生成脚本，Worker 实际上是从生成的 TS 文件中读取模板内容的。
 
-## Build, Test, and Development Commands
-- `npm install`: populate `node_modules` inside the Cloudflare worker directory before any scripts.
-- `npm run dev`: launches `wrangler dev` with a local D1 emulator; verify routes at `http://127.0.0.1:8787`.
-- `npm run typecheck`: runs `tsc` against `src/**/*`; use it to catch typing issues before commits.
-- `npm run db:migrate`: applies `migrations/` to the Miniflare-backed D1 when you need a fresh local schema.
-- `npm run deploy`: builds and publishes the Worker after you update `wrangler.toml` (update `[[d1_databases]]` `id` first).
-- `node scripts/generate_templates.cjs`: syncs the Flask HTML templates into the Worker bundle; re-run whenever template markup changes.
-- `python scripts/export_sqlite_to_d1.py instance/class_points.db -o cloudflare/d1_seed.sql`: exports existing SQLite data for the D1 seed pipeline.
-
-## Coding Style & Naming Conventions
-- TypeScript files follow the existing 2-space indentation and `import` ordering seen in `src/index.ts`; prefer descriptive module names (e.g., `routes/students`).
-- Keep shared utilities in `lib/`, route registries in `routes/`, and views/renderer logic in `views/`; match filenames to their exported feature (e.g., `registerPointsRoutes` in `routes/points.ts`).
-- Use camelCase for functions/variables, PascalCase for exported classes, and lowercase hyphenated route filenames to stay consistent with `wrangler` expectations.
-- Rely on `npm run typecheck` as the current lint gate; add ESLint or formatter only if a team decision requires it.
-
-## Testing Guidelines
-- There are no automated suites yet; rely on `npm run dev` to manually exercise workflows (import/export, batches, rankings) in the browser and verify D1 state via `wrangler d1 execute`.
-- For future tests, prefer placing them under a new `tests/` directory (e.g., `tests/test-points.ts`) and keep file names prefixed with `test-`.
-- Always run `npm run typecheck` before pushing to ensure strict mode in `tsconfig.json` still passes.
-
-## Commit & Pull Request Guidelines
-- Commit messages should be brief and imperative (`Add daily summary endpoint`, `Fix D1 ranking query`), and include context when database/migration files change.
-- Pull requests need: purpose statement, key implementation notes, manual verification steps (commands/URLs), linked issues if applicable, and screenshots/GIFs when the UI or charts change.
-- Mention any migrations or D1 configuration updates so reviewers know to rerun `npm run db:migrate` or refresh `wrangler.toml`.
-
-## Security & Configuration Tips
-- Never commit `instance/class_points.db`; rely on D1 migrations and `d1_seed.sql` for database state.
-- Keep sensitive values (API tokens, D1 IDs) out of the repo; configure them via Wrangler secrets or environment variables before deployment.

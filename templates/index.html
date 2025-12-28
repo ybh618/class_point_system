@@ -1,155 +1,252 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-12">
-        <h1 class="h2">系统概览</h1>
-        <p class="text-muted">欢迎使用班级积分管理系统</p>
+<style>
+    .glass-bg {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hero-banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    .stat-card {
+        border-radius: 20px;
+        padding: 25px;
+        height: 100%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .bg-soft-primary {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+
+    .bg-soft-success {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .bg-soft-info {
+        background: #e0f2fe;
+        color: #0369a1;
+    }
+
+    .quick-link {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        border-radius: 15px;
+        text-decoration: none;
+        color: #4b5563;
+        transition: all 0.2s;
+        border: 1px solid #f3f4f6;
+    }
+
+    .quick-link:hover {
+        background: #f9fafb;
+        border-color: #e5e7eb;
+        color: #1f2937;
+    }
+
+    .quick-link i {
+        font-size: 1.25rem;
+        margin-right: 15px;
+    }
+
+    .ranking-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .ranking-item:last-child {
+        border-bottom: none;
+    }
+
+    .rank-badge {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 15px;
+        font-size: 0.875rem;
+    }
+
+    .rank-1 {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .rank-2 {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+    .rank-3 {
+        background: #ffedd5;
+        color: #9a3412;
+    }
+</style>
+
+<div class="row align-items-center mb-4">
+    <div class="col">
+        <h1 class="h3 fw-bold mb-1">班级全局概览</h1>
+        <p class="text-muted mb-0">实时掌握班级动态与学生表现</p>
+    </div>
+    <div class="col-auto">
+        <span class="badge bg-white text-primary border shadow-sm px-3 py-2 rounded-pill">
+            <i class="bi bi-clock me-1"></i> 最后更新: 刚刚
+        </span>
     </div>
 </div>
 
-<div class="row mb-4">
-    <div class="col-md-4 mb-3">
-        <div class="card stats-card bg-primary text-white">
+<div class="hero-banner">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold mb-3">你好，优秀班主任 👋</h2>
+            <p class="lead mb-4 opacity-75">今天有 {{ today_records }} 条记录，继续加油管理你的班级！</p>
+            <div class="d-flex gap-3">
+                <a href="{{ url_for('add_points') }}" class="btn btn-light rounded-pill px-4">
+                    <i class="bi bi-plus-circle me-1"></i> 录入积分
+                </a>
+                <a href="{{ url_for('rankings') }}" class="btn btn-outline-light rounded-pill px-4">
+                    <i class="bi bi-bar-chart me-1"></i> 排名统计
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 d-none d-md-block text-end">
+            <i class="bi bi-rocket-takeoff" style="font-size: 8rem; opacity: 0.2;"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h5 class="card-title mb-0">学生总数</h5>
-                        <h2 class="mb-0">{{ total_students }}</h2>
-                    </div>
-                    <div class="fs-1 opacity-50">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
+                <div class="icon-box bg-soft-primary">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <h6 class="text-muted fw-bold mb-1">学生总数</h6>
+                <div class="h3 fw-bold mb-0">{{ total_students }} <small class="fs-6 text-muted fw-normal">人</small>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card stats-card bg-success text-white">
+    <div class="col-md-4">
+        <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h5 class="card-title mb-0">积分记录</h5>
-                        <h2 class="mb-0">{{ total_records }}</h2>
-                    </div>
-                    <div class="fs-1 opacity-50">
-                        <i class="bi bi-list-check"></i>
-                    </div>
+                <div class="icon-box bg-soft-success">
+                    <i class="bi bi-journal-text"></i>
+                </div>
+                <h6 class="text-muted fw-bold mb-1">累计积分记录</h6>
+                <div class="h3 fw-bold mb-0">{{ total_records }} <small class="fs-6 text-muted fw-normal">次</small>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card stats-card bg-info text-white">
+    <div class="col-md-4">
+        <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h5 class="card-title mb-0">今日记录</h5>
-                        <h2 class="mb-0">
-                            {{ today_records }}
-                        </h2>
-                    </div>
-                    <div class="fs-1 opacity-50">
-                        <i class="bi bi-calendar-day"></i>
-                    </div>
+                <div class="icon-box bg-soft-info">
+                    <i class="bi bi-lightning-fill"></i>
+                </div>
+                <h6 class="text-muted fw-bold mb-1">今日积分动态</h6>
+                <div class="h3 fw-bold mb-0">{{ today_records }} <small class="fs-6 text-muted fw-normal">项</small>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-8 mb-4">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="bi bi-clock-history"></i> 最近积分记录
-                </h5>
-                <a href="{{ url_for('points_records') }}" class="btn btn-sm btn-outline-primary">查看全部</a>
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">功能导航</h5>
+                <i class="bi bi-three-dots-vertical text-muted"></i>
             </div>
-            <div class="card-body">
-                {% if recent_records %}
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>学生</th>
-                                    <th>积分</th>
-                                    <th>事由</th>
-                                    <th>类别</th>
-                                    <th>时间</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for record in recent_records %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ url_for('student_detail', id=record.student.id) }}"
-                                           class="text-decoration-none">
-                                            {{ record.student.name }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {% if record.points > 0 %}
-                                            <span class="points-positive">+{{ record.points }}</span>
-                                        {% else %}
-                                            <span class="points-negative">{{ record.points }}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ record.reason }}</td>
-                                    <td><span class="badge bg-secondary">{{ record.category }}</span></td>
-                                    <td>{{ record.created_at.strftime('%m-%d %H:%M') }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% else %}
-                    <div class="text-center text-muted py-4">
-                        <i class="bi bi-inbox fs-1"></i>
-                        <p class="mt-2">暂无积分记录</p>
-                        <a href="{{ url_for('add_points') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> 添加第一条记录
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <a href="{{ url_for('students') }}" class="quick-link">
+                            <i class="bi bi-person-badge text-primary"></i>
+                            <span>学生信息</span>
                         </a>
                     </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-lightning-fill"></i> 快速操作
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a href="{{ url_for('add_student') }}" class="btn btn-primary">
-                        <i class="bi bi-person-plus-fill"></i> 添加学生
-                    </a>
-                    <a href="{{ url_for('add_points') }}" class="btn btn-success">
-                        <i class="bi bi-plus-circle-fill"></i> 录入积分
-                    </a>
-                    <a href="{{ url_for('export_data') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-download"></i> 导出数据
-                    </a>
+                    <div class="col-6">
+                        <a href="{{ url_for('groups') }}" class="quick-link">
+                            <i class="bi bi-grid-3x3-gap text-success"></i>
+                            <span>小组架构</span>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ url_for('points_records') }}" class="quick-link">
+                            <i class="bi bi-search text-warning"></i>
+                            <span>记录查询</span>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ url_for('categories') }}" class="quick-link">
+                            <i class="bi bi-tags text-danger"></i>
+                            <span>积分类别</span>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="{{ url_for('export_data') }}" class="quick-link border-primary border-opacity-25"
+                            style="background: #f0f7ff;">
+                            <i class="bi bi-cloud-download text-primary"></i>
+                            <span class="text-primary fw-bold">生成班级月度报表 (Excel)</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="card mt-3">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-trophy-fill"></i> 积分排行榜
-                </h5>
+    </div>
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0">系统状态</h5>
             </div>
-            <div class="card-body">
-                <div class="leaderboard">
-                    <div class="text-muted text-center py-3">
-                        <small>查看完整排行榜请访问统计页面</small>
-                    </div>
+            <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+                <div class="mb-3">
+                    <i class="bi bi-shield-check text-success" style="font-size: 3rem;"></i>
+                </div>
+                <h6 class="fw-bold">运行良好</h6>
+                <p class="small text-muted mb-4">
+                    所有服务处于在线状态。您的班级数据已安全同步到 D1 数据库。
+                </p>
+                <div class="alert alert-warning border-0 small mb-0 text-start">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    建议定期导出数据报表以确保离线备份。
                 </div>
             </div>
         </div>

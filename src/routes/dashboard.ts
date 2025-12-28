@@ -1,10 +1,17 @@
+/**
+ * 仪表盘路由模块
+ * 提供系统首页和统计概览功能
+ */
+
 import type { Hono } from 'hono'
 import type { Env } from '../lib/env'
-import { queryAll, queryOne } from '../lib/db'
+import { queryOne } from '../lib/db'
 import { renderTemplate } from '../views/renderer'
 import { readFlash } from '../lib/flash'
-import { makeDateHelper } from '../lib/time'
 
+/**
+ * 注册仪表盘相关路由
+ */
 export function registerDashboardRoutes(app: Hono<Env>) {
   app.get('/', async (c) => {
     const db = c.env.DB
@@ -15,30 +22,6 @@ export function registerDashboardRoutes(app: Hono<Env>) {
       "SELECT COUNT(*) as total FROM points_records WHERE date(created_at) = date('now')"
     )
 
-    const recent = await queryAll<{
-      id: number
-      student_id: number
-      points: number
-      reason: string | null
-      category: string
-      operator: string | null
-      created_at: string
-      student_name: string
-    }>(
-      db,
-      `SELECT pr.*, s.name as student_name
-       FROM points_records pr
-       JOIN students s ON s.id = pr.student_id
-       ORDER BY pr.created_at DESC
-       LIMIT 10`
-    )
-
-    const recentRecords = recent.map((record) => ({
-      ...record,
-      student: { id: record.student_id, name: record.student_name },
-      created_at: makeDateHelper(record.created_at)
-    }))
-
     return c.html(
       renderTemplate({
         template: 'index.html',
@@ -46,8 +29,7 @@ export function registerDashboardRoutes(app: Hono<Env>) {
         context: {
           total_students: totalStudents?.total ?? 0,
           total_records: totalRecords?.total ?? 0,
-          today_records: todayRecords?.total ?? 0,
-          recent_records: recentRecords
+          today_records: todayRecords?.total ?? 0
         }
       })
     )

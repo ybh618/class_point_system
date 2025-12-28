@@ -1,6 +1,7 @@
 import type { D1Database } from '@cloudflare/workers-types'
 import { queryAll } from './db'
 import { makeDateHelper, getWeekStartIso } from './time'
+import { getGlobalCache, CACHE_KEYS, CACHE_TTL } from './cache'
 
 export type StudentRow = {
   id: number
@@ -43,6 +44,24 @@ type FetchOptions = {
 }
 
 export async function fetchStudentsWithStats(db: D1Database, options: FetchOptions = {}): Promise<StudentView[]> {
+  // 如果有搜索或限制条件，不使用缓存
+  if (options.search || options.ids || options.limit) {
+    return fetchStudentsWithStatsNoCache(db, options)
+  }
+
+  const cache = getGlobalCache()
+  const cacheKey = CACHE_KEYS.STUDENTS_STATS
+  const cached = cache.get<StudentView[]>(cacheKey)
+  if (cached) {
+    return cached
+  }
+
+  const result = await fetchStudentsWithStatsNoCache(db, options)
+  cache.set(cacheKey, result, CACHE_TTL.STUDENTS_STATS)
+  return result
+}
+
+async function fetchStudentsWithStatsNoCache(db: D1Database, options: FetchOptions = {}): Promise<StudentView[]> {
   const { search, ids } = options
   if (ids && ids.length === 0) {
     return []
@@ -103,11 +122,11 @@ export async function fetchStudentsWithStats(db: D1Database, options: FetchOptio
     group_id: row.group_id,
     group: row.group_id
       ? {
-          id: row.group_id,
-          name: row.group_name ?? '',
-          color: row.group_color ?? '#0d6efd',
-          description: row.group_description ?? null
-        }
+        id: row.group_id,
+        name: row.group_name ?? '',
+        color: row.group_color ?? '#0d6efd',
+        description: row.group_description ?? null
+      }
       : undefined,
     created_at: makeDateHelper(row.created_at),
     total_points: row.total_points ?? 0,

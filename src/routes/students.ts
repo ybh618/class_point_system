@@ -1,33 +1,47 @@
+/**
+ * 学生路由模块
+ * 提供学生的增删改查和导入功能
+ */
+
 import type { Hono } from 'hono'
 import { read, utils } from 'xlsx'
 import type { Env } from '../lib/env'
 import { queryAll, queryOne, execute } from '../lib/db'
 import { renderTemplate } from '../views/renderer'
 import { readFlash, redirectWithFlash } from '../lib/flash'
-import { makeDateHelper } from '../lib/time'
 import { createPagination } from '../lib/pagination'
 import { fetchStudentsWithStats } from '../lib/student_queries'
+import { PAGE_SIZE } from '../lib/constants'
+import { respondWithError } from '../lib/errors'
 
-const PER_PAGE = 20
-
+/**
+ * 注册学生相关路由
+ */
 export function registerStudentRoutes(app: Hono<Env>) {
+  /**
+   * 学生列表页面
+   */
   app.get('/students', async (c) => {
     const page = Math.max(1, parseInt(c.req.query('page') ?? '1', 10))
     const search = c.req.query('search')?.trim() ?? ''
     const db = c.env.DB
 
-    const offset = (page - 1) * PER_PAGE
+    const offset = (page - 1) * PAGE_SIZE
 
     const rows = await fetchStudentsWithStats(db, {
       search,
-      limit: PER_PAGE,
-      offset
+      limit: PAGE_SIZE,
+      offset,
     })
     const { where, params } = buildSearchFilter(search)
-    const countRow = await queryOne<{ total: number }>(db, `SELECT COUNT(*) as total FROM students s ${where}`, params)
+    const countRow = await queryOne<{ total: number }>(
+      db,
+      `SELECT COUNT(*) as total FROM students s ${where}`,
+      params
+    )
     const total = countRow?.total ?? 0
 
-    const pagination = createPagination(rows, total, page, PER_PAGE)
+    const pagination = createPagination(rows, total, page, PAGE_SIZE)
 
     const categories = await queryAll<{ name: string }>(
       db,
@@ -125,15 +139,12 @@ export function registerStudentRoutes(app: Hono<Env>) {
       }
     }
 
-    const studentId = form.get('student_id')?.toString().trim()
     const name = form.get('name')?.toString().trim()
     const className = form.get('class_name')?.toString().trim()
+    const studentId = form.get('student_id')?.toString().trim() || `sid_${Date.now()}_${Math.floor(Math.random() * 1000)}`
 
-    if (!studentId || !name || !className) {
-      return redirectWithFlash(c, '/student/add', {
-        status: 'error',
-        message: '请完整填写学生信息'
-      })
+    if (!name || !className) {
+      return respondWithError(c, '请完整填写学生信息', '/student/add')
     }
 
     const exists = await queryOne<{ id: number }>(
@@ -142,10 +153,7 @@ export function registerStudentRoutes(app: Hono<Env>) {
       [studentId]
     )
     if (exists) {
-      return redirectWithFlash(c, '/student/add', {
-        status: 'error',
-        message: '学号已存在'
-      })
+      return respondWithError(c, '学号已存在', '/student/add')
     }
 
     await execute(
@@ -160,64 +168,11 @@ export function registerStudentRoutes(app: Hono<Env>) {
     })
   })
 
-  app.get('/student/:id', async (c) => {
-    const id = Number(c.req.param('id'))
-    const db = c.env.DB
-    const student = await queryOne<{
-      id: number
-      student_id: string
-      name: string
-      class_name: string
-      group_id: number | null
-      created_at: string
-    }>(db, 'SELECT * FROM students WHERE id = ?', [id])
-
-    if (!student) {
-      return c.text('学生不存在', 404)
-    }
-
-    const total = await queryOne<{ total_points: number }>(
-      db,
-      'SELECT COALESCE(SUM(points), 0) as total_points FROM points_records WHERE student_id = ?',
-      [id]
-    )
-
-    const records = await queryAll<{
-      id: number
-      student_id: number
-      points: number
-      reason: string | null
-      category: string
-      operator: string | null
-      created_at: string
-    }>(
-      db,
-      'SELECT * FROM points_records WHERE student_id = ? ORDER BY created_at DESC',
-      [id]
-    )
-
-    const renderedRecords = records.map((record) => ({
-      ...record,
-      created_at: makeDateHelper(record.created_at)
-    }))
-
-    return c.html(
-      renderTemplate({
-        template: 'student_detail.html',
-        flash: readFlash(c),
-        context: {
-          student: {
-            ...student,
-            created_at: makeDateHelper(student.created_at),
-            total_points: total?.total_points ?? 0
-          },
-          records: renderedRecords
-        }
-      })
-    )
-  })
 }
 
+/**
+ * 构建学生搜索过滤条件
+ */
 function buildSearchFilter(search: string) {
   if (!search) {
     return { where: '', params: [] as unknown[] }
@@ -225,6 +180,6 @@ function buildSearchFilter(search: string) {
   const term = `%${search}%`
   return {
     where: 'WHERE (s.name LIKE ? OR s.student_id LIKE ? OR s.class_name LIKE ?)',
-    params: [term, term, term]
+    params: [term, term, term],
   }
 }

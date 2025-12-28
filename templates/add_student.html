@@ -27,14 +27,6 @@
                         <h6 class="mb-3">
                             <i class="bi bi-file-earmark-excel text-success"></i> Excel批量导入
                         </h6>
-                        <div class="mb-3">
-                            <label for="excel_file" class="form-label">选择Excel文件</label>
-                            <input type="file" class="form-control" id="excel_file" name="excel_file" accept=".xlsx,.xls">
-                            <div class="form-text">
-                                请选择Excel文件，系统将从第二列读取学生姓名进行导入<br>
-                                <strong>格式要求：</strong>Excel文件至少需要两列，第二列为学生姓名
-                            </div>
-                        </div>
                         <button type="submit" class="btn btn-success" name="action" value="import">
                             <i class="bi bi-upload"></i> 批量导入
                         </button>
@@ -43,23 +35,16 @@
                     <hr>
 
                     <!-- 单个添加区域 -->
-                    <div class="mb-3">
-                        <label for="student_id" class="form-label">学号 <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="student_id" name="student_id" required
-                               placeholder="请输入学号，如：2024001">
-                        <div class="form-text">学号必须唯一，用于识别学生</div>
-                    </div>
 
                     <div class="mb-3">
                         <label for="name" class="form-label">姓名 <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" required
-                               placeholder="请输入学生姓名">
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="请输入学生姓名">
                     </div>
 
                     <div class="mb-3">
                         <label for="class_name" class="form-label">班级 <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="class_name" name="class_name" required
-                               placeholder="请输入班级名称，如：一年级一班">
+                            placeholder="请输入班级名称，如：一年级一班">
                     </div>
                 </div>
 
@@ -86,7 +71,7 @@
                 <ul class="list-unstyled">
                     <li class="mb-2">
                         <i class="bi bi-check-circle text-success"></i>
-                        学号是学生的唯一标识，不能重复
+                        支持 Excel 批量导入姓名
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-check-circle text-success"></i>

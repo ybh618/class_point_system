@@ -1,41 +1,11 @@
-export type Student = {
-  id: number
-  student_id: string
-  name: string
-  class_name: string
-  group_id: number | null
-  created_at: string
-}
+/**
+ * 共享类型定义模块
+ * 定义系统中使用的基础类型和数据模型
+ */
 
-export type PointsCategory = {
-  id: number
-  name: string
-  description: string | null
-  default_points: number
-  is_active: number
-}
-
-export type Group = {
-  id: number
-  name: string
-  description: string | null
-  class_name: string
-  color: string
-  created_at: string
-}
-
-export type PointsRecord = {
-  id: number
-  student_id: number
-  points: number
-  reason: string | null
-  category: string
-  operator: string | null
-  created_at: string
-  student_name?: string
-  student_number?: string
-}
-
+/**
+ * 分页结果类型
+ */
 export type Pagination<T> = {
   items: T[]
   page: number
@@ -44,13 +14,9 @@ export type Pagination<T> = {
   pages: number
 }
 
-export type DashboardInfo = {
-  total_students: number
-  total_records: number
-  today_records: number
-  recent_records: PointsRecord[]
-}
-
+/**
+ * Flash 消息状态类型
+ */
 export type FlashState = {
   status?: 'success' | 'error'
   message?: string

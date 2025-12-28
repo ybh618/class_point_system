@@ -1,4 +1,9 @@
-import type { Context, Hono } from 'hono'
+/**
+ * 积分路由模块
+ * 提供积分记录的增删改查和导入导出功能
+ */
+
+import type { Hono } from 'hono'
 import { read, utils, write } from 'xlsx'
 import type { Env } from '../lib/env'
 import { execute, queryAll, queryOne } from '../lib/db'
@@ -7,36 +12,30 @@ import { readFlash, redirectWithFlash } from '../lib/flash'
 import { makeDateHelper } from '../lib/time'
 import { createPagination } from '../lib/pagination'
 import { fetchStudentsWithStats } from '../lib/student_queries'
+import { DEFAULT_CATEGORY, PAGE_SIZE } from '../lib/constants'
+import { respondWithError, createErrorResponse } from '../lib/errors'
+import { fetchGroups, buildGroupView } from '../lib/group_queries'
+import { invalidateStudentsCache } from '../lib/cache'
 
+/**
+ * 注册积分相关路由
+ */
 export function registerPointsRoutes(app: Hono<Env>) {
+  /**
+   * 添加积分页面
+   */
   app.get('/points/add', async (c) => {
     const db = c.env.DB
     const students = await fetchStudentsWithStats(db, { orderBy: 's.name ASC' })
-    const groups = await queryAll<{
-      id: number
-      name: string
-      description: string | null
-      class_name: string
-      color: string
-      created_at: string
-    }>(db, 'SELECT * FROM groups ORDER BY class_name, name')
+    const groups = await fetchGroups(db)
 
+    // 使用 group_queries 模块构建小组视图
     const groupsWithStudents = groups.map((group) => {
-      const groupStudents = students.filter((student) => student.group_id === group.id)
-      const totalPoints = groupStudents.reduce((sum, student) => sum + student.total_points, 0)
-      const weekPoints = groupStudents.reduce((sum, student) => sum + student.week_points, 0)
-      const average = groupStudents.length ? totalPoints / groupStudents.length : 0
-      const weekAverage = groupStudents.length ? weekPoints / groupStudents.length : 0
+      const groupView = buildGroupView(group, students)
+      const groupStudents = students.filter((s) => s.group_id === group.id)
       return {
-        group: {
-          ...group,
-          created_at: makeDateHelper(group.created_at),
-          total_points: totalPoints,
-          average_points: average,
-          week_points: weekPoints,
-          week_average_points: weekAverage
-        },
-        students: groupStudents
+        group: groupView,
+        students: groupStudents,
       }
     })
 
@@ -54,8 +53,8 @@ export function registerPointsRoutes(app: Hono<Env>) {
         context: {
           groups_with_students: groupsWithStudents,
           ungrouped_students: ungroupedStudents,
-          categories
-        }
+          categories,
+        },
       })
     )
   })
@@ -64,12 +63,12 @@ export function registerPointsRoutes(app: Hono<Env>) {
     const form = await c.req.formData()
     const studentId = parseInt(form.get('student_id')?.toString() ?? '0', 10)
     const points = parseInt(form.get('points')?.toString() ?? '0', 10)
-    const category = form.get('category')?.toString() ?? '其他'
+    const category = form.get('category')?.toString() ?? DEFAULT_CATEGORY
     const operator = form.get('operator')?.toString() ?? ''
     let reason = form.get('reason')?.toString().trim() ?? ''
 
     if (!studentId || !points || !category) {
-      return respondPointsError(c, '请完整填写积分信息')
+      return respondWithError(c, '请完整填写积分信息', '/points')
     }
 
     if (!reason) {
@@ -81,6 +80,9 @@ export function registerPointsRoutes(app: Hono<Env>) {
       'INSERT INTO points_records (student_id, points, reason, category, operator) VALUES (?, ?, ?, ?, ?)',
       [studentId, points, reason, category, operator]
     )
+
+    // 使学生统计缓存失效，下次查询时自动刷新
+    invalidateStudentsCache()
 
     const total = await queryOne<{ total: number }>(
       c.env.DB,
@@ -103,7 +105,7 @@ export function registerPointsRoutes(app: Hono<Env>) {
     const db = c.env.DB
     const page = Math.max(1, parseInt(c.req.query('page') ?? '1', 10))
     const search = c.req.query('search')?.trim() ?? ''
-    const perPage = 20
+    const perPage = PAGE_SIZE
     const offset = (page - 1) * perPage
 
     const filters = buildRecordFilter(search)
@@ -177,10 +179,13 @@ export function registerPointsRoutes(app: Hono<Env>) {
     )
 
     if (!record) {
-      return redirectWithFlash(c, '/points', { status: 'error', message: '记录不存在' })
+      return respondWithError(c, '记录不存在', '/points')
     }
 
     await execute(db, 'DELETE FROM points_records WHERE id = ?', [recordId])
+
+    // 使学生统计缓存失效
+    invalidateStudentsCache()
 
     const message = record.points > 0 ? `已撤回${record.student_name ?? '该学生'}的加分记录` : `已撤回${record.student_name ?? '该学生'}的扣分记录`
 
@@ -370,7 +375,7 @@ export function registerPointsRoutes(app: Hono<Env>) {
     )
 
     if (!record) {
-      return c.json({ success: false, message: '记录不存在' }, 404)
+      return c.json(createErrorResponse('记录不存在'), 404)
     }
 
     return c.json({
@@ -387,6 +392,9 @@ export function registerPointsRoutes(app: Hono<Env>) {
   })
 }
 
+/**
+ * 构建积分记录搜索过滤条件
+ */
 function buildRecordFilter(search: string) {
   if (!search) {
     return { where: '', params: [] as unknown[] }
@@ -394,14 +402,6 @@ function buildRecordFilter(search: string) {
   const term = `%${search}%`
   return {
     where: 'WHERE (s.name LIKE ? OR s.student_id LIKE ? OR pr.reason LIKE ?)',
-    params: [term, term, term]
+    params: [term, term, term],
   }
-}
-
-function respondPointsError(c: Context<Env>, message: string) {
-  const isAjax = c.req.header('X-Requested-With') === 'XMLHttpRequest'
-  if (isAjax) {
-    return c.json({ success: false, message })
-  }
-  return redirectWithFlash(c, '/points', { status: 'error', message })
 }

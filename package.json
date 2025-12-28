@@ -8,6 +8,8 @@
     "start": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "db:migrate": "wrangler d1 migrations apply class_points_d1 --local",
     "db:seed": "wrangler d1 execute class_points_d1 --local --file class_point_d1_data_only.sql",
     "db:init": "npm run db:migrate && npm run db:seed",
@@ -27,7 +29,9 @@
     "@cloudflare/workers-types": "^4.20241205",
     "@types/node": "^20.11.30",
     "@types/nunjucks": "^3.2.6",
+    "fast-check": "^4.3.0",
     "typescript": "^5.5.4",
+    "vitest": "^4.0.14",
     "wrangler": "^4.47.0"
   }
 }

@@ -1,64 +1,60 @@
+/**
+ * 小组路由模块
+ * 提供小组的增删改查功能
+ */
+
 import type { Hono } from 'hono'
 import type { Env } from '../lib/env'
 import { execute, queryAll, queryOne } from '../lib/db'
 import { renderTemplate } from '../views/renderer'
 import { readFlash, redirectWithFlash } from '../lib/flash'
-import { makeDateHelper } from '../lib/time'
 import { fetchStudentsWithStats } from '../lib/student_queries'
+import { DEFAULT_COLOR } from '../lib/constants'
+import { notFound, respondWithError } from '../lib/errors'
+import { fetchGroups, buildGroupView, calculateGroupStats } from '../lib/group_queries'
 
+/**
+ * 注册小组相关路由
+ */
 export function registerGroupRoutes(app: Hono<Env>) {
+  /**
+   * 小组列表页面
+   */
   app.get('/groups', async (c) => {
     const db = c.env.DB
     const students = await fetchStudentsWithStats(db, { orderBy: 's.name ASC' })
-    const groups = await queryAll<{
-      id: number
-      name: string
-      description: string | null
-      class_name: string
-      color: string
-      created_at: string
-    }>(db, 'SELECT * FROM groups ORDER BY class_name, name')
+    const groups = await fetchGroups(db)
 
-    const enriched = groups.map((group) => {
-      const groupStudents = students.filter((student) => student.group_id === group.id)
-      const totalPoints = groupStudents.reduce((sum, student) => sum + student.total_points, 0)
-      const weekPoints = groupStudents.reduce((sum, student) => sum + student.week_points, 0)
-      const average = groupStudents.length ? totalPoints / groupStudents.length : 0
-      return {
-        ...group,
-        created_at: makeDateHelper(group.created_at),
-        students: groupStudents,
-        total_points: totalPoints,
-        week_points: weekPoints,
-        average_points: average
-      }
-    })
+    const enriched = groups.map((group) => buildGroupView(group, students))
 
     return c.html(
       renderTemplate({
         template: 'groups.html',
         flash: readFlash(c),
-        context: { groups: enriched }
+        context: { groups: enriched },
       })
     )
   })
 
+  /**
+   * 添加小组页面
+   */
   app.get('/group/add', (c) => {
     return c.html(renderTemplate({ template: 'add_group.html', flash: readFlash(c) }))
   })
 
+  /**
+   * 添加小组处理
+   */
   app.post('/group/add', async (c) => {
     const form = await c.req.formData()
     const name = form.get('name')?.toString().trim()
     const description = form.get('description')?.toString().trim() ?? ''
     const className = form.get('class_name')?.toString().trim()
-    const color = form.get('color')?.toString() || '#007bff'
+    const color = form.get('color')?.toString() || DEFAULT_COLOR
 
     if (!name || !className) {
-      return redirectWithFlash(c, '/group/add', {
-        status: 'error',
-        message: '请填写小组名称和班级'
-      })
+      return respondWithError(c, '请填写小组名称和班级', '/group/add')
     }
 
     await execute(
@@ -69,10 +65,14 @@ export function registerGroupRoutes(app: Hono<Env>) {
 
     return redirectWithFlash(c, '/groups', {
       status: 'success',
-      message: '小组创建成功'
+      message: '小组创建成功',
     })
   })
 
+
+  /**
+   * 编辑小组页面
+   */
   app.get('/group/:id/edit', async (c) => {
     const id = Number(c.req.param('id'))
     const group = await queryOne<{
@@ -85,7 +85,7 @@ export function registerGroupRoutes(app: Hono<Env>) {
     }>(c.env.DB, 'SELECT * FROM groups WHERE id = ?', [id])
 
     if (!group) {
-      return c.text('小组不存在', 404)
+      return notFound(c, '小组')
     }
 
     const memberIds = await queryAll<{ id: number }>(
@@ -100,50 +100,39 @@ export function registerGroupRoutes(app: Hono<Env>) {
     )
 
     const members = await fetchStudentsWithStats(c.env.DB, {
-      ids: memberIds.map((item) => item.id)
+      ids: memberIds.map((item) => item.id),
     })
     const available = await fetchStudentsWithStats(c.env.DB, {
-      ids: classStudentIds.map((item) => item.id)
+      ids: classStudentIds.map((item) => item.id),
     })
 
-    const totalPoints = members.reduce((sum, student) => sum + student.total_points, 0)
-    const weekPoints = members.reduce((sum, student) => sum + student.week_points, 0)
-    const avgPoints = members.length ? totalPoints / members.length : 0
-    const weekAvg = members.length ? weekPoints / members.length : 0
+    const stats = calculateGroupStats(members)
 
     return c.html(
       renderTemplate({
         template: 'edit_group.html',
         flash: readFlash(c),
         context: {
-          group: {
-            ...group,
-            created_at: makeDateHelper(group.created_at),
-            students: members,
-            total_points: totalPoints,
-            week_points: weekPoints,
-            average_points: avgPoints,
-            week_average_points: weekAvg
-          },
-          available_students: available
-        }
+          group: buildGroupView(group, members),
+          available_students: available,
+        },
       })
     )
   })
 
+  /**
+   * 编辑小组处理
+   */
   app.post('/group/:id/edit', async (c) => {
     const id = Number(c.req.param('id'))
     const form = await c.req.formData()
     const name = form.get('name')?.toString().trim()
     const description = form.get('description')?.toString().trim() ?? ''
     const className = form.get('class_name')?.toString().trim()
-    const color = form.get('color')?.toString() || '#007bff'
+    const color = form.get('color')?.toString() || DEFAULT_COLOR
 
     if (!name || !className) {
-      return redirectWithFlash(c, `/group/${id}/edit`, {
-        status: 'error',
-        message: '请填写必要信息'
-      })
+      return respondWithError(c, '请填写必要信息', `/group/${id}/edit`)
     }
 
     await execute(
@@ -154,20 +143,26 @@ export function registerGroupRoutes(app: Hono<Env>) {
 
     return redirectWithFlash(c, '/groups', {
       status: 'success',
-      message: '小组更新成功'
+      message: '小组更新成功',
     })
   })
 
+  /**
+   * 删除小组
+   */
   app.post('/group/:id/delete', async (c) => {
     const id = Number(c.req.param('id'))
     await execute(c.env.DB, 'UPDATE students SET group_id = NULL WHERE group_id = ?', [id])
     await execute(c.env.DB, 'DELETE FROM groups WHERE id = ?', [id])
     return redirectWithFlash(c, '/groups', {
       status: 'success',
-      message: '小组删除成功'
+      message: '小组删除成功',
     })
   })
 
+  /**
+   * 设置学生小组
+   */
   app.post('/student/:id/set_group', async (c) => {
     const studentId = Number(c.req.param('id'))
     const form = await c.req.formData()
@@ -176,7 +171,10 @@ export function registerGroupRoutes(app: Hono<Env>) {
     if (!groupIdValue) {
       await execute(c.env.DB, 'UPDATE students SET group_id = NULL WHERE id = ?', [studentId])
     } else {
-      await execute(c.env.DB, 'UPDATE students SET group_id = ? WHERE id = ?', [Number(groupIdValue), studentId])
+      await execute(c.env.DB, 'UPDATE students SET group_id = ? WHERE id = ?', [
+        Number(groupIdValue),
+        studentId,
+      ])
     }
 
     if (c.req.header('X-Requested-With') === 'XMLHttpRequest') {
@@ -186,13 +184,16 @@ export function registerGroupRoutes(app: Hono<Env>) {
     return redirectWithFlash(c, '/students', { status: 'success', message: '小组设置成功' })
   })
 
+  /**
+   * 批量添加学生到小组
+   */
   app.post('/group/:id/add_students', async (c) => {
     const groupId = Number(c.req.param('id'))
     const form = await c.req.formData()
     const ids = form.getAll('student_ids')
 
     if (!ids.length) {
-      return redirectWithFlash(c, `/group/${groupId}/edit`, { status: 'error', message: '请选择学生' })
+      return respondWithError(c, '请选择学生', `/group/${groupId}/edit`)
     }
 
     const group = await queryOne<{ class_name: string }>(
@@ -202,7 +203,7 @@ export function registerGroupRoutes(app: Hono<Env>) {
     )
 
     if (!group) {
-      return redirectWithFlash(c, '/groups', { status: 'error', message: '小组不存在' })
+      return respondWithError(c, '小组不存在', '/groups')
     }
 
     let added = 0
@@ -221,7 +222,7 @@ export function registerGroupRoutes(app: Hono<Env>) {
 
     return redirectWithFlash(c, `/group/${groupId}/edit`, {
       status: 'success',
-      message: `成功添加 ${added} 名学生`
+      message: `成功添加 ${added} 名学生`,
     })
   })
 }

@@ -151,11 +151,11 @@ var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
-output += "\n<div class=\"container-fluid\">\n    <!-- 页面头部 -->\n    <div class=\"row mb-4\">\n        <div class=\"col-12\">\n            <div class=\"d-flex justify-content-between align-items-center\">\n                <div>\n                    <h1 class=\"h2 mb-1\">\n                        <i class=\"bi bi-people-fill text-primary\"></i> 快速积分\n                    </h1>\n                    <p class=\"text-muted mb-0\">点击学生卡片快速录入积分</p>\n                </div>\n                <div>\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 15, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["import_points"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-success me-2\">\n                        <i class=\"bi bi-file-earmark-spreadsheet\"></i> 批量导入\n                    </a>\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 18, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                        <i class=\"bi bi-arrow-left\"></i> 记录列表\n                    </a>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"row\">\n        <!-- 左侧：学生卡片网格 -->\n        <div class=\"col-lg-9\">\n            <!-- 小组筛选 -->\n            <div class=\"row mb-4\">\n                <div class=\"col-12\">\n                    <div class=\"d-flex justify-content-between align-items-center\">\n                        <div class=\"btn-group\" role=\"group\">\n                            <button type=\"button\" class=\"btn btn-outline-primary active\" data-filter=\"all\">\n                                <i class=\"bi bi-people-fill\"></i> 全部学生\n                            </button>\n                            <button type=\"button\" class=\"btn btn-outline-primary\" data-filter=\"grouped\">\n                                <i class=\"bi bi-collection-fill\"></i> 已分组\n                            </button>\n                            <button type=\"button\" class=\"btn btn-outline-primary\" data-filter=\"ungrouped\">\n                                <i class=\"bi bi-person-x\"></i> 未分组\n                            </button>\n                        </div>\n                        <div>\n                            <button type=\"button\" class=\"btn btn-outline-secondary\" id=\"selectAllBtn\">\n                                <i class=\"bi bi-check-all\"></i> 全选\n                            </button>\n                            <button type=\"button\" class=\"btn btn-outline-secondary\" id=\"clearAllBtn\">\n                                <i class=\"bi bi-x-circle\"></i> 清除选择\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <!-- 按小组展示学生 -->\n            <div id=\"studentsGrid\">\n                <!-- 已分组的学生 -->\n                ";
+output += "\n<div class=\"container-fluid\">\n    <!-- 页面头部 -->\n    <div class=\"row mb-3 mb-md-4\">\n        <div class=\"col-12\">\n            <div class=\"d-flex justify-content-between align-items-center\">\n                <div class=\"d-flex justify-content-between align-items-center w-100\">\n                    <div>\n                        <h1 class=\"h2 mb-1\">\n                            <i class=\"bi bi-people-fill text-primary\"></i> 快速积分\n                        </h1>\n                        <p class=\"text-muted mb-0 d-none d-md-block\">点击学生卡片快速录入积分</p>\n                    </div>\n                    <div>\n                        <div class=\"d-none d-md-inline-block\">\n                            <a href=\"";
+output += runtime.suppressValue((lineno = 17, colno = 47, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["import_points"])), env.opts.autoescape);
+output += "\" class=\"btn btn-outline-success me-2\">\n                                <i class=\"bi bi-file-earmark-spreadsheet\"></i> 批量导入\n                            </a>\n                            <a href=\"";
+output += runtime.suppressValue((lineno = 20, colno = 47, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
+output += "\" class=\"btn btn-outline-secondary\">\n                                <i class=\"bi bi-arrow-left\"></i> 记录列表\n                            </a>\n                        </div>\n                        <!-- 移动端提交按钮 (现在独立固定在右上角) -->\n                        <button type=\"button\" class=\"btn btn-primary d-md-none mobile-btn-fixed\" data-bs-toggle=\"modal\"\n                            data-bs-target=\"#mobileOpsModal\">\n                            <i class=\"bi bi-plus-circle\"></i> 操作\n                            <span class=\"badge bg-white text-primary ms-1\" id=\"mobileSelectedCount\">0</span>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"row\">\n        <!-- 左侧：学生卡片网格 -->\n        <div class=\"col-lg-9\">\n            <!-- 筛选与控制 (移动端大幅精简) -->\n            <div class=\"row mb-3 mb-md-4\">\n                <div class=\"col-12\">\n                    <div class=\"d-flex justify-content-between align-items-center\">\n                        <div class=\"btn-group d-none d-md-flex\" role=\"group\">\n                            <button type=\"button\" class=\"btn btn-outline-primary active\" data-filter=\"all\">\n                                <i class=\"bi bi-people-fill\"></i> 全部学生\n                            </button>\n                            <button type=\"button\" class=\"btn btn-outline-primary\" data-filter=\"grouped\">\n                                <i class=\"bi bi-collection-fill\"></i> 已分组\n                            </button>\n                            <button type=\"button\" class=\"btn btn-outline-primary\" data-filter=\"ungrouped\">\n                                <i class=\"bi bi-person-x\"></i> 未分组\n                            </button>\n                        </div>\n                        <div class=\"flex-grow-1 d-md-none\"><!-- 移动端占位 --></div>\n                        <div>\n                            <button type=\"button\" class=\"btn btn-outline-secondary btn-sm\" id=\"selectAllBtn\">\n                                <i class=\"bi bi-check-all\"></i> 全选\n                            </button>\n                            <button type=\"button\" class=\"btn btn-outline-secondary btn-sm\" id=\"clearAllBtn\">\n                                <i class=\"bi bi-x-circle\"></i> 清除\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <!-- 按小组展示学生 -->\n            <div id=\"studentsGrid\">\n                <!-- 已分组的学生 -->\n                ";
 frame = frame.push();
 var t_10 = runtime.contextOrFrameLookup(context, frame, "groups_with_students");
 if(t_10) {t_10 = runtime.fromIterator(t_10);
@@ -174,25 +174,25 @@ output += "\n                ";
 if(runtime.memberLookup((t_11),"students")) {
 output += "\n                <div class=\"group-section mb-4\" data-group-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"id"), env.opts.autoescape);
-output += "\">\n                    <div class=\"group-header mb-3 p-3 rounded\" style=\"background-color: ";
+output += "\">\n                    <div class=\"group-header mb-2 mb-md-3 p-2 p-md-3 rounded\"\n                        style=\"background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"color"), env.opts.autoescape);
 output += "20; border-left: 4px solid ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"color"), env.opts.autoescape);
-output += ";\">\n                        <div class=\"d-flex justify-content-between align-items-center\">\n                            <div>\n                                <h5 class=\"mb-1\">\n                                    <i class=\"bi bi-collection-fill\" style=\"color: ";
+output += ";\">\n                        <div class=\"d-flex justify-content-between align-items-center\">\n                            <div>\n                                <h5 class=\"mb-0 mb-md-1\">\n                                    <i class=\"bi bi-collection-fill\" style=\"color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"color"), env.opts.autoescape);
 output += ";\"></i>\n                                    ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"name"), env.opts.autoescape);
-output += "\n                                </h5>\n                                <small class=\"text-muted\">\n                                    ";
+output += "\n                                </h5>\n                                <small class=\"text-muted d-none d-md-block\">\n                                    ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"description"), env.opts.autoescape);
 output += " |\n                                    ";
 output += runtime.suppressValue(env.getFilter("length").call(context, runtime.memberLookup((t_11),"students")), env.opts.autoescape);
 output += " 名学生 |\n                                    小组总分: ";
-output += runtime.suppressValue((lineno = 72, colno = 74, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"total_points"), "group_data[\"group\"][\"total_points\"]", context, [])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 84, colno = 74, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"total_points"), "group_data[\"group\"][\"total_points\"]", context, [])), env.opts.autoescape);
 output += " |\n                                    小组平均分: ";
-output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",(lineno = 73, colno = 91, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"average_points"), "group_data[\"group\"][\"average_points\"]", context, []))), env.opts.autoescape);
-output += "\n                                </small>\n                            </div>\n                            <div class=\"group-controls\">\n                                <button type=\"button\" class=\"btn btn-sm btn-outline-secondary group-select-all\" data-group-id=\"";
+output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",(lineno = 85, colno = 91, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"average_points"), "group_data[\"group\"][\"average_points\"]", context, []))), env.opts.autoescape);
+output += "\n                                </small>\n                            </div>\n                            <div class=\"group-controls\">\n                                <button type=\"button\" class=\"btn btn-sm btn-outline-secondary group-select-all\"\n                                    data-group-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"id"), env.opts.autoescape);
-output += "\">\n                                    <i class=\"bi bi-check-all\"></i> 全选本组\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        ";
+output += "\">\n                                    <i class=\"bi bi-check-all\"></i> <span class=\"d-none d-md-inline\">全选本组</span><span\n                                        class=\"d-md-none\">全选</span>\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 g-2 g-md-3\">\n                        ";
 frame = frame.push();
 var t_14 = runtime.memberLookup((t_11),"students");
 if(t_14) {t_14 = runtime.fromIterator(t_14);
@@ -207,37 +207,27 @@ frame.set("loop.revindex0", t_13 - t_12 - 1);
 frame.set("loop.first", t_12 === 0);
 frame.set("loop.last", t_12 === t_13 - 1);
 frame.set("loop.length", t_13);
-output += "\n                        <div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-3 student-card-wrapper\"\n                             data-student-id=\"";
+output += "\n                        <div class=\"col student-card-wrapper\" data-student-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"id"), env.opts.autoescape);
-output += "\"\n                             data-student-name=\"";
+output += "\"\n                            data-student-name=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"name"), env.opts.autoescape);
-output += "\"\n                             data-current-points=\"";
+output += "\" data-current-points=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"total_points") || 0, env.opts.autoescape);
-output += "\"\n                             data-group-id=\"";
+output += "\"\n                            data-group-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"group_id") || "", env.opts.autoescape);
-output += "\"\n                             data-filter-type=\"grouped\">\n                            <div class=\"student-card h-100\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-2\">\n                                            <img src=\"";
-output += runtime.suppressValue((lineno = 96, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_15),"id")])), env.opts.autoescape);
+output += "\" data-filter-type=\"grouped\">\n                            <div class=\"student-card h-100 position-relative\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-2 p-sm-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-1 mb-md-2\">\n                                            <img src=\"";
+output += runtime.suppressValue((lineno = 107, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_15),"id")])), env.opts.autoescape);
 output += "\" alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"name"), env.opts.autoescape);
-output += "\" class=\"avatar avatar-lg\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1\">";
+output += "\"\n                                                class=\"avatar avatar-sm avatar-md-lg\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1 text-truncate\">";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"name"), env.opts.autoescape);
-output += "</h6>\n                                        <small class=\"text-muted student-id\">";
-output += runtime.suppressValue(runtime.memberLookup((t_15),"student_id"), env.opts.autoescape);
-output += "</small>\n\n                                        <!-- 小组标识 -->\n                                        <div class=\"mt-1\">\n                                            <span class=\"badge\" style=\"background-color: ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"color"), env.opts.autoescape);
-output += "; font-size: 0.7rem;\">\n                                                <i class=\"bi bi-collection-fill\"></i> ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"group")),"name"), env.opts.autoescape);
-output += "\n                                            </span>\n                                        </div>\n\n                                        <!-- 当前积分 -->\n                                        <div class=\"current-points mt-2\">\n                                            <div class=\"mb-1\">\n                                                <span class=\"badge bg-light text-dark points-badge\">\n                                                    <i class=\"bi bi-trophy-fill\"></i>\n                                                    <span class=\"points-value\">";
+output += "</h6>\n                                        <div class=\"current-points\">\n                                            <span class=\"badge bg-light text-dark small p-1\">\n                                                <span class=\"points-value\">";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"total_points") || 0, env.opts.autoescape);
-output += "</span> 分\n                                                </span>\n                                            </div>\n                                            <div>\n                                                <span class=\"badge bg-info text-white\" style=\"font-size: 0.7rem;\">\n                                                    本周 ";
-output += runtime.suppressValue(runtime.memberLookup((t_15),"week_points") || 0, env.opts.autoescape);
-output += "分\n                                                </span>\n                                            </div>\n                                        </div>\n                                    </div>\n\n                                    <!-- 选择状态 -->\n                                    <div class=\"card-footer bg-transparent border-0 p-2\">\n                                        <div class=\"form-check\">\n                                            <input class=\"form-check-input student-checkbox\" type=\"checkbox\"\n                                                   value=\"";
+output += "</span>\n                                            </span>\n                                        </div>\n\n                                        <!-- 选中标记 (隐藏但由 JS 操作) -->\n                                        <input class=\"form-check-input student-checkbox d-none\" type=\"checkbox\"\n                                            value=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"id"), env.opts.autoescape);
 output += "\" id=\"student";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"id"), env.opts.autoescape);
-output += "\">\n                                            <label class=\"form-check-label\" for=\"student";
-output += runtime.suppressValue(runtime.memberLookup((t_15),"id"), env.opts.autoescape);
-output += "\">\n                                                选择\n                                            </label>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        ";
+output += "\">\n\n                                        <div\n                                            class=\"selection-indicator position-absolute top-0 end-0 p-1 p-md-2 d-none\">\n                                            <i class=\"bi bi-check-circle-fill text-primary\"></i>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        ";
 ;
 }
 }
@@ -252,9 +242,9 @@ output += "\n                ";
 frame = frame.pop();
 output += "\n\n                <!-- 未分组的学生 -->\n                ";
 if(runtime.contextOrFrameLookup(context, frame, "ungrouped_students")) {
-output += "\n                <div class=\"group-section mb-4\" data-group-id=\"ungrouped\">\n                    <div class=\"group-header mb-3 p-3 rounded bg-light\" style=\"border-left: 4px solid #6c757d;\">\n                        <div class=\"d-flex justify-content-between align-items-center\">\n                            <div>\n                                <h5 class=\"mb-1\">\n                                    <i class=\"bi bi-person-x text-muted\"></i>\n                                    未分组学生\n                                </h5>\n                                <small class=\"text-muted\">\n                                    ";
+output += "\n                <div class=\"group-section mb-4\" data-group-id=\"ungrouped\">\n                    <div class=\"group-header mb-2 mb-md-3 p-2 p-md-3 rounded bg-light\"\n                        style=\"border-left: 4px solid #6c757d;\">\n                        <div class=\"d-flex justify-content-between align-items-center\">\n                            <div>\n                                <h5 class=\"mb-0 mb-md-1\">\n                                    <i class=\"bi bi-person-x text-muted\"></i>\n                                    未分组学生\n                                </h5>\n                                <small class=\"text-muted d-none d-md-block\">\n                                    ";
 output += runtime.suppressValue(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "ungrouped_students")), env.opts.autoescape);
-output += " 名学生\n                                </small>\n                            </div>\n                            <div class=\"group-controls\">\n                                <button type=\"button\" class=\"btn btn-sm btn-outline-secondary group-select-all\" data-group-id=\"ungrouped\">\n                                    <i class=\"bi bi-check-all\"></i> 全选本组\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        ";
+output += " 名学生\n                                </small>\n                            </div>\n                            <div class=\"group-controls\">\n                                <button type=\"button\" class=\"btn btn-sm btn-outline-secondary group-select-all\"\n                                    data-group-id=\"ungrouped\">\n                                    <i class=\"bi bi-check-all\"></i> <span class=\"d-none d-md-inline\">全选本组</span><span\n                                        class=\"d-md-none\">全选</span>\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 g-2 g-md-3\">\n                        ";
 frame = frame.push();
 var t_18 = runtime.contextOrFrameLookup(context, frame, "ungrouped_students");
 if(t_18) {t_18 = runtime.fromIterator(t_18);
@@ -269,31 +259,25 @@ frame.set("loop.revindex0", t_17 - t_16 - 1);
 frame.set("loop.first", t_16 === 0);
 frame.set("loop.last", t_16 === t_17 - 1);
 frame.set("loop.length", t_17);
-output += "\n                        <div class=\"col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-3 student-card-wrapper\"\n                             data-student-id=\"";
+output += "\n                        <div class=\"col student-card-wrapper\" data-student-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"id"), env.opts.autoescape);
-output += "\"\n                             data-student-name=\"";
+output += "\"\n                            data-student-name=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"name"), env.opts.autoescape);
-output += "\"\n                             data-current-points=\"";
+output += "\" data-current-points=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"total_points") || 0, env.opts.autoescape);
-output += "\"\n                             data-group-id=\"\"\n                             data-filter-type=\"ungrouped\">\n                            <div class=\"student-card h-100\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-2\">\n                                            <img src=\"";
-output += runtime.suppressValue((lineno = 179, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_19),"id")])), env.opts.autoescape);
+output += "\"\n                            data-group-id=\"\" data-filter-type=\"ungrouped\">\n                            <div class=\"student-card h-100 position-relative\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-2 p-sm-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-1 mb-md-2\">\n                                            <img src=\"";
+output += runtime.suppressValue((lineno = 171, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_19),"id")])), env.opts.autoescape);
 output += "\" alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"name"), env.opts.autoescape);
-output += "\" class=\"avatar avatar-lg\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1\">";
+output += "\"\n                                                class=\"avatar avatar-sm avatar-md-lg\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1 text-truncate\">";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"name"), env.opts.autoescape);
-output += "</h6>\n                                        <small class=\"text-muted student-id\">";
-output += runtime.suppressValue(runtime.memberLookup((t_19),"student_id"), env.opts.autoescape);
-output += "</small>\n\n                                        <!-- 小组标识 -->\n                                        <div class=\"mt-1\">\n                                            <span class=\"badge bg-secondary\" style=\"font-size: 0.7rem;\">\n                                                <i class=\"bi bi-person-x\"></i> 未分组\n                                            </span>\n                                        </div>\n\n                                        <!-- 当前积分 -->\n                                        <div class=\"current-points mt-2\">\n                                            <div class=\"mb-1\">\n                                                <span class=\"badge bg-light text-dark points-badge\">\n                                                    <i class=\"bi bi-trophy-fill\"></i>\n                                                    <span class=\"points-value\">";
+output += "</h6>\n                                        <div class=\"current-points\">\n                                            <span class=\"badge bg-light text-dark small p-1\">\n                                                <span class=\"points-value\">";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"total_points") || 0, env.opts.autoescape);
-output += "</span> 分\n                                                </span>\n                                            </div>\n                                            <div>\n                                                <span class=\"badge bg-info text-white\" style=\"font-size: 0.7rem;\">\n                                                    本周 ";
-output += runtime.suppressValue(runtime.memberLookup((t_19),"week_points") || 0, env.opts.autoescape);
-output += "分\n                                                </span>\n                                            </div>\n                                        </div>\n                                    </div>\n\n                                    <!-- 选择状态 -->\n                                    <div class=\"card-footer bg-transparent border-0 p-2\">\n                                        <div class=\"form-check\">\n                                            <input class=\"form-check-input student-checkbox\" type=\"checkbox\"\n                                                   value=\"";
+output += "</span>\n                                            </span>\n                                        </div>\n\n                                        <!-- 选中标记 -->\n                                        <input class=\"form-check-input student-checkbox d-none\" type=\"checkbox\"\n                                            value=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"id"), env.opts.autoescape);
 output += "\" id=\"student";
 output += runtime.suppressValue(runtime.memberLookup((t_19),"id"), env.opts.autoescape);
-output += "\">\n                                            <label class=\"form-check-label\" for=\"student";
-output += runtime.suppressValue(runtime.memberLookup((t_19),"id"), env.opts.autoescape);
-output += "\">\n                                                选择\n                                            </label>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        ";
+output += "\">\n\n                                        <div\n                                            class=\"selection-indicator position-absolute top-0 end-0 p-1 p-md-2 d-none\">\n                                            <i class=\"bi bi-check-circle-fill text-primary\"></i>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        ";
 ;
 }
 }
@@ -301,7 +285,7 @@ frame = frame.pop();
 output += "\n                    </div>\n                </div>\n                ";
 ;
 }
-output += "\n            </div>\n        </div>\n\n        <!-- 右侧：积分操作面板 -->\n        <div class=\"col-lg-3\">\n            <div class=\"card sticky-top\" style=\"top: 20px;\">\n                <div class=\"card-header bg-primary text-white\">\n                    <h5 class=\"card-title mb-0\">\n                        <i class=\"bi bi-plus-circle\"></i> 积分操作\n                    </h5>\n                </div>\n                <div class=\"card-body\">\n                    <!-- 积分值设置 -->\n                    <div class=\"mb-4\">\n                        <label class=\"form-label fw-bold\">积分值</label>\n                        <div class=\"input-group mb-2\">\n                            <span class=\"input-group-text\">积分</span>\n                            <input type=\"number\" class=\"form-control\" id=\"customPointsValue\" placeholder=\"输入积分值\"\n                                   value=\"1\" min=\"-100\" max=\"100\">\n                            <button class=\"btn btn-outline-success\" type=\"button\" id=\"setCustomPoints\">\n                                <i class=\"bi bi-check-circle\"></i> 设定\n                            </button>\n                        </div>\n\n                    </div>\n\n                    <!-- 类别和事由 -->\n                    <div class=\"mb-4\">\n                        <label class=\"form-label fw-bold\">类别</label>\n                        <select class=\"form-select\" id=\"quickCategory\">\n                            <option value=\"\">请选择类别</option>\n                            ";
+output += "\n            </div>\n        </div>\n\n        <!-- 右侧：积分操作面板 (PC端显示，移动端隐藏) -->\n        <div class=\"col-lg-3 d-none d-lg-block\">\n            <div class=\"card sticky-top\" style=\"top: 20px;\">\n                <div class=\"card-header bg-primary text-white\">\n                    <h5 class=\"card-title mb-0\">\n                        <i class=\"bi bi-plus-circle\"></i> 积分操作\n                    </h5>\n                </div>\n                <div class=\"card-body\">\n                    <!-- 积分值设置 -->\n                    <div class=\"mb-4\">\n                        <label class=\"form-label fw-bold\">积分值</label>\n                        <div class=\"input-group mb-2\">\n                            <span class=\"input-group-text\">积分</span>\n                            <input type=\"number\" class=\"form-control\" id=\"customPointsValue\" placeholder=\"输入积分值\"\n                                value=\"1\" min=\"-100\" max=\"100\">\n                            <button class=\"btn btn-outline-success\" type=\"button\" id=\"setCustomPoints\">\n                                <i class=\"bi bi-check-circle\"></i> 设定\n                            </button>\n                        </div>\n\n                    </div>\n\n                    <!-- 类别和事由 -->\n                    <div class=\"mb-4\">\n                        <label class=\"form-label fw-bold\">类别</label>\n                        <select class=\"form-select\" id=\"quickCategory\">\n                            <option value=\"\">请选择类别</option>\n                            ";
 frame = frame.push();
 var t_22 = runtime.contextOrFrameLookup(context, frame, "categories");
 if(t_22) {t_22 = runtime.fromIterator(t_22);
@@ -325,7 +309,7 @@ output += "</option>\n                            ";
 }
 }
 frame = frame.pop();
-output += "\n                            <option value=\"自定义\">自定义</option>\n                        </select>\n                    </div>\n\n                    <div class=\"mb-4\">\n                        <label class=\"form-label fw-bold\">事由</label>\n                        <input type=\"text\" class=\"form-control\" id=\"quickReason\" placeholder=\"请输入事由\">\n                    </div>\n\n                    <!-- 操作按钮 -->\n                    <div class=\"d-grid gap-2\">\n                        <button type=\"button\" class=\"btn btn-success btn-lg\" id=\"quickAddBtn\">\n                            <i class=\"bi bi-plus-circle\"></i> 加分\n                        </button>\n                        <button type=\"button\" class=\"btn btn-danger btn-lg\" id=\"quickMinusBtn\">\n                            <i class=\"bi bi-dash-circle\"></i> 扣分\n                        </button>\n                    </div>\n\n                    <!-- 选中状态 -->\n                    <div class=\"mt-4 p-3 bg-light rounded\">\n                        <div class=\"text-center\">\n                            <small class=\"text-muted\">已选择</small>\n                            <h4 id=\"selectedCount\" class=\"text-primary mb-1\">0</h4>\n                            <small class=\"text-muted\">名学生</small>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n</div>\n\n<!-- 快速积分模态框 -->\n<div class=\"modal fade\" id=\"quickPointsModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog modal-dialog-centered\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header border-0\">\n                <h5 class=\"modal-title\">\n                    <i class=\"bi bi-person-circle text-primary\"></i>\n                    <span id=\"modalStudentName\"></span>\n                </h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <div class=\"modal-body\">\n                <form id=\"quickPointsForm\">\n                    <input type=\"hidden\" id=\"modalStudentId\" name=\"student_id\">\n\n                    <!-- 当前积分显示 -->\n                    <div class=\"text-center mb-4\">\n                        <div class=\"current-points-display\">\n                            <small class=\"text-muted\">当前积分</small>\n                            <h2 class=\"mb-0\">\n                                <span id=\"modalCurrentPoints\" class=\"text-primary\">0</span>\n                                <small class=\"text-muted\">分</small>\n                            </h2>\n                        </div>\n                    </div>\n\n                    <!-- 快捷积分选项 -->\n                    <div class=\"row mb-3\">\n                        <div class=\"col-6\">\n                            <label class=\"form-label text-success\">加分</label>\n                            <div class=\"d-grid gap-2\">\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"1\">+1 分</button>\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"2\">+2 分</button>\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"5\">+5 分</button>\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"10\">+10 分</button>\n                            </div>\n                        </div>\n                        <div class=\"col-6\">\n                            <label class=\"form-label text-danger\">扣分</label>\n                            <div class=\"d-grid gap-2\">\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-1\">-1 分</button>\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-2\">-2 分</button>\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-5\">-5 分</button>\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-10\">-10 分</button>\n                            </div>\n                        </div>\n                    </div>\n\n                    <!-- 自定义积分 -->\n                    <div class=\"mb-3\">\n                        <label for=\"customPoints\" class=\"form-label\">自定义积分</label>\n                        <input type=\"number\" class=\"form-control form-control-lg text-center\" id=\"customPoints\"\n                               placeholder=\"输入积分值\" min=\"-100\" max=\"100\">\n                    </div>\n\n                    <!-- 类别和事由 -->\n                    <div class=\"mb-3\">\n                        <label for=\"modalCategory\" class=\"form-label\">类别</label>\n                        <select class=\"form-select\" id=\"modalCategory\" name=\"category\">\n                            <option value=\"\">请选择类别</option>\n                            ";
+output += "\n                            <option value=\"自定义\">自定义</option>\n                        </select>\n                    </div>\n\n                    <div class=\"mb-4\">\n                        <label class=\"form-label fw-bold\">事由</label>\n                        <input type=\"text\" class=\"form-control\" id=\"quickReason\" placeholder=\"请输入事由\">\n                    </div>\n\n                    <!-- 操作按钮 -->\n                    <div class=\"d-grid gap-2\">\n                        <button type=\"button\" class=\"btn btn-success btn-lg\" id=\"quickAddBtn\">\n                            <i class=\"bi bi-plus-circle\"></i> 加分\n                        </button>\n                        <button type=\"button\" class=\"btn btn-danger btn-lg\" id=\"quickMinusBtn\">\n                            <i class=\"bi bi-dash-circle\"></i> 扣分\n                        </button>\n                    </div>\n\n                    <!-- 选中状态 -->\n                    <div class=\"mt-4 p-3 bg-light rounded\">\n                        <div class=\"text-center\">\n                            <small class=\"text-muted\">已选择</small>\n                            <h4 id=\"selectedCount\" class=\"text-primary mb-1\">0</h4>\n                            <small class=\"text-muted\">名学生</small>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n</div>\n\n<!-- 快速积分模态框 -->\n<div class=\"modal fade\" id=\"quickPointsModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog modal-dialog-centered\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header border-0\">\n                <h5 class=\"modal-title\">\n                    <i class=\"bi bi-person-circle text-primary\"></i>\n                    <span id=\"modalStudentName\"></span>\n                </h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <div class=\"modal-body\">\n                <form id=\"quickPointsForm\">\n                    <input type=\"hidden\" id=\"modalStudentId\" name=\"student_id\">\n\n                    <!-- 当前积分显示 -->\n                    <div class=\"text-center mb-4\">\n                        <div class=\"current-points-display\">\n                            <small class=\"text-muted\">当前积分</small>\n                            <h2 class=\"mb-0\">\n                                <span id=\"modalCurrentPoints\" class=\"text-primary\">0</span>\n                                <small class=\"text-muted\">分</small>\n                            </h2>\n                        </div>\n                    </div>\n\n                    <!-- 快捷积分选项 -->\n                    <div class=\"row mb-3\">\n                        <div class=\"col-6\">\n                            <label class=\"form-label text-success\">加分</label>\n                            <div class=\"d-grid gap-2\">\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"1\">+1\n                                    分</button>\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"2\">+2\n                                    分</button>\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"5\">+5\n                                    分</button>\n                                <button type=\"button\" class=\"btn btn-success quick-add-points\" data-points=\"10\">+10\n                                    分</button>\n                            </div>\n                        </div>\n                        <div class=\"col-6\">\n                            <label class=\"form-label text-danger\">扣分</label>\n                            <div class=\"d-grid gap-2\">\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-1\">-1\n                                    分</button>\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-2\">-2\n                                    分</button>\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-5\">-5\n                                    分</button>\n                                <button type=\"button\" class=\"btn btn-danger quick-add-points\" data-points=\"-10\">-10\n                                    分</button>\n                            </div>\n                        </div>\n                    </div>\n\n                    <!-- 自定义积分 -->\n                    <div class=\"mb-3\">\n                        <label for=\"customPoints\" class=\"form-label\">自定义积分</label>\n                        <input type=\"number\" class=\"form-control form-control-lg text-center\" id=\"customPoints\"\n                            placeholder=\"输入积分值\" min=\"-100\" max=\"100\">\n                    </div>\n\n                    <!-- 类别和事由 -->\n                    <div class=\"mb-3\">\n                        <label for=\"modalCategory\" class=\"form-label\">类别</label>\n                        <select class=\"form-select\" id=\"modalCategory\" name=\"category\">\n                            <option value=\"\">请选择类别</option>\n                            ";
 frame = frame.push();
 var t_26 = runtime.contextOrFrameLookup(context, frame, "categories");
 if(t_26) {t_26 = runtime.fromIterator(t_26);
@@ -349,7 +333,7 @@ output += "</option>\n                            ";
 }
 }
 frame = frame.pop();
-output += "\n                        </select>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"modalReason\" class=\"form-label\">事由</label>\n                        <textarea class=\"form-control\" id=\"modalReason\" name=\"reason\" rows=\"2\"\n                                  placeholder=\"请说明积分事由\"></textarea>\n                    </div>\n\n                    <!-- 操作人 -->\n                    <div class=\"mb-3\">\n                        <label for=\"modalOperator\" class=\"form-label\">操作人</label>\n                        <input type=\"text\" class=\"form-control\" id=\"modalOperator\" name=\"operator\"\n                               placeholder=\"请输入操作人姓名\">\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer border-0\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                <button type=\"button\" class=\"btn btn-primary\" id=\"submitQuickPoints\">\n                    <i class=\"bi bi-check-circle\"></i> 确认提交\n                </button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 传统表单模态框 -->\n<div class=\"modal fade\" id=\"traditionalModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog modal-lg\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">传统积分录入</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <div class=\"modal-body\">\n                <form method=\"POST\" id=\"traditionalForm\">\n                    <div class=\"mb-3\">\n                        <label for=\"tradStudentId\" class=\"form-label\">学生 <span class=\"text-danger\">*</span></label>\n                        <select class=\"form-select\" id=\"tradStudentId\" name=\"student_id\" required>\n                            <option value=\"\">请选择学生</option>\n                            ";
+output += "\n                        </select>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"modalReason\" class=\"form-label\">事由</label>\n                        <textarea class=\"form-control\" id=\"modalReason\" name=\"reason\" rows=\"2\"\n                            placeholder=\"请说明积分事由\"></textarea>\n                    </div>\n\n                    <!-- 操作人 -->\n                    <div class=\"mb-3\">\n                        <label for=\"modalOperator\" class=\"form-label\">操作人</label>\n                        <input type=\"text\" class=\"form-control\" id=\"modalOperator\" name=\"operator\"\n                            placeholder=\"请输入操作人姓名\">\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer border-0\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                <button type=\"button\" class=\"btn btn-primary\" id=\"submitQuickPoints\">\n                    <i class=\"bi bi-check-circle\"></i> 确认提交\n                </button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 传统表单模态框 -->\n<div class=\"modal fade\" id=\"traditionalModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog modal-lg\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">传统积分录入</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <div class=\"modal-body\">\n                <form method=\"POST\" id=\"traditionalForm\">\n                    <div class=\"mb-3\">\n                        <label for=\"tradStudentId\" class=\"form-label\">学生 <span class=\"text-danger\">*</span></label>\n                        <select class=\"form-select\" id=\"tradStudentId\" name=\"student_id\" required>\n                            <option value=\"\">请选择学生</option>\n                            ";
 frame = frame.push();
 var t_30 = runtime.contextOrFrameLookup(context, frame, "groups_with_students");
 if(t_30) {t_30 = runtime.fromIterator(t_30);
@@ -427,7 +411,7 @@ output += " - 未分组\n                            </option>\n                
 }
 }
 frame = frame.pop();
-output += "\n                        </select>\n                    </div>\n\n                    <div class=\"row\">\n                        <div class=\"col-md-6\">\n                            <div class=\"mb-3\">\n                                <label for=\"tradPoints\" class=\"form-label\">积分值 <span class=\"text-danger\">*</span></label>\n                                <input type=\"number\" class=\"form-control\" id=\"tradPoints\" name=\"points\" required>\n                            </div>\n                        </div>\n                        <div class=\"col-md-6\">\n                            <div class=\"mb-3\">\n                                <label for=\"tradCategory\" class=\"form-label\">类别 <span class=\"text-danger\">*</span></label>\n                                <select class=\"form-select\" id=\"tradCategory\" name=\"category\" required>\n                                    <option value=\"\">请选择类别</option>\n                                    ";
+output += "\n                        </select>\n                    </div>\n\n                    <div class=\"row\">\n                        <div class=\"col-md-6\">\n                            <div class=\"mb-3\">\n                                <label for=\"tradPoints\" class=\"form-label\">积分值 <span\n                                        class=\"text-danger\">*</span></label>\n                                <input type=\"number\" class=\"form-control\" id=\"tradPoints\" name=\"points\" required>\n                            </div>\n                        </div>\n                        <div class=\"col-md-6\">\n                            <div class=\"mb-3\">\n                                <label for=\"tradCategory\" class=\"form-label\">类别 <span\n                                        class=\"text-danger\">*</span></label>\n                                <select class=\"form-select\" id=\"tradCategory\" name=\"category\" required>\n                                    <option value=\"\">请选择类别</option>\n                                    ";
 frame = frame.push();
 var t_42 = runtime.contextOrFrameLookup(context, frame, "categories");
 if(t_42) {t_42 = runtime.fromIterator(t_42);
@@ -444,7 +428,7 @@ frame.set("loop.last", t_40 === t_41 - 1);
 frame.set("loop.length", t_41);
 output += "\n                                    <option value=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_43),"name"), env.opts.autoescape);
-output += "\" data-default-points=\"";
+output += "\"\n                                        data-default-points=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_43),"default_points"), env.opts.autoescape);
 output += "\">\n                                        ";
 output += runtime.suppressValue(runtime.memberLookup((t_43),"name"), env.opts.autoescape);
@@ -453,7 +437,31 @@ output += "\n                                    </option>\n                    
 }
 }
 frame = frame.pop();
-output += "\n                                </select>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"tradReason\" class=\"form-label\">事由</label>\n                        <textarea class=\"form-control\" id=\"tradReason\" name=\"reason\" rows=\"3\"></textarea>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"tradOperator\" class=\"form-label\">操作人</label>\n                        <input type=\"text\" class=\"form-control\" id=\"tradOperator\" name=\"operator\">\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                <button type=\"button\" class=\"btn btn-primary\" id=\"submitTraditional\">提交</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
+output += "\n                                </select>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"tradReason\" class=\"form-label\">事由</label>\n                        <textarea class=\"form-control\" id=\"tradReason\" name=\"reason\" rows=\"3\"></textarea>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"tradOperator\" class=\"form-label\">操作人</label>\n                        <input type=\"text\" class=\"form-control\" id=\"tradOperator\" name=\"operator\">\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                <button type=\"button\" class=\"btn btn-primary\" id=\"submitTraditional\">提交</button>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- 移动端积分操作模态框 -->\n<div class=\"modal fade\" id=\"mobileOpsModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog modal-dialog-centered\">\n        <div class=\"modal-content border-0 shadow-lg\">\n            <div class=\"modal-header bg-primary text-white\">\n                <h5 class=\"modal-title\">\n                    <i class=\"bi bi-plus-circle\"></i> 批量积分操作\n                    <span class=\"badge bg-white text-primary ms-1\" id=\"modalSelectedCountDisp\">0</span>\n                </h5>\n                <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <div class=\"modal-body\">\n                <!-- 积分值设置 -->\n                <div class=\"mb-4\">\n                    <label class=\"form-label fw-bold small text-muted\">积分值</label>\n                    <div class=\"input-group\">\n                        <input type=\"number\" class=\"form-control form-control-lg text-center\" id=\"mobileCustomPoints\"\n                            placeholder=\"数值\" value=\"1\" min=\"-100\" max=\"100\">\n                    </div>\n                </div>\n\n                <!-- 类别和事由 -->\n                <div class=\"mb-3\">\n                    <label class=\"form-label fw-bold small text-muted\">类别</label>\n                    <select class=\"form-select\" id=\"mobileQuickCategory\">\n                        <option value=\"\">请选择类别</option>\n                        ";
+frame = frame.push();
+var t_46 = runtime.contextOrFrameLookup(context, frame, "categories");
+if(t_46) {t_46 = runtime.fromIterator(t_46);
+var t_45 = t_46.length;
+for(var t_44=0; t_44 < t_46.length; t_44++) {
+var t_47 = t_46[t_44];
+frame.set("category", t_47);
+frame.set("loop.index", t_44 + 1);
+frame.set("loop.index0", t_44);
+frame.set("loop.revindex", t_45 - t_44);
+frame.set("loop.revindex0", t_45 - t_44 - 1);
+frame.set("loop.first", t_44 === 0);
+frame.set("loop.last", t_44 === t_45 - 1);
+frame.set("loop.length", t_45);
+output += "\n                        <option value=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_47),"name"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((t_47),"name"), env.opts.autoescape);
+output += "</option>\n                        ";
+;
+}
+}
+frame = frame.pop();
+output += "\n                        <option value=\"自定义\">自定义</option>\n                    </select>\n                </div>\n\n                <div class=\"mb-4\">\n                    <label class=\"form-label fw-bold small text-muted\">事由</label>\n                    <input type=\"text\" class=\"form-control\" id=\"mobileQuickReason\" placeholder=\"请输入事由\">\n                </div>\n\n                <!-- 操作按钮 -->\n                <div class=\"row g-2\">\n                    <div class=\"col-6\">\n                        <button type=\"button\" class=\"btn btn-success btn-lg w-100 py-3\" id=\"mobileQuickAddBtn\">\n                            <i class=\"bi bi-plus-circle\"></i> 加分\n                        </button>\n                    </div>\n                    <div class=\"col-6\">\n                        <button type=\"button\" class=\"btn btn-danger btn-lg w-100 py-3\" id=\"mobileQuickMinusBtn\">\n                            <i class=\"bi bi-dash-circle\"></i> 扣分\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -461,14 +469,14 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 455;
+var lineno = 495;
 var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
-output += "\n<style>\n/* 学生卡片样式 */\n.student-card {\n    cursor: pointer;\n    transition: all 0.3s ease;\n}\n\n.student-card:hover .student-card-inner {\n    transform: translateY(-5px);\n    box-shadow: 0 8px 25px rgba(0,0,0,0.15);\n}\n\n.student-card.selected .student-card-inner {\n    border: 2px solid #0d6efd;\n    transform: translateY(-3px);\n}\n\n.avatar-circle {\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    font-size: 24px;\n    font-weight: bold;\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n}\n\n.bg-gradient-primary {\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n}\n\n.points-animation {\n    animation: pointsChange 0.6s ease-in-out;\n}\n\n@keyframes pointsChange {\n    0% { transform: scale(1); }\n    50% { transform: scale(1.3); color: #28a745; }\n    100% { transform: scale(1); }\n}\n\n.points-negative-animation {\n    animation: pointsNegativeChange 0.6s ease-in-out;\n}\n\n@keyframes pointsNegativeChange {\n    0% { transform: scale(1); }\n    50% { transform: scale(1.3); color: #dc3545; }\n    100% { transform: scale(1); }\n}\n\n.quick-points-btn:hover {\n    transform: scale(1.1);\n    transition: all 0.2s ease;\n}\n\n/* 小组头部样式 */\n.group-header {\n    transition: all 0.3s ease;\n}\n\n.group-header:hover {\n    transform: translateY(-2px);\n    box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n}\n\n.group-controls {\n    opacity: 0.7;\n    transition: opacity 0.3s ease;\n}\n\n.group-section:hover .group-controls {\n    opacity: 1;\n}\n\n/* 响应式调整 */\n@media (max-width: 768px) {\n    .avatar-circle {\n        width: 50px;\n        height: 50px;\n        font-size: 20px;\n    }\n\n    .group-header {\n        padding: 1rem !important;\n    }\n\n    .group-header h5 {\n        font-size: 1.1rem;\n    }\n}\n</style>\n\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\n    let selectedStudents = new Set();\n    let currentFilter = 'all';\n\n    const quickPointsModal = new bootstrap.Modal(document.getElementById('quickPointsModal'));\n    const traditionalModal = new bootstrap.Modal(document.getElementById('traditionalModal'));\n\n    // 自定义积分值设定\n    document.getElementById('setCustomPoints').addEventListener('click', function() {\n        const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n        if (points !== 0) {\n            showNotification(`已设定积分值：${points > 0 ? '+' : ''}${points}分`, 'success');\n        }\n    });\n\n\n    // 筛选按钮事件\n    document.querySelectorAll('[data-filter]').forEach(btn => {\n        btn.addEventListener('click', function() {\n            const filter = this.dataset.filter;\n            currentFilter = filter;\n\n            // 更新按钮状态\n            document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));\n            this.classList.add('active');\n\n            // 筛选学生卡片\n            filterStudents(filter);\n        });\n    });\n\n    // 筛选学生函数\n    function filterStudents(filter) {\n        const sections = document.querySelectorAll('.group-section');\n        const cards = document.querySelectorAll('.student-card-wrapper');\n\n        sections.forEach(section => {\n            if (filter === 'all') {\n                section.style.display = 'block';\n            } else if (filter === 'grouped') {\n                section.style.display = section.dataset.groupId !== 'ungrouped' ? 'block' : 'none';\n            } else if (filter === 'ungrouped') {\n                section.style.display = section.dataset.groupId === 'ungrouped' ? 'block' : 'none';\n            }\n        });\n\n        // 同时更新单个卡片的显示状态，确保筛选一致性\n        cards.forEach(card => {\n            if (filter === 'all') {\n                card.style.display = 'block';\n            } else if (filter === 'grouped') {\n                card.style.display = card.dataset.groupId ? 'block' : 'none';\n            } else if (filter === 'ungrouped') {\n                card.style.display = card.dataset.groupId ? 'none' : 'block';\n            }\n        });\n    }\n\n    // 全选按钮\n    document.getElementById('selectAllBtn').addEventListener('click', function() {\n        const visibleCards = document.querySelectorAll('.student-card-wrapper:not([style*=\"display: none\"]) .student-checkbox');\n        visibleCards.forEach(checkbox => {\n            checkbox.checked = true;\n            const studentId = checkbox.value;\n            selectedStudents.add(studentId);\n        });\n        updateSelectedInfo();\n    });\n\n    // 全选本组按钮\n    document.querySelectorAll('.group-select-all').forEach(btn => {\n        btn.addEventListener('click', function() {\n            const groupId = this.dataset.groupId;\n            let checkboxes;\n\n            if (groupId === 'ungrouped') {\n                checkboxes = document.querySelectorAll('.student-card-wrapper[data-filter-type=\"ungrouped\"] .student-checkbox');\n            } else {\n                checkboxes = document.querySelectorAll(`.student-card-wrapper[data-group-id=\"${groupId}\"] .student-checkbox`);\n            }\n\n            checkboxes.forEach(checkbox => {\n                checkbox.checked = true;\n                const studentId = checkbox.value;\n                selectedStudents.add(studentId);\n            });\n            updateSelectedInfo();\n            showNotification(`已全选本组学生`, 'success');\n        });\n    });\n\n    // 清除所有选择\n    document.getElementById('clearAllBtn').addEventListener('click', function() {\n        document.querySelectorAll('.student-checkbox').forEach(checkbox => {\n            checkbox.checked = false;\n        });\n        selectedStudents.clear();\n        updateSelectedInfo();\n    });\n\n    // 学生复选框事件\n    document.querySelectorAll('.student-checkbox').forEach(checkbox => {\n        checkbox.addEventListener('change', function() {\n            const studentId = this.value;\n            const card = this.closest('.student-card-wrapper');\n\n            if (this.checked) {\n                selectedStudents.add(studentId);\n                card.querySelector('.student-card-inner').classList.add('selected');\n            } else {\n                selectedStudents.delete(studentId);\n                card.querySelector('.student-card-inner').classList.remove('selected');\n            }\n\n            updateSelectedInfo();\n        });\n    });\n\n    // 快速加分按钮\n    document.getElementById('quickAddBtn').addEventListener('click', function() {\n        applyQuickOperation(true);\n    });\n\n    // 快速扣分按钮\n    document.getElementById('quickMinusBtn').addEventListener('click', function() {\n        applyQuickOperation(false);\n    });\n\n    // 应用快速操作\n    function applyQuickOperation(isAdd) {\n        const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n        const category = document.getElementById('quickCategory').value || '自定义';\n        const reason = document.getElementById('quickReason').value || (isAdd ? '自定义加分' : '自定义扣分');\n        const actualPoints = isAdd ? Math.abs(points) : -Math.abs(points);\n\n        if (points === 0) {\n            showNotification('请先设定积分值', 'warning');\n            return;\n        }\n\n        if (selectedStudents.size === 0) {\n            showNotification('请先选择学生', 'warning');\n            return;\n        }\n\n        const studentIds = Array.from(selectedStudents);\n\n        // 批量提交\n        let completed = 0;\n        studentIds.forEach(studentId => {\n            submitPoints(studentId, actualPoints, category, reason, '', function() {\n                completed++;\n                if (completed === studentIds.length) {\n                    // 清除选择\n                    document.querySelectorAll('.student-checkbox:checked').forEach(checkbox => {\n                        checkbox.checked = false;\n                    });\n                    selectedStudents.clear();\n                    updateSelectedInfo();\n                    showNotification(`成功为${studentIds.length}名学生${isAdd ? '加分' : '扣分'} ${Math.abs(actualPoints)}分`, 'success');\n                }\n            });\n        });\n    }\n\n\n    // 更新选中信息显示\n    function updateSelectedInfo() {\n        const selectedCount = document.getElementById('selectedCount');\n        selectedCount.textContent = selectedStudents.size;\n    }\n\n    // 打开快速积分模态框\n    function openQuickPointsModal(studentId, defaultPoints) {\n        const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n        const studentName = card.dataset.studentName;\n        const currentPoints = card.dataset.currentPoints;\n\n        document.getElementById('modalStudentId').value = studentId;\n        document.getElementById('modalStudentName').textContent = studentName;\n        document.getElementById('modalCurrentPoints').textContent = currentPoints;\n        document.getElementById('customPoints').value = defaultPoints !== 0 ? defaultPoints : '';\n\n        quickPointsModal.show();\n    }\n\n    // 快捷积分按钮\n    document.querySelectorAll('.quick-add-points').forEach(btn => {\n        btn.addEventListener('click', function() {\n            const points = parseInt(this.dataset.points);\n            document.getElementById('customPoints').value = points;\n        });\n    });\n\n    // 提交快速积分\n    document.getElementById('submitQuickPoints').addEventListener('click', function() {\n        const studentId = document.getElementById('modalStudentId').value;\n        const points = parseInt(document.getElementById('customPoints').value) || 0;\n        const category = document.getElementById('modalCategory').value || '快捷操作';\n        const reason = document.getElementById('modalReason').value || '无具体事由';\n        const operator = document.getElementById('modalOperator').value;\n\n        if (points === 0) {\n            alert('请输入积分值');\n            return;\n        }\n\n        submitPoints(studentId, points, category, reason, operator);\n        quickPointsModal.hide();\n    });\n\n    // 提交传统表单\n    document.getElementById('submitTraditional').addEventListener('click', function() {\n        const form = document.getElementById('traditionalForm');\n        const formData = new FormData(form);\n\n        const studentId = formData.get('student_id');\n        const points = parseInt(formData.get('points')) || 0;\n        const category = formData.get('category') || '其他';\n        const reason = formData.get('reason') || '无具体事由';\n        const operator = formData.get('operator');\n\n        if (!studentId || points === 0 || !category) {\n            alert('请填写必要信息');\n            return;\n        }\n\n        submitPoints(studentId, points, category, reason, operator);\n        traditionalModal.hide();\n        form.reset();\n    });\n\n    // 提交积分数据\n    function submitPoints(studentId, points, category, reason, operator = '', callback) {\n        const formData = new FormData();\n        formData.append('student_id', studentId);\n        formData.append('points', points);\n        formData.append('category', category);\n        formData.append('reason', reason);\n        if (operator) {\n            formData.append('operator', operator);\n        }\n\n        fetch('";
-output += runtime.suppressValue((lineno = 792, colno = 25, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "', {\n            method: 'POST',\n            headers: {\n                'X-Requested-With': 'XMLHttpRequest'\n            },\n            body: formData\n        })\n        .then(response => response.json())\n        .then(data => {\n            if (data.success) {\n                // 更新学生积分显示\n                updateStudentPoints(studentId, data.new_total_points);\n\n                // 添加动画效果\n                addPointsAnimation(studentId, points);\n\n                // 执行回调\n                if (callback) callback();\n            } else {\n                showNotification(data.message || '录入失败', 'error');\n                if (callback) callback();\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            showNotification('网络错误，请重试', 'error');\n            if (callback) callback();\n        });\n    }\n\n    // 更新学生积分显示\n    function updateStudentPoints(studentId, newPoints) {\n        const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n        if (card) {\n            card.dataset.currentPoints = newPoints;\n            const pointsValue = card.querySelector('.points-value');\n            if (pointsValue) {\n                pointsValue.textContent = newPoints;\n            }\n        }\n    }\n\n    // 添加积分变化动画\n    function addPointsAnimation(studentId, points) {\n        const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n        if (card) {\n            const pointsValue = card.querySelector('.points-value');\n            if (pointsValue) {\n                pointsValue.classList.add(points > 0 ? 'points-animation' : 'points-negative-animation');\n                setTimeout(() => {\n                    pointsValue.classList.remove('points-animation', 'points-negative-animation');\n                }, 600);\n            }\n        }\n    }\n\n    // 显示通知\n    function showNotification(message, type = 'success') {\n        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';\n        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';\n\n        const notification = document.createElement('div');\n        notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;\n        notification.style.zIndex = '9999';\n        notification.innerHTML = `\n            <i class=\"bi ${icon}\"></i> ${message}\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n        `;\n\n        document.body.appendChild(notification);\n\n        setTimeout(() => {\n            notification.remove();\n        }, 3000);\n    }\n\n    // 页面顶部添加传统表单按钮\n    const headerDiv = document.querySelector('.d-flex.justify-content-between.align-items-center .d-flex');\n    const traditionalBtn = document.createElement('button');\n    traditionalBtn.type = 'button';\n    traditionalBtn.className = 'btn btn-outline-secondary';\n    traditionalBtn.innerHTML = '<i class=\"bi bi-pencil-square\"></i> 传统录入';\n    traditionalBtn.addEventListener('click', () => traditionalModal.show());\n    headerDiv.appendChild(traditionalBtn);\n});\n</script>\n";
+output += "\n<style>\n    /* 学生卡片样式 */\n    .student-card {\n        cursor: pointer;\n        transition: all 0.3s ease;\n    }\n\n    .student-card:hover .student-card-inner {\n        transform: translateY(-5px);\n        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);\n    }\n\n    .student-card.selected .student-card-inner {\n        border: 2px solid #0d6efd;\n        transform: translateY(-3px);\n    }\n\n    .avatar-md-lg {\n        width: 60px;\n        height: 60px;\n    }\n\n    @media (max-width: 576px) {\n        .avatar-sm {\n            width: 40px;\n            height: 40px;\n        }\n    }\n\n    @media (max-width: 768px) {\n        .mobile-btn-fixed {\n            position: fixed;\n            top: 15px;\n            right: 15px;\n            z-index: 1050;\n            /* 高于普通粘性元素 */\n            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3) !important;\n            border-radius: 50px !important;\n            padding: 8px 16px !important;\n            background: rgba(13, 110, 253, 0.9) !important;\n            backdrop-filter: blur(5px);\n            -webkit-backdrop-filter: blur(5px);\n        }\n    }\n\n    .student-card.selected .selection-indicator {\n        display: block !important;\n    }\n\n    .student-card.selected .student-card-inner {\n        background-color: #f0f7ff;\n        border: 1px solid #0d6efd !important;\n    }\n\n    .avatar-circle {\n        width: 60px;\n        height: 60px;\n        border-radius: 50%;\n        font-size: 24px;\n        font-weight: bold;\n        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n    }\n\n    .bg-gradient-primary {\n        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n    }\n\n    .points-animation {\n        animation: pointsChange 0.6s ease-in-out;\n    }\n\n    @keyframes pointsChange {\n        0% {\n            transform: scale(1);\n        }\n\n        50% {\n            transform: scale(1.3);\n            color: #28a745;\n        }\n\n        100% {\n            transform: scale(1);\n        }\n    }\n\n    .points-negative-animation {\n        animation: pointsNegativeChange 0.6s ease-in-out;\n    }\n\n    @keyframes pointsNegativeChange {\n        0% {\n            transform: scale(1);\n        }\n\n        50% {\n            transform: scale(1.3);\n            color: #dc3545;\n        }\n\n        100% {\n            transform: scale(1);\n        }\n    }\n\n    .quick-points-btn:hover {\n        transform: scale(1.1);\n        transition: all 0.2s ease;\n    }\n\n    /* 小组头部样式 */\n    .group-header {\n        transition: all 0.3s ease;\n    }\n\n    .group-header:hover {\n        transform: translateY(-2px);\n        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);\n    }\n\n    .group-controls {\n        opacity: 0.7;\n        transition: opacity 0.3s ease;\n    }\n\n    .group-section:hover .group-controls {\n        opacity: 1;\n    }\n\n    /* 响应式调整 */\n    @media (max-width: 768px) {\n        .avatar-circle {\n            width: 50px;\n            height: 50px;\n            font-size: 20px;\n        }\n\n        .group-header {\n            padding: 1rem !important;\n        }\n\n        .group-header h5 {\n            font-size: 1.1rem;\n        }\n    }\n</style>\n\n<script>\n    document.addEventListener('DOMContentLoaded', function () {\n        let selectedStudents = new Set();\n        let currentFilter = 'all';\n\n        const quickPointsModal = new bootstrap.Modal(document.getElementById('quickPointsModal'));\n        const traditionalModal = new bootstrap.Modal(document.getElementById('traditionalModal'));\n\n        // 自定义积分值设定\n        document.getElementById('setCustomPoints').addEventListener('click', function () {\n            const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n            if (points !== 0) {\n                showNotification(`已设定积分值：${points > 0 ? '+' : ''}${points}分`, 'success');\n            }\n        });\n\n\n        // 筛选按钮事件\n        document.querySelectorAll('[data-filter]').forEach(btn => {\n            btn.addEventListener('click', function () {\n                const filter = this.dataset.filter;\n                currentFilter = filter;\n\n                // 更新按钮状态\n                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));\n                this.classList.add('active');\n\n                // 筛选学生卡片\n                filterStudents(filter);\n            });\n        });\n\n        // 筛选学生函数\n        function filterStudents(filter) {\n            const sections = document.querySelectorAll('.group-section');\n            const cards = document.querySelectorAll('.student-card-wrapper');\n\n            sections.forEach(section => {\n                if (filter === 'all') {\n                    section.style.display = 'block';\n                } else if (filter === 'grouped') {\n                    section.style.display = section.dataset.groupId !== 'ungrouped' ? 'block' : 'none';\n                } else if (filter === 'ungrouped') {\n                    section.style.display = section.dataset.groupId === 'ungrouped' ? 'block' : 'none';\n                }\n            });\n\n            // 同时更新单个卡片的显示状态，确保筛选一致性\n            cards.forEach(card => {\n                if (filter === 'all') {\n                    card.style.display = 'block';\n                } else if (filter === 'grouped') {\n                    card.style.display = card.dataset.groupId ? 'block' : 'none';\n                } else if (filter === 'ungrouped') {\n                    card.style.display = card.dataset.groupId ? 'none' : 'block';\n                }\n            });\n        }\n\n        // 点击学生卡片选择\n        document.querySelectorAll('.student-card').forEach(card => {\n            card.addEventListener('click', function (e) {\n                // 如果点击的是已经存在的 checkbox（虽然已经隐藏，但以防万一），不要重复触发\n                if (e.target.classList.contains('student-checkbox')) return;\n\n                const checkbox = this.querySelector('.student-checkbox');\n                checkbox.checked = !checkbox.checked;\n\n                const studentId = checkbox.value;\n                const cardWrapper = this.closest('.student-card-wrapper');\n\n                if (checkbox.checked) {\n                    selectedStudents.add(studentId);\n                    this.classList.add('selected');\n                } else {\n                    selectedStudents.delete(studentId);\n                    this.classList.remove('selected');\n                }\n\n                updateSelectedInfo();\n            });\n        });\n\n        // 全选按钮\n        document.getElementById('selectAllBtn').addEventListener('click', function () {\n            const visibleCards = document.querySelectorAll('.student-card-wrapper:not([style*=\"display: none\"])');\n            visibleCards.forEach(wrapper => {\n                const checkbox = wrapper.querySelector('.student-checkbox');\n                const card = wrapper.querySelector('.student-card');\n                checkbox.checked = true;\n                const studentId = checkbox.value;\n                selectedStudents.add(studentId);\n                card.classList.add('selected');\n            });\n            updateSelectedInfo();\n        });\n\n        // 全选本组按钮\n        document.querySelectorAll('.group-select-all').forEach(btn => {\n            btn.addEventListener('click', function () {\n                const groupId = this.dataset.groupId;\n                let wrappers;\n\n                if (groupId === 'ungrouped') {\n                    wrappers = document.querySelectorAll('.student-card-wrapper[data-filter-type=\"ungrouped\"]');\n                } else {\n                    wrappers = document.querySelectorAll(`.student-card-wrapper[data-group-id=\"${groupId}\"]`);\n                }\n\n                wrappers.forEach(wrapper => {\n                    const checkbox = wrapper.querySelector('.student-checkbox');\n                    const card = wrapper.querySelector('.student-card');\n                    checkbox.checked = true;\n                    const studentId = checkbox.value;\n                    selectedStudents.add(studentId);\n                    card.classList.add('selected');\n                });\n                updateSelectedInfo();\n            });\n        });\n\n        // 清除所有选择\n        document.getElementById('clearAllBtn').addEventListener('click', function () {\n            document.querySelectorAll('.student-checkbox').forEach(checkbox => {\n                checkbox.checked = false;\n            });\n            document.querySelectorAll('.student-card').forEach(card => {\n                card.classList.remove('selected');\n            });\n            selectedStudents.clear();\n            updateSelectedInfo();\n        });\n\n        // 更新选中信息显示\n        function updateSelectedInfo() {\n            const count = selectedStudents.size;\n            document.getElementById('selectedCount').textContent = count;\n\n            // 同步移动端计数\n            const mobileCount = document.getElementById('mobileSelectedCount');\n            if (mobileCount) mobileCount.textContent = count;\n\n            const modalCount = document.getElementById('modalSelectedCountDisp');\n            if (modalCount) modalCount.textContent = count;\n        }\n\n        // 移动端操作按钮事件\n        const mobileOpsModal = new bootstrap.Modal(document.getElementById('mobileOpsModal'));\n\n        document.getElementById('mobileQuickAddBtn')?.addEventListener('click', function () {\n            applyMobileQuickOperation(true);\n        });\n\n        document.getElementById('mobileQuickMinusBtn')?.addEventListener('click', function () {\n            applyMobileQuickOperation(false);\n        });\n\n        function applyMobileQuickOperation(isAdd) {\n            const points = parseInt(document.getElementById('mobileCustomPoints').value) || 0;\n            const category = document.getElementById('mobileQuickCategory').value || '自定义';\n            const reason = document.getElementById('mobileQuickReason').value || (isAdd ? '自定义加分' : '自定义扣分');\n\n            if (points === 0) {\n                showNotification('请先设定积分值', 'warning');\n                return;\n            }\n\n            if (selectedStudents.size === 0) {\n                showNotification('请先选择学生', 'warning');\n                return;\n            }\n\n            const actualPoints = isAdd ? Math.abs(points) : -Math.abs(points);\n            const studentIds = Array.from(selectedStudents);\n\n            mobileOpsModal.hide();\n\n            // 执行批量提交\n            batchSubmitPoints(studentIds, actualPoints, category, reason, isAdd);\n        }\n\n        // 提取批量提交函数\n        function batchSubmitPoints(studentIds, actualPoints, category, reason, isAdd) {\n            let completed = 0;\n            studentIds.forEach(studentId => {\n                submitPoints(studentId, actualPoints, category, reason, '', function () {\n                    completed++;\n                    if (completed === studentIds.length) {\n                        // 清除选择\n                        document.querySelectorAll('.student-checkbox:checked').forEach(checkbox => {\n                            checkbox.checked = false;\n                        });\n                        document.querySelectorAll('.student-card').forEach(card => card.classList.remove('selected'));\n                        selectedStudents.clear();\n                        updateSelectedInfo();\n                        showNotification(`成功为${studentIds.length}名学生${isAdd ? '加分' : '扣分'} ${Math.abs(actualPoints)}分`, 'success');\n                    }\n                });\n            });\n        }\n\n        // 重构原 PC 端快速操作，复用 batchSubmitPoints\n        document.getElementById('quickAddBtn')?.addEventListener('click', function () {\n            const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n            const category = document.getElementById('quickCategory').value || '自定义';\n            const reason = document.getElementById('quickReason').value || '自定义加分';\n\n            if (points === 0 || selectedStudents.size === 0) {\n                showNotification(points === 0 ? '请设定积分值' : '请先选择学生', 'warning');\n                return;\n            }\n            batchSubmitPoints(Array.from(selectedStudents), Math.abs(points), category, reason, true);\n        });\n\n        document.getElementById('quickMinusBtn')?.addEventListener('click', function () {\n            const points = parseInt(document.getElementById('customPointsValue').value) || 0;\n            const category = document.getElementById('quickCategory').value || '自定义';\n            const reason = document.getElementById('quickReason').value || '自定义扣分';\n\n            if (points === 0 || selectedStudents.size === 0) {\n                showNotification(points === 0 ? '请设定积分值' : '请先选择学生', 'warning');\n                return;\n            }\n            batchSubmitPoints(Array.from(selectedStudents), -Math.abs(points), category, reason, false);\n        });\n\n        // 打开快速积分模态框\n        function openQuickPointsModal(studentId, defaultPoints) {\n            const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n            const studentName = card.dataset.studentName;\n            const currentPoints = card.dataset.currentPoints;\n\n            document.getElementById('modalStudentId').value = studentId;\n            document.getElementById('modalStudentName').textContent = studentName;\n            document.getElementById('modalCurrentPoints').textContent = currentPoints;\n            document.getElementById('customPoints').value = defaultPoints !== 0 ? defaultPoints : '';\n\n            quickPointsModal.show();\n        }\n\n        // 快捷积分按钮\n        document.querySelectorAll('.quick-add-points').forEach(btn => {\n            btn.addEventListener('click', function () {\n                const points = parseInt(this.dataset.points);\n                document.getElementById('customPoints').value = points;\n            });\n        });\n\n        // 提交快速积分\n        document.getElementById('submitQuickPoints').addEventListener('click', function () {\n            const studentId = document.getElementById('modalStudentId').value;\n            const points = parseInt(document.getElementById('customPoints').value) || 0;\n            const category = document.getElementById('modalCategory').value || '快捷操作';\n            const reason = document.getElementById('modalReason').value || '无具体事由';\n            const operator = document.getElementById('modalOperator').value;\n\n            if (points === 0) {\n                alert('请输入积分值');\n                return;\n            }\n\n            submitPoints(studentId, points, category, reason, operator);\n            quickPointsModal.hide();\n        });\n\n        // 提交传统表单\n        document.getElementById('submitTraditional').addEventListener('click', function () {\n            const form = document.getElementById('traditionalForm');\n            const formData = new FormData(form);\n\n            const studentId = formData.get('student_id');\n            const points = parseInt(formData.get('points')) || 0;\n            const category = formData.get('category') || '其他';\n            const reason = formData.get('reason') || '无具体事由';\n            const operator = formData.get('operator');\n\n            if (!studentId || points === 0 || !category) {\n                alert('请填写必要信息');\n                return;\n            }\n\n            submitPoints(studentId, points, category, reason, operator);\n            traditionalModal.hide();\n            form.reset();\n        });\n\n        // 提交积分数据\n        function submitPoints(studentId, points, category, reason, operator = '', callback) {\n            const formData = new FormData();\n            formData.append('student_id', studentId);\n            formData.append('points', points);\n            formData.append('category', category);\n            formData.append('reason', reason);\n            if (operator) {\n                formData.append('operator', operator);\n            }\n\n            fetch('";
+output += runtime.suppressValue((lineno = 940, colno = 29, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += "', {\n                method: 'POST',\n                headers: {\n                    'X-Requested-With': 'XMLHttpRequest'\n                },\n                body: formData\n            })\n                .then(response => response.json())\n                .then(data => {\n                    if (data.success) {\n                        // 更新学生积分显示\n                        updateStudentPoints(studentId, data.new_total_points);\n\n                        // 添加动画效果\n                        addPointsAnimation(studentId, points);\n\n                        // 执行回调\n                        if (callback) callback();\n                    } else {\n                        showNotification(data.message || '录入失败', 'error');\n                        if (callback) callback();\n                    }\n                })\n                .catch(error => {\n                    console.error('Error:', error);\n                    showNotification('网络错误，请重试', 'error');\n                    if (callback) callback();\n                });\n        }\n\n        // 更新学生积分显示\n        function updateStudentPoints(studentId, newPoints) {\n            const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n            if (card) {\n                card.dataset.currentPoints = newPoints;\n                const pointsValue = card.querySelector('.points-value');\n                if (pointsValue) {\n                    pointsValue.textContent = newPoints;\n                }\n            }\n        }\n\n        // 添加积分变化动画\n        function addPointsAnimation(studentId, points) {\n            const card = document.querySelector(`[data-student-id=\"${studentId}\"]`);\n            if (card) {\n                const pointsValue = card.querySelector('.points-value');\n                if (pointsValue) {\n                    pointsValue.classList.add(points > 0 ? 'points-animation' : 'points-negative-animation');\n                    setTimeout(() => {\n                        pointsValue.classList.remove('points-animation', 'points-negative-animation');\n                    }, 600);\n                }\n            }\n        }\n\n        // 显示通知\n        function showNotification(message, type = 'success') {\n            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';\n            const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';\n\n            const notification = document.createElement('div');\n            notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;\n            notification.style.zIndex = '9999';\n            notification.innerHTML = `\n            <i class=\"bi ${icon}\"></i> ${message}\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n        `;\n\n            document.body.appendChild(notification);\n\n            setTimeout(() => {\n                notification.remove();\n            }, 3000);\n        }\n\n    });\n</script>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -516,9 +524,9 @@ try {
 var frame = frame.push(true);
 output += "\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <div class=\"d-flex justify-content-between align-items-center\">\n            <h1 class=\"h2\">添加学生</h1>\n            <a href=\"";
 output += runtime.suppressValue((lineno = 7, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                <i class=\"bi bi-arrow-left\"></i> 返回学生列表\n            </a>\n        </div>\n    </div>\n</div>\n\n<div class=\"row\">\n    <div class=\"col-md-8\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-person-plus-fill\"></i> 学生信息\n                </h5>\n            </div>\n            <form method=\"POST\" enctype=\"multipart/form-data\">\n                <div class=\"card-body\">\n                    <!-- Excel导入区域 -->\n                    <div class=\"mb-4 p-3 border rounded bg-light\">\n                        <h6 class=\"mb-3\">\n                            <i class=\"bi bi-file-earmark-excel text-success\"></i> Excel批量导入\n                        </h6>\n                        <div class=\"mb-3\">\n                            <label for=\"excel_file\" class=\"form-label\">选择Excel文件</label>\n                            <input type=\"file\" class=\"form-control\" id=\"excel_file\" name=\"excel_file\" accept=\".xlsx,.xls\">\n                            <div class=\"form-text\">\n                                请选择Excel文件，系统将从第二列读取学生姓名进行导入<br>\n                                <strong>格式要求：</strong>Excel文件至少需要两列，第二列为学生姓名\n                            </div>\n                        </div>\n                        <button type=\"submit\" class=\"btn btn-success\" name=\"action\" value=\"import\">\n                            <i class=\"bi bi-upload\"></i> 批量导入\n                        </button>\n                    </div>\n\n                    <hr>\n\n                    <!-- 单个添加区域 -->\n                    <div class=\"mb-3\">\n                        <label for=\"student_id\" class=\"form-label\">学号 <span class=\"text-danger\">*</span></label>\n                        <input type=\"text\" class=\"form-control\" id=\"student_id\" name=\"student_id\" required\n                               placeholder=\"请输入学号，如：2024001\">\n                        <div class=\"form-text\">学号必须唯一，用于识别学生</div>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"name\" class=\"form-label\">姓名 <span class=\"text-danger\">*</span></label>\n                        <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\" required\n                               placeholder=\"请输入学生姓名\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"class_name\" class=\"form-label\">班级 <span class=\"text-danger\">*</span></label>\n                        <input type=\"text\" class=\"form-control\" id=\"class_name\" name=\"class_name\" required\n                               placeholder=\"请输入班级名称，如：一年级一班\">\n                    </div>\n                </div>\n\n                <div class=\"card-footer\">\n                    <button type=\"submit\" class=\"btn btn-primary\">\n                        <i class=\"bi bi-check-circle\"></i> 添加学生\n                    </button>\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 69, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
-output += "\" class=\"btn btn-secondary ms-2\">\n                        <i class=\"bi bi-x-circle\"></i> 取消\n                    </a>\n                </div>\n            </form>\n        </div>\n    </div>\n\n    <div class=\"col-md-4\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h6 class=\"mb-0\">\n                    <i class=\"bi bi-info-circle-fill\"></i> 使用说明\n                </h6>\n            </div>\n            <div class=\"card-body\">\n                <ul class=\"list-unstyled\">\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-check-circle text-success\"></i>\n                        学号是学生的唯一标识，不能重复\n                    </li>\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-check-circle text-success\"></i>\n                        姓名请使用真实姓名\n                    </li>\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-check-circle text-success\"></i>\n                        班级名称建议使用标准格式\n                    </li>\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-info-circle text-info\"></i>\n                        添加后可以为学生录入积分记录\n                    </li>\n                </ul>\n            </div>\n        </div>\n\n        <div class=\"card mt-3\">\n            <div class=\"card-header\">\n                <h6 class=\"mb-0\">\n                    <i class=\"bi bi-lightning-fill\"></i> 快速提示\n                </h6>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"alert alert-info\">\n                    <small>\n                        <strong>班级名称建议格式：</strong><br>\n                        • 一年级一班<br>\n                        • 三年二班<br>\n                        • 六年级三班\n                    </small>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+output += "\" class=\"btn btn-outline-secondary\">\n                <i class=\"bi bi-arrow-left\"></i> 返回学生列表\n            </a>\n        </div>\n    </div>\n</div>\n\n<div class=\"row\">\n    <div class=\"col-md-8\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-person-plus-fill\"></i> 学生信息\n                </h5>\n            </div>\n            <form method=\"POST\" enctype=\"multipart/form-data\">\n                <div class=\"card-body\">\n                    <!-- Excel导入区域 -->\n                    <div class=\"mb-4 p-3 border rounded bg-light\">\n                        <h6 class=\"mb-3\">\n                            <i class=\"bi bi-file-earmark-excel text-success\"></i> Excel批量导入\n                        </h6>\n                        <button type=\"submit\" class=\"btn btn-success\" name=\"action\" value=\"import\">\n                            <i class=\"bi bi-upload\"></i> 批量导入\n                        </button>\n                    </div>\n\n                    <hr>\n\n                    <!-- 单个添加区域 -->\n\n                    <div class=\"mb-3\">\n                        <label for=\"name\" class=\"form-label\">姓名 <span class=\"text-danger\">*</span></label>\n                        <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\" required placeholder=\"请输入学生姓名\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label for=\"class_name\" class=\"form-label\">班级 <span class=\"text-danger\">*</span></label>\n                        <input type=\"text\" class=\"form-control\" id=\"class_name\" name=\"class_name\" required\n                            placeholder=\"请输入班级名称，如：一年级一班\">\n                    </div>\n                </div>\n\n                <div class=\"card-footer\">\n                    <button type=\"submit\" class=\"btn btn-primary\">\n                        <i class=\"bi bi-check-circle\"></i> 添加学生\n                    </button>\n                    <a href=\"";
+output += runtime.suppressValue((lineno = 54, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
+output += "\" class=\"btn btn-secondary ms-2\">\n                        <i class=\"bi bi-x-circle\"></i> 取消\n                    </a>\n                </div>\n            </form>\n        </div>\n    </div>\n\n    <div class=\"col-md-4\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h6 class=\"mb-0\">\n                    <i class=\"bi bi-info-circle-fill\"></i> 使用说明\n                </h6>\n            </div>\n            <div class=\"card-body\">\n                <ul class=\"list-unstyled\">\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-check-circle text-success\"></i>\n                        支持 Excel 批量导入姓名\n                    </li>\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-check-circle text-success\"></i>\n                        姓名请使用真实姓名\n                    </li>\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-check-circle text-success\"></i>\n                        班级名称建议使用标准格式\n                    </li>\n                    <li class=\"mb-2\">\n                        <i class=\"bi bi-info-circle text-info\"></i>\n                        添加后可以为学生录入积分记录\n                    </li>\n                </ul>\n            </div>\n        </div>\n\n        <div class=\"card mt-3\">\n            <div class=\"card-header\">\n                <h6 class=\"mb-0\">\n                    <i class=\"bi bi-lightning-fill\"></i> 快速提示\n                </h6>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"alert alert-info\">\n                    <small>\n                        <strong>班级名称建议格式：</strong><br>\n                        • 一年级一班<br>\n                        • 三年二班<br>\n                        • 六年级三班\n                    </small>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -537,27 +545,31 @@ var colno = 0;
 var output = "";
 try {
 var parentTemplate = null;
-output += "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>班级积分管理系统</title>\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css\" rel=\"stylesheet\">\n    <style>\n        .navbar-brand {\n            font-weight: bold;\n        }\n        .card {\n            box-shadow: 0 0 10px rgba(0,0,0,0.1);\n        }\n        .stats-card {\n            transition: transform 0.2s;\n        }\n        .stats-card:hover {\n            transform: translateY(-5px);\n        }\n        .points-positive {\n            color: #198754;\n            font-weight: bold;\n        }\n        .points-negative {\n            color: #dc3545;\n            font-weight: bold;\n        }\n        .footer {\n            background-color: #f8f9fa;\n            padding: 20px 0;\n            margin-top: 50px;\n        }\n        /* 头像样式 */\n        .avatar {\n            width: 40px;\n            height: 40px;\n            border-radius: 50%;\n            object-fit: cover;\n            background-color: #e9ecef;\n        }\n        .avatar-sm {\n            width: 32px;\n            height: 32px;\n        }\n        .avatar-lg {\n            width: 60px;\n            height: 60px;\n        }\n        .avatar-circle {\n            display: inline-flex;\n            align-items: center;\n            justify-content: center;\n            border-radius: 50%;\n            font-weight: bold;\n        }\n    </style>\n</head>\n<body>\n    <nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\">\n        <div class=\"container\">\n            <a class=\"navbar-brand\" href=\"";
-output += runtime.suppressValue((lineno = 62, colno = 52, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
-output += "\">\n                <i class=\"bi bi-trophy-fill\"></i> 班级积分管理系统\n            </a>\n            <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarNav\">\n                <span class=\"navbar-toggler-icon\"></span>\n            </button>\n            <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n                <ul class=\"navbar-nav me-auto\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 71, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-house-fill\"></i> 首页\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 76, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-people-fill\"></i> 学生管理\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 81, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["groups"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-collection-fill\"></i> 小组管理\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 86, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-plus-circle-fill\"></i> 录入积分\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 91, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-list-ul\"></i> 积分记录\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 96, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-trophy-fill\"></i> 排名统计\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 101, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["categories"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-tags-fill\"></i> 类别管理\n                        </a>\n                    </li>\n                </ul>\n                <ul class=\"navbar-nav\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" href=\"";
-output += runtime.suppressValue((lineno = 108, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["export_data"])), env.opts.autoescape);
-output += "\">\n                            <i class=\"bi bi-download\"></i> 导出数据\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </nav>\n\n    <main class=\"container mt-4\">\n        ";
+output += "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>班级积分管理系统</title>\n\n    <!-- DNS 预解析和预连接优化 -->\n    <link rel=\"dns-prefetch\" href=\"https://cdn.jsdelivr.net\">\n    <link rel=\"preconnect\" href=\"https://cdn.jsdelivr.net\" crossorigin>\n    <link rel=\"dns-prefetch\" href=\"https://api.dicebear.com\">\n    <link rel=\"preconnect\" href=\"https://api.dicebear.com\" crossorigin>\n\n    <!-- 关键 CSS - Bootstrap 核心样式 -->\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n\n    <!-- 非关键 CSS - 图标字体延迟加载 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css\" as=\"style\"\n        onload=\"this.onload=null;this.rel='stylesheet'\">\n    <noscript>\n        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css\" rel=\"stylesheet\">\n    </noscript>\n\n    <style>\n        :root {\n            --sidebar-collapsed-width: 70px;\n            --sidebar-width: 240px;\n            --sidebar-bg: #2c3e50;\n            --transition-speed: 0.3s;\n        }\n\n        body {\n            background-color: #f8f9fa;\n            padding-bottom: 70px;\n        }\n\n        /* Desktop Sidebar */\n        .sidebar {\n            width: var(--sidebar-collapsed-width);\n            height: 100vh;\n            position: fixed;\n            left: 0;\n            top: 0;\n            background: rgba(255, 255, 255, 0.6) !important;\n            backdrop-filter: blur(15px);\n            -webkit-backdrop-filter: blur(15px);\n            border-right: 1px solid rgba(255, 255, 255, 0.3);\n            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);\n            z-index: 1000;\n            overflow-x: hidden;\n            display: flex;\n            flex-direction: column;\n            color: #333;\n            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);\n        }\n\n        .sidebar:hover {\n            width: var(--sidebar-width);\n            background: rgba(255, 255, 255, 0.75) !important;\n            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);\n        }\n\n        .sidebar-header {\n            height: 60px;\n            display: flex;\n            align-items: center;\n            padding: 0 20px;\n            white-space: nowrap;\n            background: rgba(13, 110, 253, 0.05);\n            border-bottom: 1px solid rgba(0, 0, 0, 0.05);\n        }\n\n        .sidebar-brand-text {\n            margin-left: 20px;\n            font-weight: bold;\n            opacity: 0;\n            transition: opacity var(--transition-speed);\n        }\n\n        .sidebar:hover .sidebar-brand-text {\n            opacity: 1;\n        }\n\n        .sidebar-nav {\n            flex-grow: 1;\n            padding: 20px 0;\n        }\n\n        .sidebar-item {\n            display: flex;\n            align-items: center;\n            height: 50px;\n            padding: 0 12px;\n            /* 居中计算: (70-20-26)/2 = 12px */\n            color: #4b5563;\n            text-decoration: none;\n            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);\n            white-space: nowrap;\n            margin: 4px 10px;\n            border-radius: 12px;\n        }\n\n        .sidebar-item:hover {\n            background: rgba(13, 110, 253, 0.1);\n            color: #0d6efd;\n            transform: translateX(4px);\n        }\n\n        .sidebar-item.active {\n            background: #0d6efd;\n            color: white;\n            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);\n        }\n\n        .sidebar-item i {\n            font-size: 1.25rem;\n            min-width: 26px;\n            display: flex;\n            justify-content: center;\n        }\n\n        .sidebar-text {\n            margin-left: 20px;\n            opacity: 0;\n            transition: opacity var(--transition-speed);\n        }\n\n        .sidebar:hover .sidebar-text {\n            opacity: 1;\n            margin-left: 10px;\n            /* 展开后图标与文字的间距 */\n        }\n\n        /* Mobile Bottom Nav */\n        .mobile-bottom-nav {\n            position: fixed;\n            bottom: 0;\n            left: 0;\n            right: 0;\n            height: 70px;\n            background: white;\n            display: none;\n            justify-content: space-around;\n            align-items: center;\n            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);\n            z-index: 1000;\n        }\n\n        .nav-link-mobile {\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            text-decoration: none;\n            color: #7f8c8d;\n            font-size: 0.75rem;\n        }\n\n        .nav-link-mobile i {\n            font-size: 1.5rem;\n            margin-bottom: 2px;\n        }\n\n        .nav-link-mobile.active {\n            color: var(--primary-color);\n        }\n\n        .main-content {\n            margin-left: 0;\n            padding: 24px 24px 24px calc(var(--sidebar-collapsed-width) + 24px);\n            transition: all var(--transition-speed);\n            min-height: 100vh;\n            background: #f8f9fa;\n        }\n\n        @media (max-width: 768px) {\n            .sidebar {\n                display: none;\n            }\n\n            .mobile-bottom-nav {\n                display: flex;\n            }\n\n            .main-content {\n                margin-left: 0;\n                padding: 15px;\n            }\n\n            body {\n                padding-bottom: 80px;\n            }\n        }\n\n        .card {\n            border: none;\n            border-radius: 15px;\n            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);\n            transition: transform 0.2s;\n        }\n\n        .stats-card:hover {\n            transform: translateY(-5px);\n        }\n\n        .avatar {\n            width: 1.25rem;\n            height: 1.25rem;\n            border-radius: 50%;\n            object-fit: cover;\n            vertical-align: middle;\n        }\n\n        .avatar-circle {\n            display: inline-flex;\n            align-items: center;\n            justify-content: center;\n            border-radius: 50%;\n            font-weight: bold;\n        }\n    </style>\n</head>\n\n<body>\n    <!-- Desktop Sidebar -->\n    <aside class=\"sidebar\">\n        <div class=\"sidebar-header\">\n            <i class=\"bi bi-trophy-fill fs-3 text-primary\"></i>\n            <span class=\"sidebar-brand-text\">积分管理系统</span>\n        </div>\n        <nav class=\"sidebar-nav\">\n            <a href=\"";
+output += runtime.suppressValue((lineno = 231, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-house-door-fill\"></i>\n                <span class=\"sidebar-text\">首页概览</span>\n            </a>\n            <a href=\"";
+output += runtime.suppressValue((lineno = 235, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-people-fill\"></i>\n                <span class=\"sidebar-text\">学生管理</span>\n            </a>\n            <a href=\"";
+output += runtime.suppressValue((lineno = 239, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["groups"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-collection-fill\"></i>\n                <span class=\"sidebar-text\">小组管理</span>\n            </a>\n            <a href=\"";
+output += runtime.suppressValue((lineno = 243, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-plus-circle-fill\"></i>\n                <span class=\"sidebar-text\">录入积分</span>\n            </a>\n            <a href=\"";
+output += runtime.suppressValue((lineno = 247, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-list-ul\"></i>\n                <span class=\"sidebar-text\">积分记录</span>\n            </a>\n            <a href=\"";
+output += runtime.suppressValue((lineno = 251, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-bar-chart-fill\"></i>\n                <span class=\"sidebar-text\">排名统计</span>\n            </a>\n            <a href=\"";
+output += runtime.suppressValue((lineno = 255, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["categories"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-tags-fill\"></i>\n                <span class=\"sidebar-text\">类别配置</span>\n            </a>\n        </nav>\n        <div class=\"sidebar-footer mt-auto pb-4\">\n            <a href=\"";
+output += runtime.suppressValue((lineno = 261, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["export_data"])), env.opts.autoescape);
+output += "\" class=\"sidebar-item\">\n                <i class=\"bi bi-download\"></i>\n                <span class=\"sidebar-text\">数据导出</span>\n            </a>\n        </div>\n    </aside>\n\n    <!-- Mobile Bottom Navigation -->\n    <nav class=\"mobile-bottom-nav\">\n        <a href=\"";
+output += runtime.suppressValue((lineno = 270, colno = 27, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["index"])), env.opts.autoescape);
+output += "\" class=\"nav-link-mobile\">\n            <i class=\"bi bi-grid-fill\"></i>\n            <span>管理</span>\n        </a>\n        <a href=\"";
+output += runtime.suppressValue((lineno = 274, colno = 27, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += "\" class=\"nav-link-mobile\">\n            <i class=\"bi bi-plus-circle-fill\" style=\"font-size: 2rem; color: var(--primary-color);\"></i>\n            <span>加分</span>\n        </a>\n        <a href=\"";
+output += runtime.suppressValue((lineno = 278, colno = 27, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"nav-link-mobile\">\n            <i class=\"bi bi-graph-up-arrow\"></i>\n            <span>统计</span>\n        </a>\n    </nav>\n\n    <main class=\"main-content\">\n        <div class=\"container-fluid\">\n            ";
 var t_1;
-t_1 = (lineno = 118, colno = 46, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "get_flashed_messages"), "get_flashed_messages", context, [runtime.makeKeywordArgs({"with_categories": true})]));
+t_1 = (lineno = 286, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "get_flashed_messages"), "get_flashed_messages", context, [runtime.makeKeywordArgs({"with_categories": true})]));
 frame.set("messages", t_1, true);
 if(frame.topLevel) {
 context.setVariable("messages", t_1);
@@ -565,7 +577,7 @@ context.setVariable("messages", t_1);
 if(frame.topLevel) {
 context.addExport("messages", t_1);
 }
-output += "\n        ";
+output += "\n            ";
 if(runtime.contextOrFrameLookup(context, frame, "messages")) {
 output += "\n            ";
 frame = frame.push();
@@ -586,11 +598,11 @@ frame.set("loop.revindex0", t_3 - t_2 - 1);
 frame.set("loop.first", t_2 === 0);
 frame.set("loop.last", t_2 === t_3 - 1);
 frame.set("loop.length", t_3);
-output += "\n                <div class=\"alert alert-";
+output += "\n            <div class=\"alert alert-";
 output += runtime.suppressValue((t_5 == "error"?"danger":"success"), env.opts.autoescape);
-output += " alert-dismissible fade show\" role=\"alert\">\n                    ";
+output += " alert-dismissible fade show\"\n                role=\"alert\">\n                ";
 output += runtime.suppressValue(t_6, env.opts.autoescape);
-output += "\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n                </div>\n            ";
+output += "\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n            </div>\n            ";
 ;
 }
 } else {
@@ -608,28 +620,28 @@ frame.set("loop.revindex0", t_3 - t_2 - 1);
 frame.set("loop.first", t_2 === 0);
 frame.set("loop.last", t_2 === t_3 - 1);
 frame.set("loop.length", t_3);
-output += "\n                <div class=\"alert alert-";
+output += "\n            <div class=\"alert alert-";
 output += runtime.suppressValue((t_7 == "error"?"danger":"success"), env.opts.autoescape);
-output += " alert-dismissible fade show\" role=\"alert\">\n                    ";
+output += " alert-dismissible fade show\"\n                role=\"alert\">\n                ";
 output += runtime.suppressValue(t_8, env.opts.autoescape);
-output += "\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n                </div>\n            ";
+output += "\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>\n            </div>\n            ";
 ;
 }
 }
 }
 frame = frame.pop();
-output += "\n        ";
+output += "\n            ";
 ;
 }
-output += "\n\n        ";
+output += "\n\n            ";
 (parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("content"))(env, context, frame, runtime, function(t_10,t_9) {
 if(t_10) { cb(t_10); return; }
 output += t_9;
-output += "\n    </main>\n\n    <footer class=\"footer\">\n        <div class=\"container text-center\">\n            <p class=\"text-muted mb-0\">&copy; 2024 班级积分管理系统 - 版本 1.0</p>\n        </div>\n    </footer>\n\n    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\"></script>\n    ";
+output += "\n        </div>\n    </main>\n\n    <footer class=\"d-md-none text-center py-3 text-muted\" style=\"margin-bottom: 70px;\">\n        <small>&copy; 2024 班级积分管理系统</small>\n    </footer>\n\n    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\"></script>\n    <script>\n        // 为移动端当前页面高亮\n        document.addEventListener('DOMContentLoaded', () => {\n            const currentPath = window.location.pathname;\n            const mobileLinks = document.querySelectorAll('.nav-link-mobile');\n            mobileLinks.forEach(link => {\n                if (link.getAttribute('href') === currentPath) {\n                    link.classList.add('active');\n                }\n            });\n        });\n    </script>\n    ";
 (parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("scripts"))(env, context, frame, runtime, function(t_12,t_11) {
 if(t_12) { cb(t_12); return; }
 output += t_11;
-output += "\n</body>\n</html>\n";
+output += "\n</body>\n\n</html>";
 if(parentTemplate) {
 parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
 } else {
@@ -641,8 +653,8 @@ cb(null, output);
 }
 }
 function b_content(env, context, frame, runtime, cb) {
-var lineno = 128;
-var colno = 11;
+var lineno = 297;
+var colno = 15;
 var output = "";
 try {
 var frame = frame.push(true);
@@ -653,7 +665,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 138;
+var lineno = 318;
 var colno = 7;
 var output = "";
 try {
@@ -1313,75 +1325,29 @@ var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
-output += "\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <h1 class=\"h2\">系统概览</h1>\n        <p class=\"text-muted\">欢迎使用班级积分管理系统</p>\n    </div>\n</div>\n\n<div class=\"row mb-4\">\n    <div class=\"col-md-4 mb-3\">\n        <div class=\"card stats-card bg-primary text-white\">\n            <div class=\"card-body\">\n                <div class=\"d-flex align-items-center\">\n                    <div class=\"flex-grow-1\">\n                        <h5 class=\"card-title mb-0\">学生总数</h5>\n                        <h2 class=\"mb-0\">";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_students"), env.opts.autoescape);
-output += "</h2>\n                    </div>\n                    <div class=\"fs-1 opacity-50\">\n                        <i class=\"bi bi-people-fill\"></i>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-md-4 mb-3\">\n        <div class=\"card stats-card bg-success text-white\">\n            <div class=\"card-body\">\n                <div class=\"d-flex align-items-center\">\n                    <div class=\"flex-grow-1\">\n                        <h5 class=\"card-title mb-0\">积分记录</h5>\n                        <h2 class=\"mb-0\">";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_records"), env.opts.autoescape);
-output += "</h2>\n                    </div>\n                    <div class=\"fs-1 opacity-50\">\n                        <i class=\"bi bi-list-check\"></i>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-md-4 mb-3\">\n        <div class=\"card stats-card bg-info text-white\">\n            <div class=\"card-body\">\n                <div class=\"d-flex align-items-center\">\n                    <div class=\"flex-grow-1\">\n                        <h5 class=\"card-title mb-0\">今日记录</h5>\n                        <h2 class=\"mb-0\">\n                            ";
+output += "\n<style>\n    .glass-bg {\n        background: rgba(255, 255, 255, 0.7);\n        backdrop-filter: blur(10px);\n        -webkit-backdrop-filter: blur(10px);\n        border: 1px solid rgba(255, 255, 255, 0.3);\n    }\n\n    .hero-banner {\n        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n        border-radius: 20px;\n        padding: 40px;\n        color: white;\n        margin-bottom: 30px;\n        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);\n    }\n\n    .stat-card {\n        border-radius: 20px;\n        padding: 25px;\n        height: 100%;\n        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n    }\n\n    .stat-card:hover {\n        transform: translateY(-5px);\n    }\n\n    .icon-box {\n        width: 50px;\n        height: 50px;\n        border-radius: 12px;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 1.5rem;\n        margin-bottom: 15px;\n    }\n\n    .bg-soft-primary {\n        background: #e0e7ff;\n        color: #4338ca;\n    }\n\n    .bg-soft-success {\n        background: #dcfce7;\n        color: #15803d;\n    }\n\n    .bg-soft-info {\n        background: #e0f2fe;\n        color: #0369a1;\n    }\n\n    .quick-link {\n        display: flex;\n        align-items: center;\n        padding: 15px 20px;\n        border-radius: 15px;\n        text-decoration: none;\n        color: #4b5563;\n        transition: all 0.2s;\n        border: 1px solid #f3f4f6;\n    }\n\n    .quick-link:hover {\n        background: #f9fafb;\n        border-color: #e5e7eb;\n        color: #1f2937;\n    }\n\n    .quick-link i {\n        font-size: 1.25rem;\n        margin-right: 15px;\n    }\n\n    .ranking-item {\n        display: flex;\n        align-items: center;\n        padding: 12px 0;\n        border-bottom: 1px solid #f3f4f6;\n    }\n\n    .ranking-item:last-child {\n        border-bottom: none;\n    }\n\n    .rank-badge {\n        width: 30px;\n        height: 30px;\n        border-radius: 50%;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-weight: bold;\n        margin-right: 15px;\n        font-size: 0.875rem;\n    }\n\n    .rank-1 {\n        background: #fef3c7;\n        color: #92400e;\n    }\n\n    .rank-2 {\n        background: #f3f4f6;\n        color: #374151;\n    }\n\n    .rank-3 {\n        background: #ffedd5;\n        color: #9a3412;\n    }\n</style>\n\n<div class=\"row align-items-center mb-4\">\n    <div class=\"col\">\n        <h1 class=\"h3 fw-bold mb-1\">班级全局概览</h1>\n        <p class=\"text-muted mb-0\">实时掌握班级动态与学生表现</p>\n    </div>\n    <div class=\"col-auto\">\n        <span class=\"badge bg-white text-primary border shadow-sm px-3 py-2 rounded-pill\">\n            <i class=\"bi bi-clock me-1\"></i> 最后更新: 刚刚\n        </span>\n    </div>\n</div>\n\n<div class=\"hero-banner\">\n    <div class=\"row align-items-center\">\n        <div class=\"col-md-8\">\n            <h2 class=\"fw-bold mb-3\">你好，优秀班主任 👋</h2>\n            <p class=\"lead mb-4 opacity-75\">今天有 ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "today_records"), env.opts.autoescape);
-output += "\n                        </h2>\n                    </div>\n                    <div class=\"fs-1 opacity-50\">\n                        <i class=\"bi bi-calendar-day\"></i>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div class=\"row\">\n    <div class=\"col-lg-8 mb-4\">\n        <div class=\"card\">\n            <div class=\"card-header d-flex justify-content-between align-items-center\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-clock-history\"></i> 最近积分记录\n                </h5>\n                <a href=\"";
-output += runtime.suppressValue((lineno = 67, colno = 35, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
-output += "\" class=\"btn btn-sm btn-outline-primary\">查看全部</a>\n            </div>\n            <div class=\"card-body\">\n                ";
-if(runtime.contextOrFrameLookup(context, frame, "recent_records")) {
-output += "\n                    <div class=\"table-responsive\">\n                        <table class=\"table table-hover\">\n                            <thead>\n                                <tr>\n                                    <th>学生</th>\n                                    <th>积分</th>\n                                    <th>事由</th>\n                                    <th>类别</th>\n                                    <th>时间</th>\n                                </tr>\n                            </thead>\n                            <tbody>\n                                ";
-frame = frame.push();
-var t_8 = runtime.contextOrFrameLookup(context, frame, "recent_records");
-if(t_8) {t_8 = runtime.fromIterator(t_8);
-var t_7 = t_8.length;
-for(var t_6=0; t_6 < t_8.length; t_6++) {
-var t_9 = t_8[t_6];
-frame.set("record", t_9);
-frame.set("loop.index", t_6 + 1);
-frame.set("loop.index0", t_6);
-frame.set("loop.revindex", t_7 - t_6);
-frame.set("loop.revindex0", t_7 - t_6 - 1);
-frame.set("loop.first", t_6 === 0);
-frame.set("loop.last", t_6 === t_7 - 1);
-frame.set("loop.length", t_7);
-output += "\n                                <tr>\n                                    <td>\n                                        <a href=\"";
-output += runtime.suppressValue((lineno = 86, colno = 59, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_9),"student")),"id")})])), env.opts.autoescape);
-output += "\"\n                                           class=\"text-decoration-none\">\n                                            ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_9),"student")),"name"), env.opts.autoescape);
-output += "\n                                        </a>\n                                    </td>\n                                    <td>\n                                        ";
-if(runtime.memberLookup((t_9),"points") > 0) {
-output += "\n                                            <span class=\"points-positive\">+";
-output += runtime.suppressValue(runtime.memberLookup((t_9),"points"), env.opts.autoescape);
-output += "</span>\n                                        ";
-;
-}
-else {
-output += "\n                                            <span class=\"points-negative\">";
-output += runtime.suppressValue(runtime.memberLookup((t_9),"points"), env.opts.autoescape);
-output += "</span>\n                                        ";
-;
-}
-output += "\n                                    </td>\n                                    <td>";
-output += runtime.suppressValue(runtime.memberLookup((t_9),"reason"), env.opts.autoescape);
-output += "</td>\n                                    <td><span class=\"badge bg-secondary\">";
-output += runtime.suppressValue(runtime.memberLookup((t_9),"category"), env.opts.autoescape);
-output += "</span></td>\n                                    <td>";
-output += runtime.suppressValue((lineno = 100, colno = 69, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_9),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%m-%d %H:%M"])), env.opts.autoescape);
-output += "</td>\n                                </tr>\n                                ";
-;
-}
-}
-frame = frame.pop();
-output += "\n                            </tbody>\n                        </table>\n                    </div>\n                ";
-;
-}
-else {
-output += "\n                    <div class=\"text-center text-muted py-4\">\n                        <i class=\"bi bi-inbox fs-1\"></i>\n                        <p class=\"mt-2\">暂无积分记录</p>\n                        <a href=\"";
-output += runtime.suppressValue((lineno = 110, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\" class=\"btn btn-primary\">\n                            <i class=\"bi bi-plus-circle\"></i> 添加第一条记录\n                        </a>\n                    </div>\n                ";
-;
-}
-output += "\n            </div>\n        </div>\n    </div>\n\n    <div class=\"col-lg-4 mb-4\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-lightning-fill\"></i> 快速操作\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"d-grid gap-2\">\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 128, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_student"])), env.opts.autoescape);
-output += "\" class=\"btn btn-primary\">\n                        <i class=\"bi bi-person-plus-fill\"></i> 添加学生\n                    </a>\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 131, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\" class=\"btn btn-success\">\n                        <i class=\"bi bi-plus-circle-fill\"></i> 录入积分\n                    </a>\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 134, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["export_data"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                        <i class=\"bi bi-download\"></i> 导出数据\n                    </a>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"card mt-3\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-trophy-fill\"></i> 积分排行榜\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"leaderboard\">\n                    <div class=\"text-muted text-center py-3\">\n                        <small>查看完整排行榜请访问统计页面</small>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+output += " 条记录，继续加油管理你的班级！</p>\n            <div class=\"d-flex gap-3\">\n                <a href=\"";
+output += runtime.suppressValue((lineno = 136, colno = 35, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += "\" class=\"btn btn-light rounded-pill px-4\">\n                    <i class=\"bi bi-plus-circle me-1\"></i> 录入积分\n                </a>\n                <a href=\"";
+output += runtime.suppressValue((lineno = 139, colno = 35, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"btn btn-outline-light rounded-pill px-4\">\n                    <i class=\"bi bi-bar-chart me-1\"></i> 排名统计\n                </a>\n            </div>\n        </div>\n        <div class=\"col-md-4 d-none d-md-block text-end\">\n            <i class=\"bi bi-rocket-takeoff\" style=\"font-size: 8rem; opacity: 0.2;\"></i>\n        </div>\n    </div>\n</div>\n\n<div class=\"row g-4 mb-5\">\n    <div class=\"col-md-4\">\n        <div class=\"card stat-card border-0 shadow-sm\">\n            <div class=\"card-body\">\n                <div class=\"icon-box bg-soft-primary\">\n                    <i class=\"bi bi-people-fill\"></i>\n                </div>\n                <h6 class=\"text-muted fw-bold mb-1\">学生总数</h6>\n                <div class=\"h3 fw-bold mb-0\">";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_students"), env.opts.autoescape);
+output += " <small class=\"fs-6 text-muted fw-normal\">人</small>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-md-4\">\n        <div class=\"card stat-card border-0 shadow-sm\">\n            <div class=\"card-body\">\n                <div class=\"icon-box bg-soft-success\">\n                    <i class=\"bi bi-journal-text\"></i>\n                </div>\n                <h6 class=\"text-muted fw-bold mb-1\">累计积分记录</h6>\n                <div class=\"h3 fw-bold mb-0\">";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_records"), env.opts.autoescape);
+output += " <small class=\"fs-6 text-muted fw-normal\">次</small>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-md-4\">\n        <div class=\"card stat-card border-0 shadow-sm\">\n            <div class=\"card-body\">\n                <div class=\"icon-box bg-soft-info\">\n                    <i class=\"bi bi-lightning-fill\"></i>\n                </div>\n                <h6 class=\"text-muted fw-bold mb-1\">今日积分动态</h6>\n                <div class=\"h3 fw-bold mb-0\">";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "today_records"), env.opts.autoescape);
+output += " <small class=\"fs-6 text-muted fw-normal\">项</small>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div class=\"row g-4\">\n    <div class=\"col-lg-7\">\n        <div class=\"card border-0 shadow-sm h-100\">\n            <div class=\"card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center\">\n                <h5 class=\"fw-bold mb-0\">功能导航</h5>\n                <i class=\"bi bi-three-dots-vertical text-muted\"></i>\n            </div>\n            <div class=\"card-body p-4\">\n                <div class=\"row g-3\">\n                    <div class=\"col-6\">\n                        <a href=\"";
+output += runtime.suppressValue((lineno = 199, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
+output += "\" class=\"quick-link\">\n                            <i class=\"bi bi-person-badge text-primary\"></i>\n                            <span>学生信息</span>\n                        </a>\n                    </div>\n                    <div class=\"col-6\">\n                        <a href=\"";
+output += runtime.suppressValue((lineno = 205, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["groups"])), env.opts.autoescape);
+output += "\" class=\"quick-link\">\n                            <i class=\"bi bi-grid-3x3-gap text-success\"></i>\n                            <span>小组架构</span>\n                        </a>\n                    </div>\n                    <div class=\"col-6\">\n                        <a href=\"";
+output += runtime.suppressValue((lineno = 211, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records"])), env.opts.autoescape);
+output += "\" class=\"quick-link\">\n                            <i class=\"bi bi-search text-warning\"></i>\n                            <span>记录查询</span>\n                        </a>\n                    </div>\n                    <div class=\"col-6\">\n                        <a href=\"";
+output += runtime.suppressValue((lineno = 217, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["categories"])), env.opts.autoescape);
+output += "\" class=\"quick-link\">\n                            <i class=\"bi bi-tags text-danger\"></i>\n                            <span>积分类别</span>\n                        </a>\n                    </div>\n                    <div class=\"col-12\">\n                        <a href=\"";
+output += runtime.suppressValue((lineno = 223, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["export_data"])), env.opts.autoescape);
+output += "\" class=\"quick-link border-primary border-opacity-25\"\n                            style=\"background: #f0f7ff;\">\n                            <i class=\"bi bi-cloud-download text-primary\"></i>\n                            <span class=\"text-primary fw-bold\">生成班级月度报表 (Excel)</span>\n                        </a>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-lg-5\">\n        <div class=\"card border-0 shadow-sm h-100\">\n            <div class=\"card-header bg-white border-0 pt-4 px-4\">\n                <h5 class=\"fw-bold mb-0\">系统状态</h5>\n            </div>\n            <div class=\"card-body p-4 text-center d-flex flex-column justify-content-center\">\n                <div class=\"mb-3\">\n                    <i class=\"bi bi-shield-check text-success\" style=\"font-size: 3rem;\"></i>\n                </div>\n                <h6 class=\"fw-bold\">运行良好</h6>\n                <p class=\"small text-muted mb-4\">\n                    所有服务处于在线状态。您的班级数据已安全同步到 D1 数据库。\n                </p>\n                <div class=\"alert alert-warning border-0 small mb-0 text-start\">\n                    <i class=\"bi bi-exclamation-triangle-fill me-2\"></i>\n                    建议定期导出数据报表以确保离线备份。\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -1414,7 +1380,6 @@ output += "\n\n";
 (parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("scripts"))(env, context, frame, runtime, function(t_7,t_6) {
 if(t_7) { cb(t_7); return; }
 output += t_6;
-output += "\n";
 if(parentTemplate) {
 parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
 } else {
@@ -1433,13 +1398,13 @@ try {
 var frame = frame.push(true);
 output += "\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <div class=\"d-flex justify-content-between align-items-center\">\n            <h1 class=\"h2\">积分记录</h1>\n            <a href=\"";
 output += runtime.suppressValue((lineno = 7, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\" class=\"btn btn-success\">\n                <i class=\"bi bi-plus-circle\"></i> 添加记录\n            </a>\n        </div>\n    </div>\n</div>\n\n<div class=\"row mb-3\">\n    <div class=\"col-md-6\">\n        <form method=\"GET\" class=\"d-flex\">\n            <input type=\"text\" name=\"search\" class=\"form-control me-2\"\n                   placeholder=\"搜索学生姓名、学号或事由...\" value=\"";
+output += "\" class=\"btn btn-success\">\n                <i class=\"bi bi-plus-circle\"></i> 添加记录\n            </a>\n        </div>\n    </div>\n</div>\n\n<div class=\"row mb-3\">\n    <div class=\"col-md-6\">\n        <form method=\"GET\" class=\"d-flex\">\n            <input type=\"text\" name=\"search\" class=\"form-control me-2\" placeholder=\"搜索学生姓名或事由...\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "search"), env.opts.autoescape);
 output += "\">\n            <button type=\"submit\" class=\"btn btn-outline-primary\">\n                <i class=\"bi bi-search\"></i>\n            </button>\n        </form>\n    </div>\n    <div class=\"col-md-6 text-end\">\n        <span class=\"text-muted\">\n            共找到 ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"total"), env.opts.autoescape);
 output += " 条记录\n        </span>\n    </div>\n</div>\n\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"items")) {
-output += "\n    <div class=\"card\">\n        <div class=\"card-body p-0\">\n            <div class=\"table-responsive\">\n                <table class=\"table table-hover mb-0\">\n                    <thead class=\"table-light\">\n                        <tr>\n                            <th>学生信息</th>\n                            <th>积分</th>\n                            <th>事由</th>\n                            <th>类别</th>\n                            <th>操作人</th>\n                            <th>时间</th>\n                            <th>操作</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        ";
+output += "\n<div class=\"card\">\n    <div class=\"card-body p-0\">\n        <div class=\"table-responsive\">\n            <table class=\"table table-hover mb-0\">\n                <thead class=\"table-light\">\n                    <tr>\n                        <th>学生信息</th>\n                        <th>积分</th>\n                        <th>事由</th>\n                        <th>类别</th>\n                        <th>操作人</th>\n                        <th>时间</th>\n                        <th>操作</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    ";
 frame = frame.push();
 var t_10 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"items");
 if(t_10) {t_10 = runtime.fromIterator(t_10);
@@ -1454,28 +1419,28 @@ frame.set("loop.revindex0", t_9 - t_8 - 1);
 frame.set("loop.first", t_8 === 0);
 frame.set("loop.last", t_8 === t_9 - 1);
 frame.set("loop.length", t_9);
-output += "\n                        <tr>\n                            <td>\n                                <div class=\"d-flex align-items-center\">\n                                    <div class=\"me-2\">\n                                        <i class=\"bi bi-person-circle fs-4 text-muted\"></i>\n                                    </div>\n                                    <div>\n                                        <div class=\"fw-bold\">";
+output += "\n                    <tr>\n                        <td>\n                            <div class=\"d-flex align-items-center\">\n                                <div class=\"me-2\">\n                                    <i class=\"bi bi-person-circle fs-4 text-muted\"></i>\n                                </div>\n                                <div>\n                                    <a href=\"";
+output += runtime.suppressValue((lineno = 55, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
+output += "\"\n                                        class=\"fw-bold text-decoration-none\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"name"), env.opts.autoescape);
-output += "</div>\n                                        <small class=\"text-muted\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"student_id"), env.opts.autoescape);
-output += " | ";
+output += "</a>\n                                    <br>\n                                    <small class=\"text-muted\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"class_name"), env.opts.autoescape);
-output += "</small>\n                                    </div>\n                                </div>\n                            </td>\n                            <td>\n                                ";
+output += "</small>\n                                </div>\n                            </div>\n                        </td>\n                        <td>\n                            ";
 if(runtime.memberLookup((t_11),"points") > 0) {
-output += "\n                                    <span class=\"badge bg-success fs-6\">+";
+output += "\n                            <span class=\"badge bg-success fs-6\">+";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"points"), env.opts.autoescape);
-output += "</span>\n                                ";
+output += "</span>\n                            ";
 ;
 }
 else {
-output += "\n                                    <span class=\"badge bg-danger fs-6\">";
+output += "\n                            <span class=\"badge bg-danger fs-6\">";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"points"), env.opts.autoescape);
-output += "</span>\n                                ";
+output += "</span>\n                            ";
 ;
 }
-output += "\n                            </td>\n                            <td>\n                                <span title=\"";
+output += "\n                        </td>\n                        <td>\n                            <span title=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"reason") || (runtime.memberLookup((t_11),"category") + "积分记录"), env.opts.autoescape);
-output += "\">\n                                    ";
+output += "\">\n                                ";
 var t_12;
 t_12 = runtime.memberLookup((t_11),"reason") || (runtime.memberLookup((t_11),"category") + "积分记录");
 frame.set("display_reason", t_12, true);
@@ -1485,25 +1450,25 @@ context.setVariable("display_reason", t_12);
 if(frame.topLevel) {
 context.addExport("display_reason", t_12);
 }
-output += "\n                                    ";
+output += "\n                                ";
 output += runtime.suppressValue(env.getFilter("truncate").call(context, runtime.contextOrFrameLookup(context, frame, "display_reason"),20,runtime.contextOrFrameLookup(context, frame, "True"),""), env.opts.autoescape);
 if(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "display_reason")) > 20) {
 output += "...";
 ;
 }
-output += "\n                                </span>\n                            </td>\n                            <td><span class=\"badge bg-secondary\">";
+output += "\n                            </span>\n                        </td>\n                        <td><span class=\"badge bg-secondary\">";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"category"), env.opts.autoescape);
-output += "</span></td>\n                            <td>";
+output += "</span></td>\n                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"operator") || "-", env.opts.autoescape);
-output += "</td>\n                            <td>\n                                <div class=\"small\">\n                                    <div>";
-output += runtime.suppressValue((lineno = 78, colno = 70, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%m-%d %H:%M"])), env.opts.autoescape);
-output += "</div>\n                                    <div class=\"text-muted\">";
-output += runtime.suppressValue((lineno = 79, colno = 89, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d"])), env.opts.autoescape);
-output += "</div>\n                                </div>\n                            </td>\n                            <td>\n                                <div class=\"btn-group btn-group-sm\">\n                                    <a href=\"";
-output += runtime.suppressValue((lineno = 84, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
-output += "\"\n                                       class=\"btn btn-outline-primary\" title=\"查看学生详情\">\n                                        <i class=\"bi bi-person\"></i>\n                                    </a>\n                                    <button class=\"btn btn-outline-info\"\n                                            onclick=\"showRecordDetail(";
+output += "</td>\n                        <td>\n                            <div class=\"small\">\n                                <div>";
+output += runtime.suppressValue((lineno = 80, colno = 66, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%m-%d %H:%M"])), env.opts.autoescape);
+output += "</div>\n                                <div class=\"text-muted\">";
+output += runtime.suppressValue((lineno = 81, colno = 85, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d"])), env.opts.autoescape);
+output += "</div>\n                            </div>\n                        </td>\n                        <td>\n                            <div class=\"btn-group btn-group-sm\">\n                                <a href=\"";
+output += runtime.suppressValue((lineno = 86, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
+output += "\"\n                                    class=\"btn btn-outline-primary\" title=\"查看趋势分析\">\n                                    <i class=\"bi bi-graph-up\"></i>\n                                </a>\n                                <button class=\"btn btn-outline-info\" onclick=\"showRecordDetail(";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"id"), env.opts.autoescape);
-output += ")\"\n                                            title=\"查看详情\">\n                                        <i class=\"bi bi-eye\"></i>\n                                    </button>\n                                    ";
+output += ")\"\n                                    title=\"查看详情\">\n                                    <i class=\"bi bi-eye\"></i>\n                                </button>\n                                ";
 var t_13;
 t_13 = runtime.memberLookup((t_11),"points") > 0;
 frame.set("is_positive", t_13, true);
@@ -1513,29 +1478,29 @@ context.setVariable("is_positive", t_13);
 if(frame.topLevel) {
 context.addExport("is_positive", t_13);
 }
-output += "\n                                    <form method=\"POST\"\n                                          action=\"";
-output += runtime.suppressValue((lineno = 95, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["revert_points_record",runtime.makeKeywordArgs({"record_id": runtime.memberLookup((t_11),"id"),"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"page"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
-output += "\"\n                                          class=\"d-inline\"\n                                          onsubmit=\"return confirm('确定要撤回这条";
+output += "\n                                <form method=\"POST\"\n                                    action=\"";
+output += runtime.suppressValue((lineno = 96, colno = 54, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["revert_points_record",runtime.makeKeywordArgs({"record_id": runtime.memberLookup((t_11),"id"),"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"page"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\"\n                                    class=\"d-inline\"\n                                    onsubmit=\"return confirm('确定要撤回这条";
 output += runtime.suppressValue((runtime.contextOrFrameLookup(context, frame, "is_positive")?"加分":"扣分"), env.opts.autoescape);
-output += "记录吗？');\">\n                                        <button type=\"submit\" class=\"btn btn-outline-danger btn-sm\"\n                                                title=\"撤回";
+output += "记录吗？');\">\n                                    <button type=\"submit\" class=\"btn btn-outline-danger btn-sm\"\n                                        title=\"撤回";
 output += runtime.suppressValue((runtime.contextOrFrameLookup(context, frame, "is_positive")?"加分":"扣分"), env.opts.autoescape);
-output += "\">\n                                            <i class=\"bi bi-arrow-counterclockwise\"></i>\n                                        </button>\n                                    </form>\n                                </div>\n                            </td>\n                        </tr>\n                        ";
+output += "\">\n                                        <i class=\"bi bi-arrow-counterclockwise\"></i>\n                                    </button>\n                                </form>\n                            </div>\n                        </td>\n                    </tr>\n                    ";
 ;
 }
 }
 frame = frame.pop();
-output += "\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n\n    <!-- 分页 -->\n    ";
+output += "\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n\n<!-- 分页 -->\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"pages") > 1) {
-output += "\n    <nav class=\"mt-4\">\n        <ul class=\"pagination justify-content-center\">\n            ";
+output += "\n<nav class=\"mt-4\">\n    <ul class=\"pagination justify-content-center\">\n        ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"has_prev")) {
-output += "\n                <li class=\"page-item\">\n                    <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 119, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"prev_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
-output += "\">上一页</a>\n                </li>\n            ";
+output += "\n        <li class=\"page-item\">\n            <a class=\"page-link\" href=\"";
+output += runtime.suppressValue((lineno = 120, colno = 49, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"prev_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\">上一页</a>\n        </li>\n        ";
 ;
 }
-output += "\n\n            ";
+output += "\n\n        ";
 frame = frame.push();
-var t_16 = (lineno = 123, colno = 49, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"iter_pages"), "records[\"iter_pages\"]", context, []));
+var t_16 = (lineno = 124, colno = 45, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"iter_pages"), "records[\"iter_pages\"]", context, []));
 if(t_16) {t_16 = runtime.fromIterator(t_16);
 var t_15 = t_16.length;
 for(var t_14=0; t_14 < t_16.length; t_14++) {
@@ -1548,52 +1513,52 @@ frame.set("loop.revindex0", t_15 - t_14 - 1);
 frame.set("loop.first", t_14 === 0);
 frame.set("loop.last", t_14 === t_15 - 1);
 frame.set("loop.length", t_15);
-output += "\n                ";
+output += "\n        ";
 if(t_17) {
-output += "\n                    ";
+output += "\n        ";
 if(t_17 != runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"page")) {
-output += "\n                        <li class=\"page-item\">\n                            <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 127, colno = 65, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records",runtime.makeKeywordArgs({"page": t_17,"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\n        <li class=\"page-item\">\n            <a class=\"page-link\" href=\"";
+output += runtime.suppressValue((lineno = 128, colno = 49, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records",runtime.makeKeywordArgs({"page": t_17,"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
 output += "\">";
 output += runtime.suppressValue(t_17, env.opts.autoescape);
-output += "</a>\n                        </li>\n                    ";
+output += "</a>\n        </li>\n        ";
 ;
 }
 else {
-output += "\n                        <li class=\"page-item active\">\n                            <span class=\"page-link\">";
+output += "\n        <li class=\"page-item active\">\n            <span class=\"page-link\">";
 output += runtime.suppressValue(t_17, env.opts.autoescape);
-output += "</span>\n                        </li>\n                    ";
+output += "</span>\n        </li>\n        ";
 ;
 }
-output += "\n                ";
+output += "\n        ";
 ;
 }
 else {
-output += "\n                    <li class=\"page-item disabled\">\n                        <span class=\"page-link\">...</span>\n                    </li>\n                ";
+output += "\n        <li class=\"page-item disabled\">\n            <span class=\"page-link\">...</span>\n        </li>\n        ";
 ;
 }
-output += "\n            ";
+output += "\n        ";
 ;
 }
 }
 frame = frame.pop();
-output += "\n\n            ";
+output += "\n\n        ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"has_next")) {
-output += "\n                <li class=\"page-item\">\n                    <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 143, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"next_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
-output += "\">下一页</a>\n                </li>\n            ";
+output += "\n        <li class=\"page-item\">\n            <a class=\"page-link\" href=\"";
+output += runtime.suppressValue((lineno = 144, colno = 49, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["points_records",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "records")),"next_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\">下一页</a>\n        </li>\n        ";
 ;
 }
-output += "\n        </ul>\n    </nav>\n    ";
+output += "\n    </ul>\n</nav>\n";
 ;
 }
 output += "\n";
 ;
 }
 else {
-output += "\n    <div class=\"card\">\n        <div class=\"card-body text-center py-5\">\n            <i class=\"bi bi-inbox fs-1 text-muted\"></i>\n            <h5 class=\"mt-3 text-muted\">暂无积分记录</h5>\n            <p class=\"text-muted\">开始添加积分记录来追踪学生表现</p>\n            <a href=\"";
-output += runtime.suppressValue((lineno = 155, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\" class=\"btn btn-success\">\n                <i class=\"bi bi-plus-circle-fill\"></i> 添加第一条记录\n            </a>\n        </div>\n    </div>\n";
+output += "\n<div class=\"card\">\n    <div class=\"card-body text-center py-5\">\n        <i class=\"bi bi-inbox fs-1 text-muted\"></i>\n        <h5 class=\"mt-3 text-muted\">暂无积分记录</h5>\n        <p class=\"text-muted\">开始添加积分记录来追踪学生表现</p>\n        <a href=\"";
+output += runtime.suppressValue((lineno = 156, colno = 27, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += "\" class=\"btn btn-success\">\n            <i class=\"bi bi-plus-circle-fill\"></i> 添加第一条记录\n        </a>\n    </div>\n</div>\n";
 ;
 }
 output += "\n\n<!-- 记录详情模态框 -->\n<div class=\"modal fade\" id=\"recordDetailModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">积分记录详情</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <div class=\"modal-body\" id=\"recordDetailContent\">\n                <!-- 动态加载内容 -->\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">关闭</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
@@ -1604,12 +1569,12 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 181;
+var lineno = 182;
 var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
-output += "\n<script>\nasync function showRecordDetail(recordId) {\n    try {\n        const response = await fetch(`/api/record/${recordId}`);\n        const record = await response.json();\n\n        const pointsClass = record.points >= 0 ? 'points-positive' : 'points-negative';\n        const pointsSign = record.points >= 0 ? '+' : '';\n\n        document.getElementById('recordDetailContent').innerHTML = `\n            <div class=\"row\">\n                <div class=\"col-sm-4\"><strong>学生姓名：</strong></div>\n                <div class=\"col-sm-8\">${record.student_name}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>学号：</strong></div>\n                <div class=\"col-sm-8\">${record.student_id}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>班级：</strong></div>\n                <div class=\"col-sm-8\">${record.class_name}</div>\n            </div>\n            <hr>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>积分：</strong></div>\n                <div class=\"col-sm-8\"><span class=\"${pointsClass}\">${pointsSign}${record.points}</span></div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>类别：</strong></div>\n                <div class=\"col-sm-8\">${record.category}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>事由：</strong></div>\n                <div class=\"col-sm-8\">${record.reason}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>操作人：</strong></div>\n                <div class=\"col-sm-8\">${record.operator}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>记录时间：</strong></div>\n                <div class=\"col-sm-8\">${record.created_at}</div>\n            </div>\n        `;\n\n        new bootstrap.Modal(document.getElementById('recordDetailModal')).show();\n    } catch (error) {\n        console.error('获取记录详情失败:', error);\n        alert('获取记录详情失败，请稍后重试');\n    }\n}\n</script>\n";
+output += "\n<script>\n    async function showRecordDetail(recordId) {\n        try {\n            const response = await fetch(`/api/record/${recordId}`);\n            const record = await response.json();\n\n            const pointsClass = record.points >= 0 ? 'points-positive' : 'points-negative';\n            const pointsSign = record.points >= 0 ? '+' : '';\n\n            document.getElementById('recordDetailContent').innerHTML = `\n            <div class=\"row\">\n                <div class=\"col-sm-4\"><strong>学生姓名：</strong></div>\n                <div class=\"col-sm-8\">${record.student_name}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>班级：</strong></div>\n                <div class=\"col-sm-8\">${record.class_name}</div>\n            </div>\n            <hr>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>积分：</strong></div>\n                <div class=\"col-sm-8\"><span class=\"${pointsClass}\">${pointsSign}${record.points}</span></div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>类别：</strong></div>\n                <div class=\"col-sm-8\">${record.category}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>事由：</strong></div>\n                <div class=\"col-sm-8\">${record.reason}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>操作人：</strong></div>\n                <div class=\"col-sm-8\">${record.operator}</div>\n            </div>\n            <div class=\"row mt-2\">\n                <div class=\"col-sm-4\"><strong>记录时间：</strong></div>\n                <div class=\"col-sm-8\">${record.created_at}</div>\n            </div>\n        `;\n\n            new bootstrap.Modal(document.getElementById('recordDetailModal')).show();\n        } catch (error) {\n            console.error('获取记录详情失败:', error);\n            alert('获取记录详情失败，请稍后重试');\n        }\n    }\n</script>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -1643,7 +1608,6 @@ output += "\n\n";
 (parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("scripts"))(env, context, frame, runtime, function(t_7,t_6) {
 if(t_7) { cb(t_7); return; }
 output += t_6;
-output += "\n";
 if(parentTemplate) {
 parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
 } else {
@@ -1662,12 +1626,12 @@ try {
 var frame = frame.push(true);
 output += "\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <div class=\"d-flex justify-content-between align-items-center\">\n            <div>\n                <h1 class=\"h2\">\n                    <i class=\"bi bi-trophy-fill text-warning\"></i> 积分排名统计\n                </h1>\n                <p class=\"text-muted\">查看学生个人积分排名和小组平均分排名，支持日期区间筛选</p>\n            </div>\n            <div>\n                <button class=\"btn btn-outline-primary\" onclick=\"refreshData()\">\n                    <i class=\"bi bi-arrow-clockwise\"></i> 刷新数据\n                </button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 日期筛选表单 -->\n<div class=\"card mb-4\">\n    <div class=\"card-header\">\n        <h5 class=\"mb-0\">\n            <i class=\"bi bi-calendar-check\"></i> 日期区间筛选\n        </h5>\n    </div>\n    <div class=\"card-body\">\n        <form method=\"GET\" action=\"";
 output += runtime.suppressValue((lineno = 29, colno = 45, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
-output += "\" class=\"row g-3\">\n            <div class=\"col-md-4\">\n                <label for=\"start_date\" class=\"form-label\">开始日期</label>\n                <input type=\"date\" class=\"form-control\" id=\"start_date\" name=\"start_date\"\n                       value=\"";
+output += "\" class=\"row g-3\" id=\"dateFilterForm\">\n            <div class=\"col-md-4\">\n                <label for=\"start_date\" class=\"form-label\">开始日期</label>\n                <input type=\"date\" class=\"form-control\" id=\"start_date\" name=\"start_date\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "start_date"), env.opts.autoescape);
-output += "\">\n            </div>\n            <div class=\"col-md-4\">\n                <label for=\"end_date\" class=\"form-label\">结束日期</label>\n                <input type=\"date\" class=\"form-control\" id=\"end_date\" name=\"end_date\"\n                       value=\"";
+output += "\">\n            </div>\n            <div class=\"col-md-4\">\n                <label for=\"end_date\" class=\"form-label\">结束日期</label>\n                <input type=\"date\" class=\"form-control\" id=\"end_date\" name=\"end_date\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "end_date"), env.opts.autoescape);
 output += "\">\n            </div>\n            <div class=\"col-md-4\">\n                <label class=\"form-label\">&nbsp;</label>\n                <div>\n                    <button type=\"submit\" class=\"btn btn-primary\">\n                        <i class=\"bi bi-search\"></i> 应用筛选\n                    </button>\n                    <a href=\"";
-output += runtime.suppressValue((lineno = 46, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += runtime.suppressValue((lineno = 44, colno = 39, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
 output += "\" class=\"btn btn-outline-secondary\">\n                        <i class=\"bi bi-x-circle\"></i> 清除\n                    </a>\n                </div>\n            </div>\n        </form>\n\n        ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
 output += "\n        <div class=\"mt-3 p-3 bg-light rounded\">\n            <div class=\"row text-center\">\n                <div class=\"col-md-4\">\n                    <div class=\"h5 mb-1 text-primary\">";
@@ -1681,12 +1645,12 @@ output += runtime.suppressValue(env.getFilter("length").call(context, runtime.co
 output += "</div>\n                    <small class=\"text-muted\">活跃小组</small>\n                </div>\n            </div>\n        </div>\n        ";
 ;
 }
-output += "\n    </div>\n</div>\n\n<!-- 排名切换标签 -->\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <ul class=\"nav nav-tabs\" id=\"rankingTabs\" role=\"tablist\">\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link active\" id=\"student-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#student\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-person-fill\"></i> 学生排名\n                </button>\n            </li>\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"group-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#group\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-collection-fill\"></i> 小组排名\n                </button>\n            </li>\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"week-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#week\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-calendar-week\"></i> 本周排行\n                </button>\n            </li>\n            ";
+output += "\n    </div>\n</div>\n\n<!-- 排名切换标签 -->\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <ul class=\"nav nav-tabs\" id=\"rankingTabs\" role=\"tablist\">\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link active\" id=\"student-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#student\"\n                    type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-person-fill\"></i> 学生排名\n                </button>\n            </li>\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"group-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#group\" type=\"button\"\n                    role=\"tab\">\n                    <i class=\"bi bi-collection-fill\"></i> 小组排名\n                </button>\n            </li>\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"week-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#week\" type=\"button\"\n                    role=\"tab\">\n                    <i class=\"bi bi-calendar-week\"></i> 本周排行\n                </button>\n            </li>\n            ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
-output += "\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"range-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#range\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-calendar-range\"></i> 区间排行\n                </button>\n            </li>\n            ";
+output += "\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"range-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#range\" type=\"button\"\n                    role=\"tab\">\n                    <i class=\"bi bi-calendar-range\"></i> 区间排行\n                </button>\n            </li>\n            ";
 ;
 }
-output += "\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"progress-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#progress\" type=\"button\" role=\"tab\">\n                    <i class=\"bi bi-graph-up-arrow\"></i> 进步榜\n                </button>\n            </li>\n        </ul>\n    </div>\n</div>\n\n<div class=\"tab-content\" id=\"rankingTabsContent\">\n    <!-- 学生排名 -->\n    <div class=\"tab-pane fade show active\" id=\"student\" role=\"tabpanel\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-trophy-fill text-warning\"></i> 学生总积分排名\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"120\">总积分</th>\n                                        <th width=\"120\">本周积分</th>\n                                        ";
+output += "\n            <li class=\"nav-item\" role=\"presentation\">\n                <button class=\"nav-link\" id=\"progress-tab\" data-bs-toggle=\"tab\" data-bs-target=\"#progress\" type=\"button\"\n                    role=\"tab\">\n                    <i class=\"bi bi-graph-up-arrow\"></i> 进步榜\n                </button>\n            </li>\n        </ul>\n    </div>\n</div>\n\n<div class=\"tab-content\" id=\"rankingTabsContent\">\n    <!-- 学生排名 -->\n    <div class=\"tab-pane fade show active\" id=\"student\" role=\"tabpanel\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-trophy-fill text-warning\"></i> 学生总积分排名\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"120\">总积分</th>\n                                        <th width=\"120\">本周积分</th>\n                                        ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
 output += "\n                                        <th width=\"120\">区间积分</th>\n                                        ";
 ;
@@ -1737,18 +1701,16 @@ output += "</span>\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <img src=\"";
-output += runtime.suppressValue((lineno = 152, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")])), env.opts.autoescape);
-output += "\" alt=\"";
+output += runtime.suppressValue((lineno = 155, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")])), env.opts.autoescape);
+output += "\"\n                                                    alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"name"), env.opts.autoescape);
-output += "\" class=\"avatar me-3\">\n                                                <div>\n                                                    <a href=\"";
-output += runtime.suppressValue((lineno = 154, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
-output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
+output += "\" class=\"avatar me-2\">\n                                                <div>\n                                                    <a href=\"";
+output += runtime.suppressValue((lineno = 158, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_11),"student")),"id")})])), env.opts.autoescape);
+output += "\"\n                                                        class=\"text-decoration-none\">\n                                                        <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"name"), env.opts.autoescape);
-output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"student_id"), env.opts.autoescape);
-output += "</small>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
+output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"class_name"), env.opts.autoescape);
-output += "</td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "</td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_11),"total_points") >= 0) {
 output += "bg-success";
 ;
@@ -1759,7 +1721,7 @@ output += "bg-danger";
 }
 output += " fs-6\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"total_points"), env.opts.autoescape);
-output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_11),"week_points") >= 0) {
 output += "bg-info";
 ;
@@ -1772,7 +1734,7 @@ output += "\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"week_points"), env.opts.autoescape);
 output += "分\n                                            </span>\n                                        </td>\n                                        ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
-output += "\n                                        <td>\n                                            <span class=\"badge ";
+output += "\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_11),"range_points") >= 0) {
 output += "bg-success";
 ;
@@ -1788,7 +1750,7 @@ output += "分\n                                            </span>\n           
 }
 output += "\n                                        <td>\n                                            ";
 if(runtime.memberLookup((runtime.memberLookup((t_11),"student")),"group")) {
-output += "\n                                            <span class=\"badge\" style=\"background-color: ";
+output += "\n                                            <span class=\"badge\"\n                                                style=\"background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_11),"student")),"group")),"color"), env.opts.autoescape);
 output += ";\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_11),"student")),"group")),"name"), env.opts.autoescape);
@@ -1824,7 +1786,7 @@ frame.set("loop.revindex0", t_13 - t_12 - 1);
 frame.set("loop.first", t_12 === 0);
 frame.set("loop.last", t_12 === t_13 - 1);
 frame.set("loop.length", t_13);
-output += "\n                            <div class=\"col-xl-3 col-lg-4 col-md-6 mb-4\">\n                                <div class=\"card h-100 border-0 shadow-sm group-ranking-card\">\n                                    <div class=\"card-header d-flex justify-content-between align-items-center\"\n                                         style=\"background-color: ";
+output += "\n                            <div class=\"col-xl-3 col-lg-4 col-md-6 mb-4\">\n                                <div class=\"card h-100 border-0 shadow-sm group-ranking-card\">\n                                    <div class=\"card-header d-flex justify-content-between align-items-center\"\n                                        style=\"background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"color"), env.opts.autoescape);
 output += "20; border-left: 4px solid ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"color"), env.opts.autoescape);
@@ -1860,18 +1822,18 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_15
 output += "</small>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"card-body text-center\">\n                                        <div class=\"row\">\n                                            <div class=\"col-6\">\n                                                <div class=\"mb-3\">\n                                                    <div class=\"h4 mb-0 text-primary\">";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_15),"average_points")), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">平均积分</small>\n                                                </div>\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <div class=\"mb-3\">\n                                                    <div class=\"h4 mb-0 text-success\">";
-output += runtime.suppressValue((lineno = 250, colno = 112, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"total_points"), "item[\"group\"][\"total_points\"]", context, [])), env.opts.autoescape);
-output += "</div>\n                                                    <small class=\"text-muted\">总积分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-info\">";
+output += runtime.suppressValue((lineno = 259, colno = 112, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"total_points"), "item[\"group\"][\"total_points\"]", context, [])), env.opts.autoescape);
+output += "\n                                                    </div>\n                                                    <small class=\"text-muted\">总积分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-info\">";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_15),"week_average_points")), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">本周平均</small>\n                                                </div>\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-warning\">";
-output += runtime.suppressValue((lineno = 264, colno = 111, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"week_points"), "item[\"group\"][\"week_points\"]", context, [])), env.opts.autoescape);
-output += "</div>\n                                                    <small class=\"text-muted\">本周总分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ";
+output += runtime.suppressValue((lineno = 275, colno = 111, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_15),"group")),"week_points"), "item[\"group\"][\"week_points\"]", context, [])), env.opts.autoescape);
+output += "\n                                                    </div>\n                                                    <small class=\"text-muted\">本周总分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ";
 if(runtime.contextOrFrameLookup(context, frame, "start_date") && runtime.contextOrFrameLookup(context, frame, "end_date")) {
 output += "\n                                        <div class=\"row mt-2\">\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-success\">";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_15),"avg_range_points")), env.opts.autoescape);
 output += "</div>\n                                                    <small class=\"text-muted\">区间平均</small>\n                                                </div>\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <div>\n                                                    <div class=\"h5 mb-0 text-primary\">";
 output += runtime.suppressValue(runtime.memberLookup((t_15),"total_range_points"), env.opts.autoescape);
-output += "</div>\n                                                    <small class=\"text-muted\">区间总分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ";
+output += "\n                                                    </div>\n                                                    <small class=\"text-muted\">区间总分</small>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ";
 ;
 }
 output += "\n                                        <hr>\n                                        <div class=\"text-start\">\n                                            <small class=\"text-muted\">\n                                                <i class=\"bi bi-people-fill\"></i> ";
@@ -1918,7 +1880,7 @@ output += "table-info";
 }
 output += "\">\n                                        <td>\n                                            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3) {
-output += "\n                                            <span class=\"badge ";
+output += " <span\n                                                class=\"badge ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") == 1) {
 output += "bg-warning";
 ;
@@ -1936,22 +1898,22 @@ output += "bg-dark";
 }
 output += "\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index"), env.opts.autoescape);
-output += "\n                                            </span>\n                                            ";
+output += "\n                                                </span>\n                                                ";
 ;
 }
 else {
-output += "\n                                            ";
+output += "\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index"), env.opts.autoescape);
-output += "\n                                            ";
+output += "\n                                                ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <a href=\"";
-output += runtime.suppressValue((lineno = 343, colno = 63, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_20),"student")),"id")})])), env.opts.autoescape);
-output += "\" class=\"text-decoration-none\">\n                                                <strong>";
+output += runtime.suppressValue((lineno = 358, colno = 63, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_20),"student")),"id")})])), env.opts.autoescape);
+output += "\"\n                                                class=\"text-decoration-none\">\n                                                <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_20),"student")),"name"), env.opts.autoescape);
 output += "</strong>\n                                            </a>\n                                            <br>\n                                            <small class=\"text-muted\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_20),"student")),"class_name"), env.opts.autoescape);
-output += "</small>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "</small>\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_20),"week_points") >= 0) {
 output += "bg-success";
 ;
@@ -1999,7 +1961,7 @@ output += "table-warning";
 }
 output += "\">\n                                        <td>\n                                            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3) {
-output += "\n                                            <span class=\"badge ";
+output += " <span\n                                                class=\"badge ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") == 1) {
 output += "bg-warning";
 ;
@@ -2017,22 +1979,22 @@ output += "bg-dark";
 }
 output += "\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index"), env.opts.autoescape);
-output += "\n                                            </span>\n                                            ";
+output += "\n                                                </span>\n                                                ";
 ;
 }
 else {
-output += "\n                                            ";
+output += "\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index"), env.opts.autoescape);
-output += "\n                                            ";
+output += "\n                                                ";
 ;
 }
-output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"rounded me-2\" style=\"width: 16px; height: 16px; background-color: ";
+output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"rounded me-2\"\n                                                    style=\"width: 16px; height: 16px; background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_25),"group")),"color"), env.opts.autoescape);
-output += ";\"></div>\n                                                <strong>";
+output += ";\">\n                                                </div>\n                                                <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_25),"group")),"name"), env.opts.autoescape);
 output += "</strong>\n                                            </div>\n                                            <small class=\"text-muted\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_25),"group")),"class_name"), env.opts.autoescape);
-output += "</small>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "</small>\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_25),"week_average_points") >= 0) {
 output += "bg-success";
 ;
@@ -2077,7 +2039,7 @@ frame.set("loop.revindex0", t_28 - t_27 - 1);
 frame.set("loop.first", t_27 === 0);
 frame.set("loop.last", t_27 === t_28 - 1);
 frame.set("loop.length", t_28);
-output += "\n                                            ";
+output += "\n                                        ";
 var t_31;
 t_31 = runtime.contextOrFrameLookup(context, frame, "total_week_points") + runtime.memberLookup((t_30),"week_points");
 frame.set("total_week_points", t_31, true);
@@ -2096,13 +2058,13 @@ output += "\n                                        ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total_week_points"), env.opts.autoescape);
 output += "\n                                    </div>\n                                    <small class=\"text-muted\">本周总积分</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\">\n                                <div class=\"text-center p-3 bg-light rounded\">\n                                    <div class=\"h4 mb-0 text-warning\">\n                                        ";
 if(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking")) > 0) {
-output += "\n                                            ";
+output += "\n                                        ";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.contextOrFrameLookup(context, frame, "total_week_points") / (env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "student_ranking")))), env.opts.autoescape);
 output += "\n                                        ";
 ;
 }
 else {
-output += "\n                                            0.0\n                                        ";
+output += "\n                                        0.0\n                                        ";
 ;
 }
 output += "\n                                    </div>\n                                    <small class=\"text-muted\">本周平均</small>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- 区间排行 -->\n    ";
@@ -2163,18 +2125,16 @@ output += "</span>\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <img src=\"";
-output += runtime.suppressValue((lineno = 510, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")])), env.opts.autoescape);
-output += "\" alt=\"";
+output += runtime.suppressValue((lineno = 532, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")])), env.opts.autoescape);
+output += "\"\n                                                    alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name"), env.opts.autoescape);
-output += "\" class=\"avatar me-3\">\n                                                <div>\n                                                    <a href=\"";
-output += runtime.suppressValue((lineno = 512, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")})])), env.opts.autoescape);
-output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
+output += "\" class=\"avatar me-2\">\n                                                <div>\n                                                    <a href=\"";
+output += runtime.suppressValue((lineno = 535, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_36),"student")),"id")})])), env.opts.autoescape);
+output += "\"\n                                                        class=\"text-decoration-none\">\n                                                        <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"name"), env.opts.autoescape);
-output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"student_id"), env.opts.autoescape);
-output += "</small>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
+output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"class_name"), env.opts.autoescape);
-output += "</td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "</td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_36),"range_points") >= 0) {
 output += "bg-success";
 ;
@@ -2187,7 +2147,7 @@ output += " fs-6\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((t_36),"range_points"), env.opts.autoescape);
 output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            ";
 if(runtime.memberLookup((runtime.memberLookup((t_36),"student")),"group")) {
-output += "\n                                            <span class=\"badge\" style=\"background-color: ";
+output += "\n                                            <span class=\"badge\"\n                                                style=\"background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_36),"student")),"group")),"color"), env.opts.autoescape);
 output += ";\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_36),"student")),"group")),"name"), env.opts.autoescape);
@@ -2258,15 +2218,15 @@ output += "</span>\n                                            ";
 }
 ;
 }
-output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"rounded me-2\" style=\"width: 16px; height: 16px; background-color: ";
+output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <div class=\"rounded me-2\"\n                                                    style=\"width: 16px; height: 16px; background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_41),"group")),"color"), env.opts.autoescape);
-output += ";\"></div>\n                                                <div>\n                                                    <strong>";
+output += ";\">\n                                                </div>\n                                                <div>\n                                                    <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_41),"group")),"name"), env.opts.autoescape);
 output += "</strong>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_41),"group")),"class_name"), env.opts.autoescape);
 output += "</small>\n                                                </div>\n                                            </div>\n                                            <small class=\"text-muted\">\n                                                <i class=\"bi bi-people-fill\"></i> ";
 output += runtime.suppressValue(env.getFilter("length").call(context, runtime.memberLookup((runtime.memberLookup((t_41),"group")),"students")), env.opts.autoescape);
-output += "名成员\n                                            </small>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "名成员\n                                            </small>\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_41),"avg_range_points") >= 0) {
 output += "bg-success";
 ;
@@ -2277,7 +2237,7 @@ output += "bg-danger";
 }
 output += " fs-6\">\n                                                ";
 output += runtime.suppressValue(env.getFilter("format").call(context, "%.1f",runtime.memberLookup((t_41),"avg_range_points")), env.opts.autoescape);
-output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_41),"total_range_points") >= 0) {
 output += "bg-info";
 ;
@@ -2345,22 +2305,22 @@ output += "\n                                    </div>\n                       
 ;
 }
 output += "\n\n    <!-- 进步榜 -->\n    <div class=\"tab-pane fade\" id=\"progress\" role=\"tabpanel\">\n        <div class=\"row mb-4\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-sliders\"></i> 进步榜时间区间设置\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <form method=\"GET\" action=\"";
-output += runtime.suppressValue((lineno = 677, colno = 61, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
-output += "\" class=\"row g-3\">\n                            <!-- 保留原有筛选参数 -->\n                            <input type=\"hidden\" name=\"start_date\" value=\"";
+output += runtime.suppressValue((lineno = 710, colno = 61, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"row g-3\" id=\"progressForm\">\n                            <!-- 保留原有筛选参数 -->\n                            <input type=\"hidden\" name=\"start_date\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "start_date"), env.opts.autoescape);
 output += "\">\n                            <input type=\"hidden\" name=\"end_date\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "end_date"), env.opts.autoescape);
-output += "\">\n                            \n                            <div class=\"col-12\">\n                                <div class=\"alert alert-info mb-3\">\n                                    <i class=\"bi bi-info-circle\"></i> \n                                    进步榜对比学生在两个时间区间内的排名变化。选择A区间（基准期）和B区间（对比期），系统将计算学生在B区间相对于A区间的排名进步情况。\n                                </div>\n                            </div>\n                            \n                            <div class=\"col-md-6\">\n                                <div class=\"card bg-light\">\n                                    <div class=\"card-header\">\n                                        <strong><i class=\"bi bi-calendar-check text-secondary\"></i> A区间（基准期）</strong>\n                                    </div>\n                                    <div class=\"card-body\">\n                                        <div class=\"row g-2\">\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_a_start\" class=\"form-label\">开始日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_a_start\" name=\"progress_a_start\"\n                                                       value=\"";
+output += "\">\n\n                            <div class=\"col-12\">\n                                <div class=\"alert alert-info mb-3\">\n                                    <i class=\"bi bi-info-circle\"></i>\n                                    进步榜对比学生在两个时间区间内的排名变化。选择A区间（基准期）和B区间（对比期），系统将计算学生在B区间相对于A区间的排名进步情况。\n                                </div>\n                            </div>\n\n                            <div class=\"col-md-6\">\n                                <div class=\"card bg-light\">\n                                    <div class=\"card-header\">\n                                        <strong><i class=\"bi bi-calendar-check text-secondary\"></i> A区间（基准期）</strong>\n                                    </div>\n                                    <div class=\"card-body\">\n                                        <div class=\"row g-2\">\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_a_start\" class=\"form-label\">开始日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_a_start\"\n                                                    name=\"progress_a_start\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_start"), env.opts.autoescape);
-output += "\">\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_a_end\" class=\"form-label\">结束日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_a_end\" name=\"progress_a_end\"\n                                                       value=\"";
+output += "\">\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_a_end\" class=\"form-label\">结束日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_a_end\"\n                                                    name=\"progress_a_end\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_end"), env.opts.autoescape);
-output += "\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                            \n                            <div class=\"col-md-6\">\n                                <div class=\"card bg-light\">\n                                    <div class=\"card-header\">\n                                        <strong><i class=\"bi bi-calendar-check text-primary\"></i> B区间（对比期）</strong>\n                                    </div>\n                                    <div class=\"card-body\">\n                                        <div class=\"row g-2\">\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_b_start\" class=\"form-label\">开始日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_b_start\" name=\"progress_b_start\"\n                                                       value=\"";
+output += "\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n\n                            <div class=\"col-md-6\">\n                                <div class=\"card bg-light\">\n                                    <div class=\"card-header\">\n                                        <strong><i class=\"bi bi-calendar-check text-primary\"></i> B区间（对比期）</strong>\n                                    </div>\n                                    <div class=\"card-body\">\n                                        <div class=\"row g-2\">\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_b_start\" class=\"form-label\">开始日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_b_start\"\n                                                    name=\"progress_b_start\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_start"), env.opts.autoescape);
-output += "\">\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_b_end\" class=\"form-label\">结束日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_b_end\" name=\"progress_b_end\"\n                                                       value=\"";
+output += "\">\n                                            </div>\n                                            <div class=\"col-6\">\n                                                <label for=\"progress_b_end\" class=\"form-label\">结束日期</label>\n                                                <input type=\"date\" class=\"form-control\" id=\"progress_b_end\"\n                                                    name=\"progress_b_end\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_end"), env.opts.autoescape);
-output += "\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                            \n                            <div class=\"col-12 text-center mt-3\">\n                                <button type=\"submit\" class=\"btn btn-primary\">\n                                    <i class=\"bi bi-search\"></i> 计算进步榜\n                                </button>\n                                <a href=\"";
-output += runtime.suppressValue((lineno = 737, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                                    <i class=\"bi bi-x-circle\"></i> 清除\n                                </a>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        ";
+output += "\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n\n                            <div class=\"col-12 text-center mt-3\">\n                                <button type=\"submit\" class=\"btn btn-primary\" id=\"progressSubmitBtn\">\n                                    <i class=\"bi bi-search\"></i> 计算进步榜\n                                </button>\n                                <a href=\"";
+output += runtime.suppressValue((lineno = 770, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["rankings"])), env.opts.autoescape);
+output += "\" class=\"btn btn-outline-secondary\">\n                                    <i class=\"bi bi-x-circle\"></i> 清除\n                                </a>\n                            </div>\n                        </form>\n\n                        <!-- 进步榜结果容器（用于 AJAX 更新） -->\n                        <div id=\"progressResults\" class=\"mt-4\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        ";
 if(runtime.contextOrFrameLookup(context, frame, "progress_ranking") && env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "progress_ranking")) > 0) {
 output += "\n        <!-- 进步榜统计摘要 -->\n        <div class=\"row mb-4\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-bar-chart-fill\"></i> 进步榜统计\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"row text-center\">\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-success text-white rounded\">\n                                    <div class=\"h4 mb-0\">\n                                        ";
 var t_46;
@@ -2413,7 +2373,7 @@ output += "\n                                    </div>\n                       
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_start"), env.opts.autoescape);
 output += " ~ ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_a_end"), env.opts.autoescape);
-output += " | \n                            B区间: ";
+output += " |\n                            B区间: ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_start"), env.opts.autoescape);
 output += " ~ ";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "progress_b_end"), env.opts.autoescape);
@@ -2432,7 +2392,7 @@ frame.set("loop.revindex0", t_50 - t_49 - 1);
 frame.set("loop.first", t_49 === 0);
 frame.set("loop.last", t_49 === t_50 - 1);
 frame.set("loop.length", t_50);
-output += "\n                                    <tr class=\"";
+output += "\n                                    <tr\n                                        class=\"";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index") <= 3 && runtime.memberLookup((t_52),"rank_change") > 0) {
 output += "table-success";
 ;
@@ -2470,20 +2430,18 @@ output += "</span>\n                                            ";
 ;
 }
 output += "\n                                        </td>\n                                        <td>\n                                            <div class=\"d-flex align-items-center\">\n                                                <img src=\"";
-output += runtime.suppressValue((lineno = 849, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_52),"student")),"id")])), env.opts.autoescape);
-output += "\" alt=\"";
+output += runtime.suppressValue((lineno = 889, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.memberLookup((t_52),"student")),"id")])), env.opts.autoescape);
+output += "\"\n                                                    alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"name"), env.opts.autoescape);
-output += "\" class=\"avatar me-3\">\n                                                <div>\n                                                    <a href=\"";
-output += runtime.suppressValue((lineno = 851, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_52),"student")),"id")})])), env.opts.autoescape);
-output += "\" class=\"text-decoration-none\">\n                                                        <strong>";
+output += "\" class=\"avatar me-2\">\n                                                <div>\n                                                    <a href=\"";
+output += runtime.suppressValue((lineno = 892, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((runtime.memberLookup((t_52),"student")),"id")})])), env.opts.autoescape);
+output += "\"\n                                                        class=\"text-decoration-none\">\n                                                        <strong>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"name"), env.opts.autoescape);
-output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                    <small class=\"text-muted\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"student_id"), env.opts.autoescape);
-output += "</small>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
+output += "</strong>\n                                                    </a>\n                                                    <br>\n                                                </div>\n                                            </div>\n                                        </td>\n                                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"class_name"), env.opts.autoescape);
 output += "</td>\n                                        <td>\n                                            ";
 if(runtime.memberLookup((runtime.memberLookup((t_52),"student")),"group")) {
-output += "\n                                            <span class=\"badge\" style=\"background-color: ";
+output += "\n                                            <span class=\"badge\"\n                                                style=\"background-color: ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_52),"student")),"group")),"color"), env.opts.autoescape);
 output += ";\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((t_52),"student")),"group")),"name"), env.opts.autoescape);
@@ -2507,18 +2465,18 @@ output += "\n                                            </span>\n              
 }
 else {
 if(runtime.memberLookup((t_52),"rank_change") < 0) {
-output += "\n                                            <span class=\"badge bg-danger fs-6\">\n                                                <i class=\"bi bi-arrow-down\"></i> ";
+output += " <span class=\"badge bg-danger fs-6\">\n                                                <i class=\"bi bi-arrow-down\"></i> ";
 output += runtime.suppressValue(runtime.memberLookup((t_52),"rank_change"), env.opts.autoescape);
-output += "\n                                            </span>\n                                            ";
+output += "\n                                                </span>\n                                                ";
 ;
 }
 else {
-output += "\n                                            <span class=\"badge bg-secondary fs-6\">\n                                                <i class=\"bi bi-dash\"></i> 0\n                                            </span>\n                                            ";
+output += "\n                                                <span class=\"badge bg-secondary fs-6\">\n                                                    <i class=\"bi bi-dash\"></i> 0\n                                                </span>\n                                                ";
 ;
 }
 ;
 }
-output += "\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_52),"points_a") >= 0) {
 output += "bg-outline-secondary";
 ;
@@ -2529,7 +2487,7 @@ output += "bg-warning";
 }
 output += "\">\n                                                ";
 output += runtime.suppressValue(runtime.memberLookup((t_52),"points_a"), env.opts.autoescape);
-output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span class=\"badge ";
+output += "分\n                                            </span>\n                                        </td>\n                                        <td>\n                                            <span\n                                                class=\"badge ";
 if(runtime.memberLookup((t_52),"points_b") >= 0) {
 output += "bg-info";
 ;
@@ -2567,186 +2525,12 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 924;
+var lineno = 967;
 var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
-output += "\n<script>\nfunction refreshData() {\n    location.reload();\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    // 设置默认日期为最近一个月\n    const today = new Date();\n    const oneMonthAgo = new Date();\n    oneMonthAgo.setMonth(today.getMonth() - 1);\n\n    // 格式化日期为 YYYY-MM-DD\n    function formatDate(date) {\n        const year = date.getFullYear();\n        const month = String(date.getMonth() + 1).padStart(2, '0');\n        const day = String(date.getDate()).padStart(2, '0');\n        return `${year}-${month}-${day}`;\n    }\n\n    // 如果没有选择日期，设置默认日期\n    if (!document.getElementById('start_date').value) {\n        document.getElementById('start_date').value = formatDate(oneMonthAgo);\n    }\n    if (!document.getElementById('end_date').value) {\n        document.getElementById('end_date').value = formatDate(today);\n    }\n\n    // 添加动画效果\n    const tabs = document.querySelectorAll('#rankingTabs button');\n    tabs.forEach(tab => {\n        tab.addEventListener('shown.bs.tab', function() {\n            // 添加淡入动画\n            const target = document.querySelector(this.dataset.bsTarget);\n            target.classList.add('fade-in');\n        });\n    });\n});\n</script>\n\n<style>\n.fade-in {\n    animation: fadeIn 0.5s ease-in;\n}\n\n@keyframes fadeIn {\n    from { opacity: 0; transform: translateY(10px); }\n    to { opacity: 1; transform: translateY(0); }\n}\n\n.group-ranking-card {\n    transition: transform 0.2s ease;\n}\n\n.group-ranking-card:hover {\n    transform: translateY(-5px);\n}\n</style>\n";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-b_content: b_content,
-b_scripts: b_scripts,
-root: root
-};
-})();
-precompiledTemplates["student_detail.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
-var lineno = 0;
-var colno = 0;
-var output = "";
-try {
-var parentTemplate = null;
-env.getTemplate("base.html", true, "student_detail.html", false, function(t_3,t_2) {
-if(t_3) { cb(t_3); return; }
-parentTemplate = t_2
-for(var t_1 in parentTemplate.blocks) {
-context.addBlock(t_1, parentTemplate.blocks[t_1]);
-}
-output += "\n\n";
-(parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("content"))(env, context, frame, runtime, function(t_5,t_4) {
-if(t_5) { cb(t_5); return; }
-output += t_4;
-output += "\n\n";
-(parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("scripts"))(env, context, frame, runtime, function(t_7,t_6) {
-if(t_7) { cb(t_7); return; }
-output += t_6;
-if(parentTemplate) {
-parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
-} else {
-cb(null, output);
-}
-})})});
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-function b_content(env, context, frame, runtime, cb) {
-var lineno = 2;
-var colno = 3;
-var output = "";
-try {
-var frame = frame.push(true);
-output += "\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <div class=\"d-flex justify-content-between align-items-center\">\n            <div>\n                <h1 class=\"h2\">学生详情</h1>\n                <nav aria-label=\"breadcrumb\">\n                    <ol class=\"breadcrumb\">\n                        <li class=\"breadcrumb-item\"><a href=\"";
-output += runtime.suppressValue((lineno = 10, colno = 71, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
-output += "\">学生管理</a></li>\n                        <li class=\"breadcrumb-item active\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
-output += "</li>\n                    </ol>\n                </nav>\n            </div>\n            <div>\n                <button class=\"btn btn-success\" onclick=\"quickAddPoints()\">\n                    <i class=\"bi bi-plus-circle\"></i> 快速添加积分\n                </button>\n                <a href=\"";
-output += runtime.suppressValue((lineno = 19, colno = 35, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students"])), env.opts.autoescape);
-output += "\" class=\"btn btn-outline-secondary\">\n                    <i class=\"bi bi-arrow-left\"></i> 返回列表\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 学生信息卡片 -->\n<div class=\"row mb-4\">\n    <div class=\"col-md-6\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-person-fill\"></i> 基本信息\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"text-center mb-3\">\n                    <img src=\"";
-output += runtime.suppressValue((lineno = 38, colno = 43, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"id")])), env.opts.autoescape);
-output += "\" alt=\"";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
-output += "\" class=\"avatar avatar-lg\">\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-4\"><strong>姓名：</strong></div>\n                    <div class=\"col-sm-8\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
-output += "</div>\n                </div>\n                <div class=\"row mt-2\">\n                    <div class=\"col-sm-4\"><strong>学号：</strong></div>\n                    <div class=\"col-sm-8\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"student_id"), env.opts.autoescape);
-output += "</div>\n                </div>\n                <div class=\"row mt-2\">\n                    <div class=\"col-sm-4\"><strong>班级：</strong></div>\n                    <div class=\"col-sm-8\">";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"class_name"), env.opts.autoescape);
-output += "</div>\n                </div>\n                <div class=\"row mt-2\">\n                    <div class=\"col-sm-4\"><strong>注册时间：</strong></div>\n                    <div class=\"col-sm-8\">";
-output += runtime.suppressValue((lineno = 54, colno = 72, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d %H:%M:%S"])), env.opts.autoescape);
-output += "</div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"col-md-6\">\n        <div class=\"card\">\n            <div class=\"card-header\">\n                <h5 class=\"mb-0\">\n                    <i class=\"bi bi-bar-chart-fill\"></i> 积分统计\n                </h5>\n            </div>\n            <div class=\"card-body\">\n                <div class=\"row\">\n                    <div class=\"col-sm-6\">\n                        <div class=\"text-center\">\n                            <div class=\"h2 ";
-if((lineno = 71, colno = 69, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"total_points"), "student[\"total_points\"]", context, [])) >= 0) {
-output += "text-success";
-;
-}
-else {
-output += "text-danger";
-;
-}
-output += "\">\n                                ";
-var t_8;
-t_8 = (lineno = 72, colno = 67, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"total_points"), "student[\"total_points\"]", context, []));
-frame.set("total", t_8, true);
-if(frame.topLevel) {
-context.setVariable("total", t_8);
-}
-if(frame.topLevel) {
-context.addExport("total", t_8);
-}
-output += "\n                                ";
-if(runtime.contextOrFrameLookup(context, frame, "total") >= 0) {
-output += "+";
-;
-}
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total"), env.opts.autoescape);
-output += "\n                            </div>\n                            <div class=\"text-muted\">总积分</div>\n                        </div>\n                    </div>\n                    <div class=\"col-sm-6\">\n                        <div class=\"text-center\">\n                            <div class=\"h2 text-info\">";
-output += runtime.suppressValue(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "records")), env.opts.autoescape);
-output += "</div>\n                            <div class=\"text-muted\">记录数</div>\n                        </div>\n                    </div>\n                </div>\n                <hr>\n                <div class=\"row\">\n                    <div class=\"col-sm-6\">\n                        <small class=\"text-muted\">加分记录：</small>\n                        <span class=\"badge bg-success\">\n                            ";
-output += runtime.suppressValue(env.getFilter("length").call(context, env.getFilter("list").call(context, env.getFilter("selectattr").call(context, runtime.contextOrFrameLookup(context, frame, "records"),"points","greaterthan",0))), env.opts.autoescape);
-output += "\n                        </span>\n                    </div>\n                    <div class=\"col-sm-6\">\n                        <small class=\"text-muted\">扣分记录：</small>\n                        <span class=\"badge bg-danger\">\n                            ";
-output += runtime.suppressValue(env.getFilter("length").call(context, env.getFilter("list").call(context, env.getFilter("selectattr").call(context, runtime.contextOrFrameLookup(context, frame, "records"),"points","lessthan",0))), env.opts.autoescape);
-output += "\n                        </span>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- 积分记录 -->\n<div class=\"card\">\n    <div class=\"card-header d-flex justify-content-between align-items-center\">\n        <h5 class=\"mb-0\">\n            <i class=\"bi bi-clock-history\"></i> 积分记录历史\n        </h5>\n        <div>\n            <span class=\"badge bg-info\">";
-output += runtime.suppressValue(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "records")), env.opts.autoescape);
-output += " 条记录</span>\n        </div>\n    </div>\n\n    ";
-if(runtime.contextOrFrameLookup(context, frame, "records")) {
-output += "\n        <div class=\"card-body p-0\">\n            <div class=\"table-responsive\">\n                <table class=\"table table-hover mb-0\">\n                    <thead class=\"table-light\">\n                        <tr>\n                            <th width=\"80\">积分</th>\n                            <th>事由</th>\n                            <th>类别</th>\n                            <th>操作人</th>\n                            <th>时间</th>\n                            <th width=\"80\">操作</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        ";
-frame = frame.push();
-var t_11 = runtime.contextOrFrameLookup(context, frame, "records");
-if(t_11) {t_11 = runtime.fromIterator(t_11);
-var t_10 = t_11.length;
-for(var t_9=0; t_9 < t_11.length; t_9++) {
-var t_12 = t_11[t_9];
-frame.set("record", t_12);
-frame.set("loop.index", t_9 + 1);
-frame.set("loop.index0", t_9);
-frame.set("loop.revindex", t_10 - t_9);
-frame.set("loop.revindex0", t_10 - t_9 - 1);
-frame.set("loop.first", t_9 === 0);
-frame.set("loop.last", t_9 === t_10 - 1);
-frame.set("loop.length", t_10);
-output += "\n                        <tr>\n                            <td>\n                                ";
-if(runtime.memberLookup((t_12),"points") > 0) {
-output += "\n                                    <span class=\"badge bg-success\">+";
-output += runtime.suppressValue(runtime.memberLookup((t_12),"points"), env.opts.autoescape);
-output += "</span>\n                                ";
-;
-}
-else {
-output += "\n                                    <span class=\"badge bg-danger\">";
-output += runtime.suppressValue(runtime.memberLookup((t_12),"points"), env.opts.autoescape);
-output += "</span>\n                                ";
-;
-}
-output += "\n                            </td>\n                            <td>";
-output += runtime.suppressValue(runtime.memberLookup((t_12),"reason"), env.opts.autoescape);
-output += "</td>\n                            <td><span class=\"badge bg-secondary\">";
-output += runtime.suppressValue(runtime.memberLookup((t_12),"category"), env.opts.autoescape);
-output += "</span></td>\n                            <td>";
-output += runtime.suppressValue(runtime.memberLookup((t_12),"operator"), env.opts.autoescape);
-output += "</td>\n                            <td>\n                                <div class=\"small\">\n                                    ";
-output += runtime.suppressValue((lineno = 145, colno = 65, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_12),"created_at")),"strftime"), "record[\"created_at\"][\"strftime\"]", context, ["%m-%d %H:%M"])), env.opts.autoescape);
-output += "\n                                </div>\n                            </td>\n                            <td>\n                                <button class=\"btn btn-sm btn-outline-info\"\n                                        onclick=\"showRecordDetail(";
-output += runtime.suppressValue(runtime.memberLookup((t_12),"id"), env.opts.autoescape);
-output += ")\">\n                                    <i class=\"bi bi-eye\"></i>\n                                </button>\n                            </td>\n                        </tr>\n                        ";
-;
-}
-}
-frame = frame.pop();
-output += "\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    ";
-;
-}
-else {
-output += "\n        <div class=\"card-body text-center py-5\">\n            <i class=\"bi bi-inbox fs-1 text-muted\"></i>\n            <h5 class=\"mt-3 text-muted\">暂无积分记录</h5>\n            <p class=\"text-muted\">为这个学生添加第一条积分记录</p>\n            <button class=\"btn btn-success\" onclick=\"quickAddPoints()\">\n                <i class=\"bi bi-plus-circle\"></i> 添加积分记录\n            </button>\n        </div>\n    ";
-;
-}
-output += "\n</div>\n\n<!-- 快速添加积分模态框 -->\n<div class=\"modal fade\" id=\"quickAddModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">快速添加积分</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <form method=\"POST\" action=\"";
-output += runtime.suppressValue((lineno = 180, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\">\n                <div class=\"modal-body\">\n                    <input type=\"hidden\" name=\"student_id\" value=\"";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"id"), env.opts.autoescape);
-output += "\">\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">学生</label>\n                        <input type=\"text\" class=\"form-control\" value=\"";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"name"), env.opts.autoescape);
-output += " (";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "student")),"student_id"), env.opts.autoescape);
-output += ")\" readonly>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">积分值</label>\n                        <input type=\"number\" name=\"points\" class=\"form-control\" required\n                               placeholder=\"正数为加分，负数为扣分\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">事由</label>\n                        <input type=\"text\" name=\"reason\" class=\"form-control\"\n                               placeholder=\"选填，如不填写将使用类别作为默认事由\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">类别</label>\n                        <select name=\"category\" class=\"form-select\" required>\n                            <option value=\"\">请选择类别</option>\n                            <option value=\"作业\">作业</option>\n                            <option value=\"考试\">考试</option>\n                            <option value=\"纪律\">纪律</option>\n                            <option value=\"表现\">表现</option>\n                            <option value=\"其他\">其他</option>\n                        </select>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">操作人</label>\n                        <input type=\"text\" name=\"operator\" class=\"form-control\"\n                               placeholder=\"选填，请输入操作人姓名\">\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                    <button type=\"submit\" class=\"btn btn-primary\">添加</button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 229;
-var colno = 3;
-var output = "";
-try {
-var frame = frame.push(true);
-output += "\n<script>\nfunction quickAddPoints() {\n    new bootstrap.Modal(document.getElementById('quickAddModal')).show();\n}\n\nfunction showRecordDetail(recordId) {\n    // 这里可以实现查看记录详情的功能\n    alert('记录详情功能开发中...');\n}\n</script>\n";
+output += "\n<script>\n    function refreshData() {\n        location.reload();\n    }\n\n    // 格式化日期为 YYYY-MM-DD\n    function formatDate(date) {\n        const year = date.getFullYear();\n        const month = String(date.getMonth() + 1).padStart(2, '0');\n        const day = String(date.getDate()).padStart(2, '0');\n        return `${year}-${month}-${day}`;\n    }\n\n    // 获取头像URL\n    function avatarUrl(studentId) {\n        return `/api/avatar/${studentId}`;\n    }\n\n    // 渲染进步榜统计摘要\n    function renderProgressStats(stats, progressAStart, progressAEnd, progressBStart, progressBEnd) {\n        return `\n        <div class=\"row mb-4\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-bar-chart-fill\"></i> 进步榜统计\n                        </h5>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"row text-center\">\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-success text-white rounded\">\n                                    <div class=\"h4 mb-0\">${stats.improved_count}</div>\n                                    <small>进步学生数</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-danger text-white rounded\">\n                                    <div class=\"h4 mb-0\">${stats.declined_count}</div>\n                                    <small>退步学生数</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-secondary text-white rounded\">\n                                    <div class=\"h4 mb-0\">${stats.unchanged_count}</div>\n                                    <small>排名不变</small>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3 mb-3\">\n                                <div class=\"p-3 bg-primary text-white rounded\">\n                                    <div class=\"h4 mb-0\">${stats.max_improvement}</div>\n                                    <small>最大进步名次</small>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    `;\n    }\n\n    // 渲染进步榜排名表格\n    function renderProgressTable(progressRanking, progressAStart, progressAEnd, progressBStart, progressBEnd) {\n        if (!progressRanking || progressRanking.length === 0) {\n            return `\n            <div class=\"text-center py-5\">\n                <i class=\"bi bi-emoji-frown text-muted\" style=\"font-size: 3rem;\"></i>\n                <p class=\"text-muted\">暂无进步数据</p>\n            </div>\n        `;\n        }\n\n        let rowsHtml = '';\n        progressRanking.forEach((item, index) => {\n            let rowClass = '';\n            if (index < 3 && item.rank_change > 0) rowClass = 'table-success';\n            else if (item.rank_change < 0) rowClass = 'table-danger';\n\n            let rankBadge = '';\n            if (index === 0 && item.rank_change > 0) {\n                rankBadge = '<i class=\"bi bi-award-fill text-warning fs-4\"></i>';\n            } else if (index === 1 && item.rank_change > 0) {\n                rankBadge = '<i class=\"bi bi-award-fill text-secondary fs-4\"></i>';\n            } else if (index === 2 && item.rank_change > 0) {\n                rankBadge = '<i class=\"bi bi-award-fill fs-4\" style=\"color: #CD7F32;\"></i>';\n            } else {\n                rankBadge = `<span class=\"badge bg-secondary\">${index + 1}</span>`;\n            }\n\n            let changeBadge = '';\n            if (item.rank_change > 0) {\n                changeBadge = `<span class=\"badge bg-success fs-6\"><i class=\"bi bi-arrow-up\"></i> +${item.rank_change}</span>`;\n            } else if (item.rank_change < 0) {\n                changeBadge = `<span class=\"badge bg-danger fs-6\"><i class=\"bi bi-arrow-down\"></i> ${item.rank_change}</span>`;\n            } else {\n                changeBadge = `<span class=\"badge bg-secondary fs-6\"><i class=\"bi bi-dash\"></i> 0</span>`;\n            }\n\n            const groupBadge = item.student.group\n                ? `<span class=\"badge\" style=\"background-color: ${item.student.group.color};\">${item.student.group.name}</span>`\n                : '<span class=\"text-muted\">无</span>';\n\n            rowsHtml += `\n            <tr class=\"${rowClass}\">\n                <td>${rankBadge}</td>\n                <td>\n                    <div class=\"d-flex align-items-center\">\n                        <img src=\"${avatar_url(item.student.id)}\" alt=\"${item.student.name}\" class=\"avatar me-2\">\n                        <div>\n                            <a href=\"/trend/${item.student.id}\" class=\"text-decoration-none\">\n                                <strong>${item.student.name}</strong>\n                            </a>\n                            <br>\n                        </div>\n                    </div>\n                </td>\n                <td>${item.student.class_name}</td>\n                <td>${groupBadge}</td>\n                <td><span class=\"badge bg-secondary\">第${item.rank_a}名</span></td>\n                <td><span class=\"badge bg-primary\">第${item.rank_b}名</span></td>\n                <td>${changeBadge}</td>\n                <td><span class=\"badge bg-outline-secondary\">${item.points_a}分</span></td>\n                <td><span class=\"badge bg-info\">${item.points_b}分</span></td>\n            </tr>\n        `;\n        });\n\n        return `\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"card\">\n                    <div class=\"card-header d-flex justify-content-between align-items-center\">\n                        <h5 class=\"mb-0\">\n                            <i class=\"bi bi-graph-up-arrow text-success\"></i> 学生进步排名\n                        </h5>\n                        <span class=\"badge bg-info\">\n                            A区间: ${progressAStart} ~ ${progressAEnd} |\n                            B区间: ${progressBStart} ~ ${progressBEnd}\n                        </span>\n                    </div>\n                    <div class=\"card-body\">\n                        <div class=\"table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"table-light\">\n                                    <tr>\n                                        <th width=\"80\">进步排名</th>\n                                        <th>学生信息</th>\n                                        <th>班级</th>\n                                        <th width=\"100\">小组</th>\n                                        <th width=\"100\">A区间排名</th>\n                                        <th width=\"100\">B区间排名</th>\n                                        <th width=\"120\">排名变化</th>\n                                        <th width=\"100\">A区间积分</th>\n                                        <th width=\"100\">B区间积分</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ${rowsHtml}\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    `;\n    }\n\n    // 加载进步榜数据\n    async function loadProgressRanking() {\n        const progressAStart = document.getElementById('progress_a_start').value;\n        const progressAEnd = document.getElementById('progress_a_end').value;\n        const progressBStart = document.getElementById('progress_b_start').value;\n        const progressBEnd = document.getElementById('progress_b_end').value;\n        const progressResults = document.getElementById('progressResults');\n        const submitBtn = document.getElementById('progressSubmitBtn');\n\n        // 如果没有填写完整日期，不显示结果\n        if (!progressAStart || !progressAEnd || !progressBStart || !progressBEnd) {\n            progressResults.innerHTML = `\n            <div class=\"text-center py-5\">\n                <i class=\"bi bi-calendar-range text-muted\" style=\"font-size: 3rem;\"></i>\n                <p class=\"text-muted\">请选择A区间和B区间的时间范围来计算进步榜</p>\n            </div>\n        `;\n            return;\n        }\n\n        // 显示加载状态\n        submitBtn.disabled = true;\n        submitBtn.innerHTML = '<span class=\"spinner-border spinner-border-sm\"></span> 加载中...';\n        progressResults.innerHTML = '';\n\n        try {\n            const params = new URLSearchParams({\n                progress_a_start: progressAStart,\n                progress_a_end: progressAEnd,\n                progress_b_start: progressBStart,\n                progress_b_end: progressBEnd\n            });\n\n            const response = await fetch(`/api/progress-ranking?${params.toString()}`);\n\n            if (!response.ok) {\n                throw new Error('请求失败');\n            }\n\n            const data = await response.json();\n\n            // 渲染结果\n            progressResults.innerHTML = renderProgressStats(data.stats, data.progress_a_start, data.progress_a_end, data.progress_b_start, data.progress_b_end) +\n                renderProgressTable(data.progress_ranking, data.progress_a_start, data.progress_a_end, data.progress_b_start, data.progress_b_end);\n\n            // 如果有结果，自动切换到进步榜标签页\n            if (data.progress_ranking && data.progress_ranking.length > 0) {\n                const progressTab = document.getElementById('progress-tab');\n                const progressPane = document.getElementById('progress');\n                const tab = new bootstrap.Tab(progressTab);\n                tab.show();\n            }\n        } catch (error) {\n            console.error('加载进步榜数据失败:', error);\n            progressResults.innerHTML = `\n            <div class=\"alert alert-danger\">\n                <i class=\"bi bi-exclamation-triangle\"></i> 加载失败，请重试\n            </div>\n        `;\n        } finally {\n            submitBtn.disabled = false;\n            submitBtn.innerHTML = '<i class=\"bi bi-search\"></i> 计算进步榜';\n        }\n    }\n\n    document.addEventListener('DOMContentLoaded', function () {\n        // 设置默认日期为最近一个月\n        const today = new Date();\n        const oneMonthAgo = new Date();\n        oneMonthAgo.setMonth(today.getMonth() - 1);\n\n        // 如果没有选择日期，设置默认日期\n        if (!document.getElementById('start_date').value) {\n            document.getElementById('start_date').value = formatDate(oneMonthAgo);\n        }\n        if (!document.getElementById('end_date').value) {\n            document.getElementById('end_date').value = formatDate(today);\n        }\n\n        // 进步榜表单提交处理（AJAX）\n        const progressForm = document.getElementById('progressForm');\n        if (progressForm) {\n            progressForm.addEventListener('submit', function (e) {\n                e.preventDefault();\n                loadProgressRanking();\n            });\n\n            // 日期变化时自动加载\n            const progressDateInputs = progressForm.querySelectorAll('input[type=\"date\"]');\n            progressDateInputs.forEach(input => {\n                input.addEventListener('change', function () {\n                    // 检查是否所有日期都已填写\n                    const aStart = document.getElementById('progress_a_start').value;\n                    const aEnd = document.getElementById('progress_a_end').value;\n                    const bStart = document.getElementById('progress_b_start').value;\n                    const bEnd = document.getElementById('progress_b_end').value;\n\n                    if (aStart && aEnd && bStart && bEnd) {\n                        loadProgressRanking();\n                    }\n                });\n            });\n\n            // 页面加载时如果有已保存的日期，自动加载\n            const aStart = document.getElementById('progress_a_start').value;\n            const aEnd = document.getElementById('progress_a_end').value;\n            const bStart = document.getElementById('progress_b_start').value;\n            const bEnd = document.getElementById('progress_b_end').value;\n\n            if (aStart && aEnd && bStart && bEnd) {\n                loadProgressRanking();\n            }\n        }\n\n        // 添加动画效果\n        const tabs = document.querySelectorAll('#rankingTabs button');\n        tabs.forEach(tab => {\n            tab.addEventListener('shown.bs.tab', function () {\n                const target = document.querySelector(this.dataset.bsTarget);\n                target.classList.add('fade-in');\n            });\n        });\n    });\n</script>\n\n<style>\n    .fade-in {\n        animation: fadeIn 0.5s ease-in;\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n            transform: translateY(10px);\n        }\n\n        to {\n            opacity: 1;\n            transform: translateY(0);\n        }\n    }\n\n    .group-ranking-card {\n        transition: transform 0.2s ease;\n    }\n\n    .group-ranking-card:hover {\n        transform: translateY(-5px);\n    }\n</style>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -2969,7 +2753,6 @@ output += "\n\n";
 (parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("scripts"))(env, context, frame, runtime, function(t_7,t_6) {
 if(t_7) { cb(t_7); return; }
 output += t_6;
-output += "\n";
 if(parentTemplate) {
 parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
 } else {
@@ -2988,13 +2771,13 @@ try {
 var frame = frame.push(true);
 output += "\n<div class=\"row mb-4\">\n    <div class=\"col-12\">\n        <div class=\"d-flex justify-content-between align-items-center\">\n            <h1 class=\"h2\">学生管理</h1>\n            <a href=\"";
 output += runtime.suppressValue((lineno = 7, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_student"])), env.opts.autoescape);
-output += "\" class=\"btn btn-primary\">\n                <i class=\"bi bi-plus-circle\"></i> 添加学生\n            </a>\n        </div>\n    </div>\n</div>\n\n<div class=\"row mb-3\">\n    <div class=\"col-md-6\">\n        <form method=\"GET\" class=\"d-flex\">\n            <input type=\"text\" name=\"search\" class=\"form-control me-2\" placeholder=\"搜索学生姓名、学号或班级...\" value=\"";
+output += "\" class=\"btn btn-primary\">\n                <i class=\"bi bi-plus-circle\"></i> 添加学生\n            </a>\n        </div>\n    </div>\n</div>\n\n<div class=\"row mb-3\">\n    <div class=\"col-md-6\">\n        <form method=\"GET\" class=\"d-flex\">\n            <input type=\"text\" name=\"search\" class=\"form-control me-2\" placeholder=\"搜索学生姓名或班级...\" value=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "search"), env.opts.autoescape);
 output += "\">\n            <button type=\"submit\" class=\"btn btn-outline-primary\">\n                <i class=\"bi bi-search\"></i>\n            </button>\n        </form>\n    </div>\n    <div class=\"col-md-6 text-end\">\n        <span class=\"text-muted\">\n            共找到 ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"total"), env.opts.autoescape);
 output += " 名学生\n        </span>\n    </div>\n</div>\n\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"items")) {
-output += "\n    <div class=\"card\">\n        <div class=\"card-body p-0\">\n            <div class=\"table-responsive\">\n                <table class=\"table table-hover mb-0\">\n                    <thead class=\"table-light\">\n                        <tr>\n                            <th>学号</th>\n                            <th>姓名</th>\n                            <th>班级</th>\n                            <th>总积分</th>\n                            <th>记录数</th>\n                            <th>创建时间</th>\n                            <th>操作</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        ";
+output += "\n<div class=\"card\">\n    <div class=\"card-body p-0\">\n        <div class=\"table-responsive\">\n            <table class=\"table table-hover mb-0\">\n                <thead class=\"table-light\">\n                    <tr>\n                        <th>姓名</th>\n                        <th>班级</th>\n                        <th>总积分</th>\n                        <th>记录数</th>\n                        <th>创建时间</th>\n                        <th>操作</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    ";
 frame = frame.push();
 var t_10 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"items");
 if(t_10) {t_10 = runtime.fromIterator(t_10);
@@ -3009,21 +2792,19 @@ frame.set("loop.revindex0", t_9 - t_8 - 1);
 frame.set("loop.first", t_8 === 0);
 frame.set("loop.last", t_8 === t_9 - 1);
 frame.set("loop.length", t_9);
-output += "\n                        <tr>\n                            <td>";
-output += runtime.suppressValue(runtime.memberLookup((t_11),"student_id"), env.opts.autoescape);
-output += "</td>\n                            <td>\n                                <div class=\"d-flex align-items-center\">\n                                    <img src=\"";
-output += runtime.suppressValue((lineno = 52, colno = 59, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_11),"id")])), env.opts.autoescape);
+output += "\n                    <tr>\n                        <td>\n                            <div class=\"d-flex align-items-center\">\n                                <img src=\"";
+output += runtime.suppressValue((lineno = 50, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_11),"id")])), env.opts.autoescape);
 output += "\" alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"name"), env.opts.autoescape);
-output += "\" class=\"avatar avatar-sm me-2\">\n                                    <a href=\"";
-output += runtime.suppressValue((lineno = 53, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
-output += "\"\n                                       class=\"text-decoration-none fw-bold\">\n                                        ";
+output += "\" class=\"avatar me-2\">\n                                <a href=\"";
+output += runtime.suppressValue((lineno = 51, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
+output += "\"\n                                    class=\"text-decoration-none fw-bold\">\n                                    ";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"name"), env.opts.autoescape);
-output += "\n                                    </a>\n                                </div>\n                            </td>\n                            <td>";
+output += "\n                                </a>\n                            </div>\n                        </td>\n                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"class_name"), env.opts.autoescape);
-output += "</td>\n                            <td>\n                                ";
+output += "</td>\n                        <td>\n                            ";
 var t_12;
-t_12 = (lineno = 61, colno = 67, runtime.callWrap(runtime.memberLookup((t_11),"total_points"), "student[\"total_points\"]", context, []));
+t_12 = (lineno = 59, colno = 63, runtime.callWrap(runtime.memberLookup((t_11),"total_points"), "student[\"total_points\"]", context, []));
 frame.set("total", t_12, true);
 if(frame.topLevel) {
 context.setVariable("total", t_12);
@@ -3031,46 +2812,46 @@ context.setVariable("total", t_12);
 if(frame.topLevel) {
 context.addExport("total", t_12);
 }
-output += "\n                                ";
+output += "\n                            ";
 if(runtime.contextOrFrameLookup(context, frame, "total") >= 0) {
-output += "\n                                    <span class=\"points-positive\">+";
+output += "\n                            <span class=\"points-positive\">+";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total"), env.opts.autoescape);
-output += "</span>\n                                ";
+output += "</span>\n                            ";
 ;
 }
 else {
-output += "\n                                    <span class=\"points-negative\">";
+output += "\n                            <span class=\"points-negative\">";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "total"), env.opts.autoescape);
-output += "</span>\n                                ";
+output += "</span>\n                            ";
 ;
 }
-output += "\n                            </td>\n                            <td>";
+output += "\n                        </td>\n                        <td>";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"records_count"), env.opts.autoescape);
-output += "</td>\n                            <td>";
-output += runtime.suppressValue((lineno = 69, colno = 62, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d"])), env.opts.autoescape);
-output += "</td>\n                            <td>\n                                <div class=\"btn-group btn-group-sm\">\n                                    <a href=\"";
-output += runtime.suppressValue((lineno = 72, colno = 55, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_detail",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
-output += "\"\n                                       class=\"btn btn-outline-primary\">\n                                        <i class=\"bi bi-eye\"></i>\n                                    </a>\n                                    <button class=\"btn btn-outline-success\"\n                                            onclick=\"quickAddPoints(";
+output += "</td>\n                        <td>";
+output += runtime.suppressValue((lineno = 67, colno = 58, runtime.callWrap(runtime.memberLookup((runtime.memberLookup((t_11),"created_at")),"strftime"), "student[\"created_at\"][\"strftime\"]", context, ["%Y-%m-%d"])), env.opts.autoescape);
+output += "</td>\n                        <td>\n                            <div class=\"btn-group btn-group-sm\">\n                                <a href=\"";
+output += runtime.suppressValue((lineno = 70, colno = 51, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["student_trend",runtime.makeKeywordArgs({"id": runtime.memberLookup((t_11),"id")})])), env.opts.autoescape);
+output += "\" class=\"btn btn-outline-primary\"\n                                    title=\"查看趋势分析\">\n                                    <i class=\"bi bi-graph-up\"></i>\n                                </a>\n                                <button class=\"btn btn-outline-success\"\n                                    onclick=\"quickAddPoints(";
 output += runtime.suppressValue(runtime.memberLookup((t_11),"id"), env.opts.autoescape);
-output += ", '";
-output += runtime.suppressValue(runtime.memberLookup((t_11),"name"), env.opts.autoescape);
-output += "')\">\n                                        <i class=\"bi bi-plus\"></i>\n                                    </button>\n                                </div>\n                            </td>\n                        </tr>\n                        ";
+output += ", ";
+output += runtime.suppressValue(env.getFilter("dump").call(context, runtime.memberLookup((t_11),"name")), env.opts.autoescape);
+output += ")\">\n                                    <i class=\"bi bi-plus\"></i>\n                                </button>\n                            </div>\n                        </td>\n                    </tr>\n                    ";
 ;
 }
 }
 frame = frame.pop();
-output += "\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n\n    <!-- 分页 -->\n    ";
+output += "\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n\n<!-- 分页 -->\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"pages") > 1) {
-output += "\n    <nav class=\"mt-4\">\n        <ul class=\"pagination justify-content-center\">\n            ";
+output += "\n<nav class=\"mt-4\">\n    <ul class=\"pagination justify-content-center\">\n        ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"has_prev")) {
-output += "\n                <li class=\"page-item\">\n                    <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 96, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"prev_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
-output += "\">上一页</a>\n                </li>\n            ";
+output += "\n        <li class=\"page-item\">\n            <a class=\"page-link\" href=\"";
+output += runtime.suppressValue((lineno = 94, colno = 49, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"prev_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\">上一页</a>\n        </li>\n        ";
 ;
 }
-output += "\n\n            ";
+output += "\n\n        ";
 frame = frame.push();
-var t_15 = (lineno = 100, colno = 50, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"iter_pages"), "students[\"iter_pages\"]", context, []));
+var t_15 = (lineno = 98, colno = 46, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"iter_pages"), "students[\"iter_pages\"]", context, []));
 if(t_15) {t_15 = runtime.fromIterator(t_15);
 var t_14 = t_15.length;
 for(var t_13=0; t_13 < t_15.length; t_13++) {
@@ -3083,57 +2864,57 @@ frame.set("loop.revindex0", t_14 - t_13 - 1);
 frame.set("loop.first", t_13 === 0);
 frame.set("loop.last", t_13 === t_14 - 1);
 frame.set("loop.length", t_14);
-output += "\n                ";
+output += "\n        ";
 if(t_16) {
-output += "\n                    ";
+output += "\n        ";
 if(t_16 != runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"page")) {
-output += "\n                        <li class=\"page-item\">\n                            <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 104, colno = 65, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": t_16,"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\n        <li class=\"page-item\">\n            <a class=\"page-link\" href=\"";
+output += runtime.suppressValue((lineno = 102, colno = 49, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": t_16,"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
 output += "\">";
 output += runtime.suppressValue(t_16, env.opts.autoescape);
-output += "</a>\n                        </li>\n                    ";
+output += "</a>\n        </li>\n        ";
 ;
 }
 else {
-output += "\n                        <li class=\"page-item active\">\n                            <span class=\"page-link\">";
+output += "\n        <li class=\"page-item active\">\n            <span class=\"page-link\">";
 output += runtime.suppressValue(t_16, env.opts.autoescape);
-output += "</span>\n                        </li>\n                    ";
+output += "</span>\n        </li>\n        ";
 ;
 }
-output += "\n                ";
+output += "\n        ";
 ;
 }
 else {
-output += "\n                    <li class=\"page-item disabled\">\n                        <span class=\"page-link\">...</span>\n                    </li>\n                ";
+output += "\n        <li class=\"page-item disabled\">\n            <span class=\"page-link\">...</span>\n        </li>\n        ";
 ;
 }
-output += "\n            ";
+output += "\n        ";
 ;
 }
 }
 frame = frame.pop();
-output += "\n\n            ";
+output += "\n\n        ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"has_next")) {
-output += "\n                <li class=\"page-item\">\n                    <a class=\"page-link\" href=\"";
-output += runtime.suppressValue((lineno = 120, colno = 57, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"next_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
-output += "\">下一页</a>\n                </li>\n            ";
+output += "\n        <li class=\"page-item\">\n            <a class=\"page-link\" href=\"";
+output += runtime.suppressValue((lineno = 118, colno = 49, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["students",runtime.makeKeywordArgs({"page": runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "students")),"next_num"),"search": runtime.contextOrFrameLookup(context, frame, "search")})])), env.opts.autoescape);
+output += "\">下一页</a>\n        </li>\n        ";
 ;
 }
-output += "\n        </ul>\n    </nav>\n    ";
+output += "\n    </ul>\n</nav>\n";
 ;
 }
 output += "\n";
 ;
 }
 else {
-output += "\n    <div class=\"card\">\n        <div class=\"card-body text-center py-5\">\n            <i class=\"bi bi-person-x fs-1 text-muted\"></i>\n            <h5 class=\"mt-3 text-muted\">暂无学生数据</h5>\n            <p class=\"text-muted\">开始添加学生来使用系统</p>\n            <a href=\"";
-output += runtime.suppressValue((lineno = 132, colno = 31, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_student"])), env.opts.autoescape);
-output += "\" class=\"btn btn-primary\">\n                <i class=\"bi bi-person-plus-fill\"></i> 添加第一个学生\n            </a>\n        </div>\n    </div>\n";
+output += "\n<div class=\"card\">\n    <div class=\"card-body text-center py-5\">\n        <i class=\"bi bi-person-x fs-1 text-muted\"></i>\n        <h5 class=\"mt-3 text-muted\">暂无学生数据</h5>\n        <p class=\"text-muted\">开始添加学生来使用系统</p>\n        <a href=\"";
+output += runtime.suppressValue((lineno = 130, colno = 27, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_student"])), env.opts.autoescape);
+output += "\" class=\"btn btn-primary\">\n            <i class=\"bi bi-person-plus-fill\"></i> 添加第一个学生\n        </a>\n    </div>\n</div>\n";
 ;
 }
 output += "\n\n<!-- 快速添加积分模态框 -->\n<div class=\"modal fade\" id=\"quickAddModal\" tabindex=\"-1\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h5 class=\"modal-title\">快速添加积分</h5>\n                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n            </div>\n            <form method=\"POST\" action=\"";
-output += runtime.suppressValue((lineno = 147, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
-output += "\">\n                <div class=\"modal-body\">\n                    <input type=\"hidden\" id=\"quickStudentId\" name=\"student_id\">\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">学生</label>\n                        <input type=\"text\" class=\"form-control\" id=\"quickStudentName\" readonly>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">积分值</label>\n                        <input type=\"number\" name=\"points\" class=\"form-control\" required\n                               placeholder=\"正数为加分，负数为扣分\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">事由</label>\n                        <input type=\"text\" name=\"reason\" class=\"form-control\"\n                               placeholder=\"选填，如不填写将使用类别作为默认事由\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">类别</label>\n                        <select name=\"category\" class=\"form-select\" required>\n                            <option value=\"\">请选择类别</option>\n                            ";
+output += runtime.suppressValue((lineno = 145, colno = 50, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "url_for"), "url_for", context, ["add_points"])), env.opts.autoescape);
+output += "\">\n                <div class=\"modal-body\">\n                    <input type=\"hidden\" id=\"quickStudentId\" name=\"student_id\">\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">学生</label>\n                        <input type=\"text\" class=\"form-control\" id=\"quickStudentName\" readonly>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">积分值</label>\n                        <input type=\"number\" name=\"points\" class=\"form-control\" required placeholder=\"正数为加分，负数为扣分\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">事由</label>\n                        <input type=\"text\" name=\"reason\" class=\"form-control\" placeholder=\"选填，如不填写将使用类别作为默认事由\">\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">类别</label>\n                        <select name=\"category\" class=\"form-select\" required>\n                            <option value=\"\">请选择类别</option>\n                            ";
 frame = frame.push();
 var t_19 = runtime.contextOrFrameLookup(context, frame, "categories");
 if(t_19) {t_19 = runtime.fromIterator(t_19);
@@ -3157,7 +2938,7 @@ output += "</option>\n                            ";
 }
 }
 frame = frame.pop();
-output += "\n                        </select>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">操作人</label>\n                        <input type=\"text\" name=\"operator\" class=\"form-control\"\n                               placeholder=\"选填，请输入操作人姓名\">\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                    <button type=\"submit\" class=\"btn btn-primary\">添加</button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n";
+output += "\n                        </select>\n                    </div>\n\n                    <div class=\"mb-3\">\n                        <label class=\"form-label\">操作人</label>\n                        <input type=\"text\" name=\"operator\" class=\"form-control\" placeholder=\"选填，请输入操作人姓名\">\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">取消</button>\n                    <button type=\"submit\" class=\"btn btn-primary\">添加</button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -3165,12 +2946,12 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 194;
+var lineno = 189;
 var colno = 3;
 var output = "";
 try {
 var frame = frame.push(true);
-output += "\n<script>\nfunction quickAddPoints(studentId, studentName) {\n    document.getElementById('quickStudentId').value = studentId;\n    document.getElementById('quickStudentName').value = studentName;\n    new bootstrap.Modal(document.getElementById('quickAddModal')).show();\n}\n</script>\n";
+output += "\n<script>\n    function quickAddPoints(studentId, studentName) {\n        document.getElementById('quickStudentId').value = studentId;\n        document.getElementById('quickStudentName').value = studentName;\n        new bootstrap.Modal(document.getElementById('quickAddModal')).show();\n    }\n</script>\n";
 cb(null, output);
 ;
 } catch (e) {
