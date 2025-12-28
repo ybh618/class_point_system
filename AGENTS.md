@@ -1,4 +1,3 @@
-# 班级积分管理系统 - AI 代理指南 (AGENTS.md)
 该项目是基于 Cloudflare Workers 和 D1 数据库构建的班级积分管理系统。
 ## 1. 项目核心概览
 - **技术栈**: Hono, D1 (SQLite 数据库), Nunjucks, TypeScript.
@@ -18,9 +17,3 @@
   - 路由文件: 小写并以连字符分隔 (`points-history.ts`)
 - **路由分发**: 新功能应在 `src/routes/` 下创建独立模块，并在 `src/index.ts` 中注册。
 - **API 设计**: 移动端 API 统一前缀为 `/api/v1/`，遵循 RESTful 风格。
-## 4. 故障排除与常见问题
-- **Android Gradle 兼容性**: 
-  - 如果遇到 `DependencyHandler.module(java.lang.Object)` 错误，通常是 Gradle 版本（如 9.0+）过高与 AGP/Kotlin 插件不匹配导致。
-  - 建议回退 `gradle-wrapper.properties` 中的 Gradle 版本至 8.x 系列，或升级 AGP 插件版本。
-- **模板未生效**: 记得运行模板生成脚本，Worker 实际上是从生成的 TS 文件中读取模板内容的。
-
