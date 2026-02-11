@@ -641,7 +641,7 @@ output += "\n        </div>\n    </main>\n\n    <footer class=\"d-md-none text-c
 (parentTemplate ? function(e, c, f, r, cb) { cb(""); } : context.getBlock("scripts"))(env, context, frame, runtime, function(t_12,t_11) {
 if(t_12) { cb(t_12); return; }
 output += t_11;
-output += "\n</body>\n\n</html>";
+output += "\n</body>\n\n</html>\n";
 if(parentTemplate) {
 parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
 } else {

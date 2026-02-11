@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="accent">#FFC107</color>
-    <color name="ic_launcher_background">#4CAF50</color>
-    <color name="primary">#4CAF50</color>
-    <color name="primary_dark">#388E3C</color>
-    <string name="app_name">班级积分系统</string>
-    <style name="Theme.ClassPoints" parent="android:Theme.Material.Light.NoActionBar"/>
-</resources>
