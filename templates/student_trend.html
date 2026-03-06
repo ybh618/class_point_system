@@ -29,7 +29,7 @@
     <div class="col-md-3">
         <div class="card text-center">
             <div class="card-body">
-                <img src="{{ avatar_url(student.id) }}" alt="{{ student.name }}" class="avatar mx-auto mb-3" style="width: 80px; height: 80px;">
+                <img src="{{ avatar_url(student.id, student.name) }}" alt="{{ student.name }}" class="avatar mx-auto mb-3" style="width: 80px; height: 80px;" loading="lazy" decoding="async">
                 <h5>{{ student.name }}</h5>
                 <p class="text-muted mb-0">{{ student.student_id }}</p>
                 <p class="text-muted">{{ student.class_name }}</p>
@@ -176,106 +176,13 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
-// 趋势图数据
-const trendData = {{ trend_data | tojson }};
-const classAvgData = {{ class_avg_data | tojson }};
-const classQ1Data = {{ class_q1_data | tojson }};
-const classQ3Data = {{ class_q3_data | tojson }};
-const classMedianData = {{ class_median_data | tojson }};
-
-// 累计积分趋势图
-const trendCtx = document.getElementById('trendChart').getContext('2d');
-new Chart(trendCtx, {
-    type: 'line',
-    data: {
-        labels: trendData.map(d => d.date),
-        datasets: [
-            {
-                label: '个人累计积分',
-                data: trendData.map(d => d.cumulative),
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                tension: 0.4,
-                fill: true,
-                borderWidth: 3
-            },
-            {
-                label: '班级平均分',
-                data: classAvgData.map(d => d.avg),
-                borderColor: 'rgb(255, 159, 64)',
-                backgroundColor: 'transparent',
-                tension: 0.4,
-                borderWidth: 2,
-                borderDash: [5, 5]
-            },
-            {
-                label: '上四分位数',
-                data: classQ3Data.map(d => d.q3),
-                borderColor: 'rgb(153, 102, 255)',
-                backgroundColor: 'transparent',
-                tension: 0.4,
-                borderWidth: 1,
-                borderDash: [3, 3]
-            },
-            {
-                label: '中位数',
-                data: classMedianData.map(d => d.median),
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'transparent',
-                tension: 0.4,
-                borderWidth: 2,
-                borderDash: [5, 5]
-            },
-            {
-                label: '下四分位数',
-                data: classQ1Data.map(d => d.q1),
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'transparent',
-                tension: 0.4,
-                borderWidth: 1,
-                borderDash: [3, 3]
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        interaction: {
-            mode: 'index',
-            intersect: false
-        },
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '分';
-                    }
-                }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: false,
-                title: {
-                    display: true,
-                    text: '积分'
-                }
-            },
-            x: {
-                title: {
-                    display: true,
-                    text: '日期'
-                }
-            }
-        }
-    }
-});
-
-
-</script>
+<script id="studentTrendData" type="application/json">{{ {
+  trend_data: trend_data,
+  class_avg_data: class_avg_data,
+  class_q1_data: class_q1_data,
+  class_q3_data: class_q3_data,
+  class_median_data: class_median_data
+} | tojson }}</script>
+<script src="/assets/vendor/chart.umd.js" defer></script>
+<script src="/assets/app/student-trend.js" defer></script>
 {% endblock %}

@@ -12,6 +12,7 @@ import { fetchStudentsWithStats } from '../lib/student_queries'
 import { DEFAULT_COLOR } from '../lib/constants'
 import { notFound, respondWithError } from '../lib/errors'
 import { fetchGroups, buildGroupView, calculateGroupStats } from '../lib/group_queries'
+import { invalidateStudentsCache } from '../lib/cache'
 
 /**
  * 注册小组相关路由
@@ -62,6 +63,8 @@ export function registerGroupRoutes(app: Hono<Env>) {
       'INSERT INTO groups (name, description, class_name, color) VALUES (?, ?, ?, ?)',
       [name, description, className, color]
     )
+
+    invalidateStudentsCache()
 
     return redirectWithFlash(c, '/groups', {
       status: 'success',
@@ -141,6 +144,8 @@ export function registerGroupRoutes(app: Hono<Env>) {
       [name, description, className, color, id]
     )
 
+    invalidateStudentsCache()
+
     return redirectWithFlash(c, '/groups', {
       status: 'success',
       message: '小组更新成功',
@@ -154,6 +159,7 @@ export function registerGroupRoutes(app: Hono<Env>) {
     const id = Number(c.req.param('id'))
     await execute(c.env.DB, 'UPDATE students SET group_id = NULL WHERE group_id = ?', [id])
     await execute(c.env.DB, 'DELETE FROM groups WHERE id = ?', [id])
+    invalidateStudentsCache()
     return redirectWithFlash(c, '/groups', {
       status: 'success',
       message: '小组删除成功',
@@ -176,6 +182,8 @@ export function registerGroupRoutes(app: Hono<Env>) {
         studentId,
       ])
     }
+
+    invalidateStudentsCache()
 
     if (c.req.header('X-Requested-With') === 'XMLHttpRequest') {
       return c.json({ success: true })
@@ -219,6 +227,8 @@ export function registerGroupRoutes(app: Hono<Env>) {
         added += 1
       }
     }
+
+    invalidateStudentsCache()
 
     return redirectWithFlash(c, `/group/${groupId}/edit`, {
       status: 'success',

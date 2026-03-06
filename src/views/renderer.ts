@@ -1,6 +1,7 @@
 import nunjucks from 'nunjucks'
 import { precompiledTemplates } from '../templates.generated'
 import type { FlashState } from '../lib/types'
+import { getAvatarUrl } from '../lib/avatar'
 
 const runtime: any = (nunjucks as any).runtime
 const originalCallWrap = runtime.callWrap.bind(runtime)
@@ -83,11 +84,8 @@ env.addGlobal('url_for', (name: string, kwargs?: Record<string, unknown>) => {
   return resolveRoute(name, kwargs)
 })
 
-// 生成随机头像 URL (使用 DiceBear API)
-env.addGlobal('avatar_url', (seed: string | number, style?: string) => {
-  const avatarStyle = style || 'adventurer'
-  const seedStr = String(seed)
-  return `https://api.dicebear.com/7.x/${avatarStyle}/svg?seed=${encodeURIComponent(seedStr)}`
+env.addGlobal('avatar_url', (seed: string | number, name?: string) => {
+  return getAvatarUrl(seed, typeof name === 'string' ? name : undefined)
 })
 
 env.addFilter('format', (pattern: string, value: unknown) => {

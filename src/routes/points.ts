@@ -6,7 +6,7 @@
 import type { Hono } from 'hono'
 import { read, utils, write } from 'xlsx'
 import type { Env } from '../lib/env'
-import { execute, queryAll, queryOne } from '../lib/db'
+import { execute, executeBatch, queryAll, queryOne } from '../lib/db'
 import { renderTemplate } from '../views/renderer'
 import { readFlash, redirectWithFlash } from '../lib/flash'
 import { makeDateHelper } from '../lib/time'
@@ -16,6 +16,7 @@ import { DEFAULT_CATEGORY, PAGE_SIZE } from '../lib/constants'
 import { respondWithError, createErrorResponse } from '../lib/errors'
 import { fetchGroups, buildGroupView } from '../lib/group_queries'
 import { invalidateStudentsCache } from '../lib/cache'
+import { applyCacheHeadersToResponse, PAGE_CACHE_OPTIONS } from '../lib/http-cache'
 
 /**
  * 注册积分相关路由
@@ -26,13 +27,30 @@ export function registerPointsRoutes(app: Hono<Env>) {
    */
   app.get('/points/add', async (c) => {
     const db = c.env.DB
-    const students = await fetchStudentsWithStats(db, { orderBy: 's.name ASC' })
-    const groups = await fetchGroups(db)
+    const [students, groups, categories] = await Promise.all([
+      fetchStudentsWithStats(db, { orderBy: 's.name ASC' }),
+      fetchGroups(db),
+      queryAll<{ name: string; default_points: number }>(
+        db,
+        'SELECT name, default_points FROM points_categories WHERE is_active = 1 ORDER BY name'
+      )
+    ])
+    const studentsByGroupId = new Map<number, typeof students>()
+    for (const student of students) {
+      if (!student.group_id) {
+        continue
+      }
+      const existing = studentsByGroupId.get(student.group_id)
+      if (existing) {
+        existing.push(student)
+      } else {
+        studentsByGroupId.set(student.group_id, [student])
+      }
+    }
 
-    // 使用 group_queries 模块构建小组视图
     const groupsWithStudents = groups.map((group) => {
       const groupView = buildGroupView(group, students)
-      const groupStudents = students.filter((s) => s.group_id === group.id)
+      const groupStudents = studentsByGroupId.get(group.id) ?? []
       return {
         group: groupView,
         students: groupStudents,
@@ -40,11 +58,6 @@ export function registerPointsRoutes(app: Hono<Env>) {
     })
 
     const ungroupedStudents = students.filter((student) => !student.group_id)
-
-    const categories = await queryAll<{ name: string; default_points: number }>(
-      db,
-      'SELECT name, default_points FROM points_categories WHERE is_active = 1 ORDER BY name'
-    )
 
     return c.html(
       renderTemplate({
@@ -109,33 +122,34 @@ export function registerPointsRoutes(app: Hono<Env>) {
     const offset = (page - 1) * perPage
 
     const filters = buildRecordFilter(search)
-    const records = await queryAll<{
-      id: number
-      student_id: number
-      points: number
-      reason: string | null
-      category: string
-      operator: string | null
-      created_at: string
-      student_name: string
-      student_number: string
-      class_name: string
-    }>(
-      db,
-      `SELECT pr.*, s.name as student_name, s.student_id as student_number, s.class_name
-         FROM points_records pr
-         JOIN students s ON s.id = pr.student_id
-         ${filters.where}
-         ORDER BY pr.created_at DESC
-         LIMIT ? OFFSET ?`,
-      [...filters.params, perPage, offset]
-    )
-
-    const totalRow = await queryOne<{ total: number }>(
-      db,
-      `SELECT COUNT(*) as total FROM points_records pr JOIN students s ON s.id = pr.student_id ${filters.where}`,
-      filters.params
-    )
+    const [records, totalRow] = await Promise.all([
+      queryAll<{
+        id: number
+        student_id: number
+        points: number
+        reason: string | null
+        category: string
+        operator: string | null
+        created_at: string
+        student_name: string
+        student_number: string
+        class_name: string
+      }>(
+        db,
+        `SELECT pr.*, s.name as student_name, s.student_id as student_number, s.class_name
+           FROM points_records pr
+           JOIN students s ON s.id = pr.student_id
+           ${filters.where}
+           ORDER BY pr.created_at DESC
+           LIMIT ? OFFSET ?`,
+        [...filters.params, perPage, offset]
+      ),
+      queryOne<{ total: number }>(
+        db,
+        `SELECT COUNT(*) as total FROM points_records pr JOIN students s ON s.id = pr.student_id ${filters.where}`,
+        filters.params
+      )
+    ])
     const total = totalRow?.total ?? 0
 
     const formatted = records.map((record) => ({
@@ -237,14 +251,33 @@ export function registerPointsRoutes(app: Hono<Env>) {
         return c.json({ success: false, message: '文件格式错误：至少需要2列' })
       }
 
+      const normalizedRows = rows.slice(1).map((row) => ({
+        nameCell: row[0],
+        pointsCell: row[1],
+      }))
+      const uniqueNames = Array.from(new Set(
+        normalizedRows
+          .map((row) => row.nameCell == null ? '' : String(row.nameCell).trim())
+          .filter(Boolean)
+      ))
+      const placeholders = uniqueNames.map(() => '?').join(',')
+      const studentsByName = uniqueNames.length > 0
+        ? await queryAll<{ id: number; name: string }>(
+          c.env.DB,
+          `SELECT id, name FROM students WHERE name IN (${placeholders})`,
+          uniqueNames
+        )
+        : []
+      const studentIdByName = new Map(studentsByName.map((student) => [student.name, student.id]))
+
       let successCount = 0
       let failedCount = 0
       let totalRecords = 0
       const failedRecords: Array<{ name: string; points: unknown; error: string }> = []
+      const insertStatements: Array<{ sql: string; params: unknown[] }> = []
 
-      for (const row of rows.slice(1)) {
-        const nameCell = row[0]
-        const pointsCell = row[1]
+      for (const row of normalizedRows) {
+        const { nameCell, pointsCell } = row
         if (!nameCell || pointsCell === undefined || pointsCell === null) {
           continue
         }
@@ -261,12 +294,8 @@ export function registerPointsRoutes(app: Hono<Env>) {
           failedRecords.push({ name, points: pointsCell, error: '分数格式错误' })
           continue
         }
-        const student = await queryOne<{ id: number }>(
-          c.env.DB,
-          'SELECT id FROM students WHERE name = ?',
-          [name]
-        )
-        if (!student) {
+        const studentId = studentIdByName.get(name)
+        if (!studentId) {
           failedCount += 1
           failedRecords.push({ name, points, error: '学生不存在' })
           if (!skipNotFound) {
@@ -274,18 +303,22 @@ export function registerPointsRoutes(app: Hono<Env>) {
           }
           continue
         }
-        try {
-          await execute(
-            c.env.DB,
-            'INSERT INTO points_records (student_id, points, reason, category, operator) VALUES (?, ?, ?, ?, ?)',
-            [student.id, points, reason, category, operator]
-          )
-          successCount += 1
-        } catch (error) {
-          console.error('Import record error', error)
-          failedCount += 1
-          failedRecords.push({ name, points, error: '数据库错误' })
-        }
+        insertStatements.push({
+          sql: 'INSERT INTO points_records (student_id, points, reason, category, operator) VALUES (?, ?, ?, ?, ?)',
+          params: [studentId, points, reason, category, operator]
+        })
+        successCount += 1
+      }
+
+      try {
+        await executeBatch(c.env.DB, insertStatements)
+      } catch (error) {
+        console.error('Import batch error', error)
+        return c.json({ success: false, message: '数据库写入失败，请重试' })
+      }
+
+      if (successCount > 0) {
+        invalidateStudentsCache()
       }
 
       return c.json({
@@ -378,7 +411,7 @@ export function registerPointsRoutes(app: Hono<Env>) {
       return c.json(createErrorResponse('记录不存在'), 404)
     }
 
-    return c.json({
+    return applyCacheHeadersToResponse(c.json({
       id: record.id,
       student_name: record.name,
       student_id: record.student_id,
@@ -388,7 +421,7 @@ export function registerPointsRoutes(app: Hono<Env>) {
       category: record.category,
       operator: record.operator ?? '',
       created_at: record.created_at
-    })
+    }), PAGE_CACHE_OPTIONS.dashboard)
   })
 }
 

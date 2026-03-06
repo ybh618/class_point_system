@@ -40,26 +40,45 @@ export function registerTrendRoutes(app: Hono<Env>) {
       return c.text('学生不存在', 404)
     }
 
-    const totalPoints = await queryOne<{ total: number }>(
-      db,
-      'SELECT COALESCE(SUM(points), 0) as total FROM points_records WHERE student_id = ?',
-      [id]
-    )
-
-    const recordsCount = await queryOne<{ count: number }>(
-      db,
-      'SELECT COUNT(*) as count FROM points_records WHERE student_id = ?',
-      [id]
-    )
+    const [totalPoints, recordsCount, categoryDistribution, recentRecords] = await Promise.all([
+      queryOne<{ total: number }>(
+        db,
+        'SELECT COALESCE(SUM(points), 0) as total FROM points_records WHERE student_id = ?',
+        [id]
+      ),
+      queryOne<{ count: number }>(
+        db,
+        'SELECT COUNT(*) as count FROM points_records WHERE student_id = ?',
+        [id]
+      ),
+      fetchCategoryDistribution(db, id),
+      queryAll<{
+        id: number
+        points: number
+        reason: string | null
+        category: string
+        operator: string | null
+        created_at: string
+      }>(
+        db,
+        'SELECT * FROM points_records WHERE student_id = ? ORDER BY created_at DESC LIMIT 10',
+        [id]
+      )
+    ])
 
     const avgPoints = recordsCount?.count
       ? (totalPoints?.total ?? 0) / recordsCount.count
       : 0
 
-    const classRank = await fetchClassRank(db, student.class_name, totalPoints?.total ?? 0)
+    const classRankPromise = fetchClassRank(db, student.class_name, totalPoints?.total ?? 0)
+    const classStatsPromise = fetchClassStats(db, student.class_name)
     const allDates = await fetchClassDates(db, student.class_name)
-    const trendData = await fetchStudentTrend(db, id, allDates)
-    const classTrendData = await fetchClassTrendBatch(db, student.class_name, allDates)
+    const [trendData, classTrendData, classRank, classStats] = await Promise.all([
+      fetchStudentTrend(db, id, allDates),
+      fetchClassTrendBatch(db, student.class_name, allDates),
+      classRankPromise,
+      classStatsPromise
+    ])
 
     const classAvgData = classTrendData.map((d) => ({ date: d.date, avg: d.avg }))
     const classQuartiles = {
@@ -68,26 +87,10 @@ export function registerTrendRoutes(app: Hono<Env>) {
       median: classTrendData.map((d) => ({ date: d.date, median: d.median })),
     }
 
-    const classStats = await fetchClassStats(db, student.class_name)
     const percentile = calculatePercentile(
       totalPoints?.total ?? 0,
       classStats.avg,
       classStats.max
-    )
-
-    const categoryDistribution = await fetchCategoryDistribution(db, id)
-
-    const recentRecords = await queryAll<{
-      id: number
-      points: number
-      reason: string | null
-      category: string
-      operator: string | null
-      created_at: string
-    }>(
-      db,
-      'SELECT * FROM points_records WHERE student_id = ? ORDER BY created_at DESC LIMIT 10',
-      [id]
     )
 
     return c.html(

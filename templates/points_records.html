@@ -181,52 +181,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    async function showRecordDetail(recordId) {
-        try {
-            const response = await fetch(`/api/record/${recordId}`);
-            const record = await response.json();
-
-            const pointsClass = record.points >= 0 ? 'points-positive' : 'points-negative';
-            const pointsSign = record.points >= 0 ? '+' : '';
-
-            document.getElementById('recordDetailContent').innerHTML = `
-            <div class="row">
-                <div class="col-sm-4"><strong>学生姓名：</strong></div>
-                <div class="col-sm-8">${record.student_name}</div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-sm-4"><strong>班级：</strong></div>
-                <div class="col-sm-8">${record.class_name}</div>
-            </div>
-            <hr>
-            <div class="row mt-2">
-                <div class="col-sm-4"><strong>积分：</strong></div>
-                <div class="col-sm-8"><span class="${pointsClass}">${pointsSign}${record.points}</span></div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-sm-4"><strong>类别：</strong></div>
-                <div class="col-sm-8">${record.category}</div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-sm-4"><strong>事由：</strong></div>
-                <div class="col-sm-8">${record.reason}</div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-sm-4"><strong>操作人：</strong></div>
-                <div class="col-sm-8">${record.operator}</div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-sm-4"><strong>记录时间：</strong></div>
-                <div class="col-sm-8">${record.created_at}</div>
-            </div>
-        `;
-
-            new bootstrap.Modal(document.getElementById('recordDetailModal')).show();
-        } catch (error) {
-            console.error('获取记录详情失败:', error);
-            alert('获取记录详情失败，请稍后重试');
-        }
-    }
-</script>
+<script src="/assets/app/points-records.js" defer></script>
 {% endblock %}

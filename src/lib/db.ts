@@ -57,9 +57,28 @@ export async function execute(
   await db.prepare(sql).bind(...params).run()
 }
 
+export async function executeBatch(
+  db: D1Database,
+  statements: Array<{ sql: string; params?: unknown[] }>,
+  chunkSize = 100
+): Promise<void> {
+  if (statements.length === 0) {
+    return
+  }
+
+  for (let i = 0; i < statements.length; i += chunkSize) {
+    const chunk = statements.slice(i, i + chunkSize)
+    await db.batch(
+      chunk.map((statement) => db.prepare(statement.sql).bind(...(statement.params ?? [])))
+    )
+  }
+}
+
 // 初始化状态标记
 let schemaEnsured = false
 let categoriesEnsured = false
+let schemaEnsurePromise: Promise<void> | null = null
+let categoriesEnsurePromise: Promise<void> | null = null
 
 const SCHEMA_STATEMENTS = [
   `CREATE TABLE IF NOT EXISTS points_categories (
@@ -97,8 +116,12 @@ const SCHEMA_STATEMENTS = [
   )`,
   `CREATE INDEX IF NOT EXISTS idx_points_records_student ON points_records(student_id)`,
   `CREATE INDEX IF NOT EXISTS idx_points_records_created ON points_records(created_at)`,
+  `CREATE INDEX IF NOT EXISTS idx_points_records_student_created ON points_records(student_id, created_at)`,
+  `CREATE INDEX IF NOT EXISTS idx_points_records_category ON points_records(category)`,
   `CREATE INDEX IF NOT EXISTS idx_students_group ON students(group_id)`,
-  `CREATE INDEX IF NOT EXISTS idx_students_class ON students(class_name)`
+  `CREATE INDEX IF NOT EXISTS idx_students_class ON students(class_name)`,
+  `CREATE INDEX IF NOT EXISTS idx_students_name ON students(name)`,
+  `CREATE INDEX IF NOT EXISTS idx_students_class_name ON students(class_name, name)`
 ]
 
 /**
@@ -109,10 +132,22 @@ export async function ensureSchema(db: D1Database): Promise<void> {
   if (schemaEnsured) {
     return
   }
-  for (const statement of SCHEMA_STATEMENTS) {
-    await db.prepare(statement).run()
+
+  if (schemaEnsurePromise) {
+    await schemaEnsurePromise
+    return
   }
-  schemaEnsured = true
+
+  schemaEnsurePromise = (async () => {
+    await db.batch(SCHEMA_STATEMENTS.map((statement) => db.prepare(statement)))
+    schemaEnsured = true
+  })()
+
+  try {
+    await schemaEnsurePromise
+  } finally {
+    schemaEnsurePromise = null
+  }
 }
 
 /**
@@ -162,40 +197,39 @@ export async function paginate<T>(
  */
 export async function ensureDefaultCategories(db: D1Database): Promise<void> {
   await ensureSchema(db)
-  
-  // 如果已经确认类别存在，直接返回
+
   if (categoriesEnsured) {
     return
   }
-  
-  const existing = await queryOne<{ count: number }>(
-    db,
-    'SELECT COUNT(*) as count FROM points_categories',
-    []
-  )
-  
-  if ((existing?.count ?? 0) > 0) {
-    // 标记类别已存在，后续请求不再查询
-    categoriesEnsured = true
+
+  if (categoriesEnsurePromise) {
+    await categoriesEnsurePromise
     return
   }
 
-  const defaults = [
-    { name: '作业', description: '作业完成情况', default_points: 5 },
-    { name: '考试', description: '考试成绩', default_points: 10 },
-    { name: '纪律', description: '课堂纪律', default_points: 3 },
-    { name: '表现', description: '课堂表现', default_points: 2 },
-    { name: '其他', description: '其他情况', default_points: 1 },
-  ]
+  categoriesEnsurePromise = (async () => {
+    const defaults = [
+      { name: '作业', description: '作业完成情况', default_points: 5 },
+      { name: '考试', description: '考试成绩', default_points: 10 },
+      { name: '纪律', description: '课堂纪律', default_points: 3 },
+      { name: '表现', description: '课堂表现', default_points: 2 },
+      { name: '其他', description: '其他情况', default_points: 1 },
+    ]
 
-  for (const item of defaults) {
-    await execute(
-      db,
-      'INSERT INTO points_categories (name, description, default_points, is_active) VALUES (?, ?, ?, 1)',
-      [item.name, item.description, item.default_points]
+    await db.batch(
+      defaults.map((item) =>
+        db.prepare(
+          'INSERT OR IGNORE INTO points_categories (name, description, default_points, is_active) VALUES (?, ?, ?, 1)'
+        ).bind(item.name, item.description, item.default_points)
+      )
     )
+
+    categoriesEnsured = true
+  })()
+
+  try {
+    await categoriesEnsurePromise
+  } finally {
+    categoriesEnsurePromise = null
   }
-  
-  // 标记类别已初始化
-  categoriesEnsured = true
 }

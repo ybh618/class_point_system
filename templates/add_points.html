@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="/assets/app/add-points.css">
+{% endblock %}
+
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid" id="addPointsPage" data-submit-url="{{ url_for('add_points') }}">
     <!-- 页面头部 -->
     <div class="row mb-3 mb-md-4">
         <div class="col-12">
@@ -34,9 +38,9 @@
         </div>
     </div>
 
-    <div class="row">
-        <!-- 左侧：学生卡片网格 -->
-        <div class="col-lg-9">
+    <div class="row add-points-layout-row">
+        <!-- 左侧：学生卡片网格，占据剩余空间 -->
+        <div class="col add-points-students-col">
             <!-- 筛选与控制 (移动端大幅精简) -->
             <div class="row mb-3 mb-md-4">
                 <div class="col-12">
@@ -105,8 +109,8 @@
                                     <div class="card-body text-center p-2 p-sm-3">
                                         <!-- 学生头像 -->
                                         <div class="student-avatar mb-1 mb-md-2">
-                                            <img src="{{ avatar_url(student.id) }}" alt="{{ student.name }}"
-                                                class="avatar avatar-sm avatar-md-lg">
+                                            <img src="{{ avatar_url(student.id, student.name) }}" alt="{{ student.name }}"
+                                                class="avatar avatar-sm avatar-md-lg" loading="lazy" decoding="async">
                                         </div>
 
                                         <!-- 学生信息 -->
@@ -169,8 +173,8 @@
                                     <div class="card-body text-center p-2 p-sm-3">
                                         <!-- 学生头像 -->
                                         <div class="student-avatar mb-1 mb-md-2">
-                                            <img src="{{ avatar_url(student.id) }}" alt="{{ student.name }}"
-                                                class="avatar avatar-sm avatar-md-lg">
+                                            <img src="{{ avatar_url(student.id, student.name) }}" alt="{{ student.name }}"
+                                                class="avatar avatar-sm avatar-md-lg" loading="lazy" decoding="async">
                                         </div>
 
                                         <!-- 学生信息 -->
@@ -200,241 +204,104 @@
             </div>
         </div>
 
-        <!-- 右侧：积分操作面板 (PC端显示，移动端隐藏) -->
-        <div class="col-lg-3 d-none d-lg-block">
-            <div class="card sticky-top" style="top: 20px;">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-plus-circle"></i> 积分操作
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <!-- 积分值设置 -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">积分值</label>
-                        <div class="input-group mb-2">
-                            <span class="input-group-text">积分</span>
-                            <input type="number" class="form-control" id="customPointsValue" placeholder="输入积分值"
-                                value="1" min="-100" max="100">
-                            <button class="btn btn-outline-success" type="button" id="setCustomPoints">
-                                <i class="bi bi-check-circle"></i> 设定
+        <!-- 右侧：加分面板 + 字母表紧贴靠右 (PC端显示，移动端隐藏) -->
+        <div class="col-auto ms-lg-auto d-none d-lg-flex add-points-right-block flex-nowrap">
+            <div class="add-points-ops-wrap pe-0">
+                <div class="card sticky-top add-points-ops-card" style="top: 20px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-plus-circle"></i> 积分操作
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- 积分值设置 -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">积分值</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">积分</span>
+                                <input type="number" class="form-control" id="customPointsValue" placeholder="输入积分值"
+                                    value="1" min="-100" max="100">
+                                <button class="btn btn-outline-success" type="button" id="setCustomPoints">
+                                    <i class="bi bi-check-circle"></i> 设定
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- 类别和事由 -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">类别</label>
+                            <select class="form-select" id="quickCategory">
+                                <option value="">请选择类别</option>
+                                {% for category in categories %}
+                                <option value="{{ category.name }}">{{ category.name }}</option>
+                                {% endfor %}
+                                <option value="自定义">自定义</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">事由</label>
+                            <input type="text" class="form-control" id="quickReason" placeholder="请输入事由">
+                        </div>
+
+                        <!-- 操作按钮 -->
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-success btn-lg" id="quickAddBtn">
+                                <i class="bi bi-plus-circle"></i> 加分
+                            </button>
+                            <button type="button" class="btn btn-danger btn-lg" id="quickMinusBtn">
+                                <i class="bi bi-dash-circle"></i> 扣分
                             </button>
                         </div>
 
-                    </div>
-
-                    <!-- 类别和事由 -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">类别</label>
-                        <select class="form-select" id="quickCategory">
-                            <option value="">请选择类别</option>
-                            {% for category in categories %}
-                            <option value="{{ category.name }}">{{ category.name }}</option>
-                            {% endfor %}
-                            <option value="自定义">自定义</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">事由</label>
-                        <input type="text" class="form-control" id="quickReason" placeholder="请输入事由">
-                    </div>
-
-                    <!-- 操作按钮 -->
-                    <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-success btn-lg" id="quickAddBtn">
-                            <i class="bi bi-plus-circle"></i> 加分
-                        </button>
-                        <button type="button" class="btn btn-danger btn-lg" id="quickMinusBtn">
-                            <i class="bi bi-dash-circle"></i> 扣分
-                        </button>
-                    </div>
-
-                    <!-- 选中状态 -->
-                    <div class="mt-4 p-3 bg-light rounded">
-                        <div class="text-center">
-                            <small class="text-muted">已选择</small>
-                            <h4 id="selectedCount" class="text-primary mb-1">0</h4>
-                            <small class="text-muted">名学生</small>
+                        <!-- 选中状态 -->
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <div class="text-center">
+                                <small class="text-muted">已选择</small>
+                                <h4 id="selectedCount" class="text-primary mb-1">0</h4>
+                                <small class="text-muted">名学生</small>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- 快速积分模态框 -->
-<div class="modal fade" id="quickPointsModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title">
-                    <i class="bi bi-person-circle text-primary"></i>
-                    <span id="modalStudentName"></span>
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="quickPointsForm">
-                    <input type="hidden" id="modalStudentId" name="student_id">
-
-                    <!-- 当前积分显示 -->
-                    <div class="text-center mb-4">
-                        <div class="current-points-display">
-                            <small class="text-muted">当前积分</small>
-                            <h2 class="mb-0">
-                                <span id="modalCurrentPoints" class="text-primary">0</span>
-                                <small class="text-muted">分</small>
-                            </h2>
-                        </div>
-                    </div>
-
-                    <!-- 快捷积分选项 -->
-                    <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="form-label text-success">加分</label>
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-success quick-add-points" data-points="1">+1
-                                    分</button>
-                                <button type="button" class="btn btn-success quick-add-points" data-points="2">+2
-                                    分</button>
-                                <button type="button" class="btn btn-success quick-add-points" data-points="5">+5
-                                    分</button>
-                                <button type="button" class="btn btn-success quick-add-points" data-points="10">+10
-                                    分</button>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label text-danger">扣分</label>
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-danger quick-add-points" data-points="-1">-1
-                                    分</button>
-                                <button type="button" class="btn btn-danger quick-add-points" data-points="-2">-2
-                                    分</button>
-                                <button type="button" class="btn btn-danger quick-add-points" data-points="-5">-5
-                                    分</button>
-                                <button type="button" class="btn btn-danger quick-add-points" data-points="-10">-10
-                                    分</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 自定义积分 -->
-                    <div class="mb-3">
-                        <label for="customPoints" class="form-label">自定义积分</label>
-                        <input type="number" class="form-control form-control-lg text-center" id="customPoints"
-                            placeholder="输入积分值" min="-100" max="100">
-                    </div>
-
-                    <!-- 类别和事由 -->
-                    <div class="mb-3">
-                        <label for="modalCategory" class="form-label">类别</label>
-                        <select class="form-select" id="modalCategory" name="category">
-                            <option value="">请选择类别</option>
-                            {% for category in categories %}
-                            <option value="{{ category.name }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="modalReason" class="form-label">事由</label>
-                        <textarea class="form-control" id="modalReason" name="reason" rows="2"
-                            placeholder="请说明积分事由"></textarea>
-                    </div>
-
-                    <!-- 操作人 -->
-                    <div class="mb-3">
-                        <label for="modalOperator" class="form-label">操作人</label>
-                        <input type="text" class="form-control" id="modalOperator" name="operator"
-                            placeholder="请输入操作人姓名">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="submitQuickPoints">
-                    <i class="bi bi-check-circle"></i> 确认提交
-                </button>
+            <!-- 竖排字母表索引，紧贴加分面板、靠屏幕右侧 -->
+            <div class="alphabet-index-outer align-self-start">
+            <nav class="alphabet-index" id="alphabetIndex" aria-label="按首字母筛选">
+                <span class="alphabet-index-label">A–Z</span>
+                <button type="button" class="alphabet-letter" data-letter="A" title="姓名以 A 开头">A</button>
+                <button type="button" class="alphabet-letter" data-letter="B" title="姓名以 B 开头">B</button>
+                <button type="button" class="alphabet-letter" data-letter="C" title="姓名以 C 开头">C</button>
+                <button type="button" class="alphabet-letter" data-letter="D" title="姓名以 D 开头">D</button>
+                <button type="button" class="alphabet-letter" data-letter="E" title="姓名以 E 开头">E</button>
+                <button type="button" class="alphabet-letter" data-letter="F" title="姓名以 F 开头">F</button>
+                <button type="button" class="alphabet-letter" data-letter="G" title="姓名以 G 开头">G</button>
+                <button type="button" class="alphabet-letter" data-letter="H" title="姓名以 H 开头">H</button>
+                <button type="button" class="alphabet-letter" data-letter="I" title="姓名以 I 开头">I</button>
+                <button type="button" class="alphabet-letter" data-letter="J" title="姓名以 J 开头">J</button>
+                <button type="button" class="alphabet-letter" data-letter="K" title="姓名以 K 开头">K</button>
+                <button type="button" class="alphabet-letter" data-letter="L" title="姓名以 L 开头">L</button>
+                <button type="button" class="alphabet-letter" data-letter="M" title="姓名以 M 开头">M</button>
+                <button type="button" class="alphabet-letter" data-letter="N" title="姓名以 N 开头">N</button>
+                <button type="button" class="alphabet-letter" data-letter="O" title="姓名以 O 开头">O</button>
+                <button type="button" class="alphabet-letter" data-letter="P" title="姓名以 P 开头">P</button>
+                <button type="button" class="alphabet-letter" data-letter="Q" title="姓名以 Q 开头">Q</button>
+                <button type="button" class="alphabet-letter" data-letter="R" title="姓名以 R 开头">R</button>
+                <button type="button" class="alphabet-letter" data-letter="S" title="姓名以 S 开头">S</button>
+                <button type="button" class="alphabet-letter" data-letter="T" title="姓名以 T 开头">T</button>
+                <button type="button" class="alphabet-letter" data-letter="U" title="姓名以 U 开头">U</button>
+                <button type="button" class="alphabet-letter" data-letter="V" title="姓名以 V 开头">V</button>
+                <button type="button" class="alphabet-letter" data-letter="W" title="姓名以 W 开头">W</button>
+                <button type="button" class="alphabet-letter" data-letter="X" title="姓名以 X 开头">X</button>
+                <button type="button" class="alphabet-letter" data-letter="Y" title="姓名以 Y 开头">Y</button>
+                <button type="button" class="alphabet-letter" data-letter="Z" title="姓名以 Z 开头">Z</button>
+                <button type="button" class="alphabet-letter" data-letter="#" title="其他">#</button>
+            </nav>
             </div>
         </div>
     </div>
-</div>
 
-<!-- 传统表单模态框 -->
-<div class="modal fade" id="traditionalModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">传统积分录入</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" id="traditionalForm">
-                    <div class="mb-3">
-                        <label for="tradStudentId" class="form-label">学生 <span class="text-danger">*</span></label>
-                        <select class="form-select" id="tradStudentId" name="student_id" required>
-                            <option value="">请选择学生</option>
-                            {% for group_data in groups_with_students %}
-                            {% for student in group_data.students %}
-                            <option value="{{ student.id }}">
-                                {{ student.name }} ({{ student.student_id }}) - {{ student.class_name }} - {{
-                                group_data.group.name }}
-                            </option>
-                            {% endfor %}
-                            {% endfor %}
-                            {% for student in ungrouped_students %}
-                            <option value="{{ student.id }}">
-                                {{ student.name }} ({{ student.student_id }}) - {{ student.class_name }} - 未分组
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="tradPoints" class="form-label">积分值 <span
-                                        class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="tradPoints" name="points" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="tradCategory" class="form-label">类别 <span
-                                        class="text-danger">*</span></label>
-                                <select class="form-select" id="tradCategory" name="category" required>
-                                    <option value="">请选择类别</option>
-                                    {% for category in categories %}
-                                    <option value="{{ category.name }}"
-                                        data-default-points="{{ category.default_points }}">
-                                        {{ category.name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="tradReason" class="form-label">事由</label>
-                        <textarea class="form-control" id="tradReason" name="reason" rows="3"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="tradOperator" class="form-label">操作人</label>
-                        <input type="text" class="form-control" id="tradOperator" name="operator">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="submitTraditional">提交</button>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- 移动端积分操作模态框 -->
 <div class="modal fade" id="mobileOpsModal" tabindex="-1">
@@ -494,526 +361,5 @@
 {% endblock %}
 
 {% block scripts %}
-<style>
-    /* 学生卡片样式 */
-    .student-card {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .student-card:hover .student-card-inner {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .student-card.selected .student-card-inner {
-        border: 2px solid #0d6efd;
-        transform: translateY(-3px);
-    }
-
-    .avatar-md-lg {
-        width: 60px;
-        height: 60px;
-    }
-
-    @media (max-width: 576px) {
-        .avatar-sm {
-            width: 40px;
-            height: 40px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .mobile-btn-fixed {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 1050;
-            /* 高于普通粘性元素 */
-            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3) !important;
-            border-radius: 50px !important;
-            padding: 8px 16px !important;
-            background: rgba(13, 110, 253, 0.9) !important;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-    }
-
-    .student-card.selected .selection-indicator {
-        display: block !important;
-    }
-
-    .student-card.selected .student-card-inner {
-        background-color: #f0f7ff;
-        border: 1px solid #0d6efd !important;
-    }
-
-    .avatar-circle {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        font-size: 24px;
-        font-weight: bold;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .bg-gradient-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .points-animation {
-        animation: pointsChange 0.6s ease-in-out;
-    }
-
-    @keyframes pointsChange {
-        0% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.3);
-            color: #28a745;
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
-    .points-negative-animation {
-        animation: pointsNegativeChange 0.6s ease-in-out;
-    }
-
-    @keyframes pointsNegativeChange {
-        0% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.3);
-            color: #dc3545;
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
-    .quick-points-btn:hover {
-        transform: scale(1.1);
-        transition: all 0.2s ease;
-    }
-
-    /* 小组头部样式 */
-    .group-header {
-        transition: all 0.3s ease;
-    }
-
-    .group-header:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .group-controls {
-        opacity: 0.7;
-        transition: opacity 0.3s ease;
-    }
-
-    .group-section:hover .group-controls {
-        opacity: 1;
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .avatar-circle {
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-        }
-
-        .group-header {
-            padding: 1rem !important;
-        }
-
-        .group-header h5 {
-            font-size: 1.1rem;
-        }
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let selectedStudents = new Set();
-        let currentFilter = 'all';
-
-        const quickPointsModal = new bootstrap.Modal(document.getElementById('quickPointsModal'));
-        const traditionalModal = new bootstrap.Modal(document.getElementById('traditionalModal'));
-
-        // 自定义积分值设定
-        document.getElementById('setCustomPoints').addEventListener('click', function () {
-            const points = parseInt(document.getElementById('customPointsValue').value) || 0;
-            if (points !== 0) {
-                showNotification(`已设定积分值：${points > 0 ? '+' : ''}${points}分`, 'success');
-            }
-        });
-
-
-        // 筛选按钮事件
-        document.querySelectorAll('[data-filter]').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const filter = this.dataset.filter;
-                currentFilter = filter;
-
-                // 更新按钮状态
-                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                // 筛选学生卡片
-                filterStudents(filter);
-            });
-        });
-
-        // 筛选学生函数
-        function filterStudents(filter) {
-            const sections = document.querySelectorAll('.group-section');
-            const cards = document.querySelectorAll('.student-card-wrapper');
-
-            sections.forEach(section => {
-                if (filter === 'all') {
-                    section.style.display = 'block';
-                } else if (filter === 'grouped') {
-                    section.style.display = section.dataset.groupId !== 'ungrouped' ? 'block' : 'none';
-                } else if (filter === 'ungrouped') {
-                    section.style.display = section.dataset.groupId === 'ungrouped' ? 'block' : 'none';
-                }
-            });
-
-            // 同时更新单个卡片的显示状态，确保筛选一致性
-            cards.forEach(card => {
-                if (filter === 'all') {
-                    card.style.display = 'block';
-                } else if (filter === 'grouped') {
-                    card.style.display = card.dataset.groupId ? 'block' : 'none';
-                } else if (filter === 'ungrouped') {
-                    card.style.display = card.dataset.groupId ? 'none' : 'block';
-                }
-            });
-        }
-
-        // 点击学生卡片选择
-        document.querySelectorAll('.student-card').forEach(card => {
-            card.addEventListener('click', function (e) {
-                // 如果点击的是已经存在的 checkbox（虽然已经隐藏，但以防万一），不要重复触发
-                if (e.target.classList.contains('student-checkbox')) return;
-
-                const checkbox = this.querySelector('.student-checkbox');
-                checkbox.checked = !checkbox.checked;
-
-                const studentId = checkbox.value;
-                const cardWrapper = this.closest('.student-card-wrapper');
-
-                if (checkbox.checked) {
-                    selectedStudents.add(studentId);
-                    this.classList.add('selected');
-                } else {
-                    selectedStudents.delete(studentId);
-                    this.classList.remove('selected');
-                }
-
-                updateSelectedInfo();
-            });
-        });
-
-        // 全选按钮
-        document.getElementById('selectAllBtn').addEventListener('click', function () {
-            const visibleCards = document.querySelectorAll('.student-card-wrapper:not([style*="display: none"])');
-            visibleCards.forEach(wrapper => {
-                const checkbox = wrapper.querySelector('.student-checkbox');
-                const card = wrapper.querySelector('.student-card');
-                checkbox.checked = true;
-                const studentId = checkbox.value;
-                selectedStudents.add(studentId);
-                card.classList.add('selected');
-            });
-            updateSelectedInfo();
-        });
-
-        // 全选本组按钮
-        document.querySelectorAll('.group-select-all').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const groupId = this.dataset.groupId;
-                let wrappers;
-
-                if (groupId === 'ungrouped') {
-                    wrappers = document.querySelectorAll('.student-card-wrapper[data-filter-type="ungrouped"]');
-                } else {
-                    wrappers = document.querySelectorAll(`.student-card-wrapper[data-group-id="${groupId}"]`);
-                }
-
-                wrappers.forEach(wrapper => {
-                    const checkbox = wrapper.querySelector('.student-checkbox');
-                    const card = wrapper.querySelector('.student-card');
-                    checkbox.checked = true;
-                    const studentId = checkbox.value;
-                    selectedStudents.add(studentId);
-                    card.classList.add('selected');
-                });
-                updateSelectedInfo();
-            });
-        });
-
-        // 清除所有选择
-        document.getElementById('clearAllBtn').addEventListener('click', function () {
-            document.querySelectorAll('.student-checkbox').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            document.querySelectorAll('.student-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            selectedStudents.clear();
-            updateSelectedInfo();
-        });
-
-        // 更新选中信息显示
-        function updateSelectedInfo() {
-            const count = selectedStudents.size;
-            document.getElementById('selectedCount').textContent = count;
-
-            // 同步移动端计数
-            const mobileCount = document.getElementById('mobileSelectedCount');
-            if (mobileCount) mobileCount.textContent = count;
-
-            const modalCount = document.getElementById('modalSelectedCountDisp');
-            if (modalCount) modalCount.textContent = count;
-        }
-
-        // 移动端操作按钮事件
-        const mobileOpsModal = new bootstrap.Modal(document.getElementById('mobileOpsModal'));
-
-        document.getElementById('mobileQuickAddBtn')?.addEventListener('click', function () {
-            applyMobileQuickOperation(true);
-        });
-
-        document.getElementById('mobileQuickMinusBtn')?.addEventListener('click', function () {
-            applyMobileQuickOperation(false);
-        });
-
-        function applyMobileQuickOperation(isAdd) {
-            const points = parseInt(document.getElementById('mobileCustomPoints').value) || 0;
-            const category = document.getElementById('mobileQuickCategory').value || '自定义';
-            const reason = document.getElementById('mobileQuickReason').value || (isAdd ? '自定义加分' : '自定义扣分');
-
-            if (points === 0) {
-                showNotification('请先设定积分值', 'warning');
-                return;
-            }
-
-            if (selectedStudents.size === 0) {
-                showNotification('请先选择学生', 'warning');
-                return;
-            }
-
-            const actualPoints = isAdd ? Math.abs(points) : -Math.abs(points);
-            const studentIds = Array.from(selectedStudents);
-
-            mobileOpsModal.hide();
-
-            // 执行批量提交
-            batchSubmitPoints(studentIds, actualPoints, category, reason, isAdd);
-        }
-
-        // 提取批量提交函数
-        function batchSubmitPoints(studentIds, actualPoints, category, reason, isAdd) {
-            let completed = 0;
-            studentIds.forEach(studentId => {
-                submitPoints(studentId, actualPoints, category, reason, '', function () {
-                    completed++;
-                    if (completed === studentIds.length) {
-                        // 清除选择
-                        document.querySelectorAll('.student-checkbox:checked').forEach(checkbox => {
-                            checkbox.checked = false;
-                        });
-                        document.querySelectorAll('.student-card').forEach(card => card.classList.remove('selected'));
-                        selectedStudents.clear();
-                        updateSelectedInfo();
-                        showNotification(`成功为${studentIds.length}名学生${isAdd ? '加分' : '扣分'} ${Math.abs(actualPoints)}分`, 'success');
-                    }
-                });
-            });
-        }
-
-        // 重构原 PC 端快速操作，复用 batchSubmitPoints
-        document.getElementById('quickAddBtn')?.addEventListener('click', function () {
-            const points = parseInt(document.getElementById('customPointsValue').value) || 0;
-            const category = document.getElementById('quickCategory').value || '自定义';
-            const reason = document.getElementById('quickReason').value || '自定义加分';
-
-            if (points === 0 || selectedStudents.size === 0) {
-                showNotification(points === 0 ? '请设定积分值' : '请先选择学生', 'warning');
-                return;
-            }
-            batchSubmitPoints(Array.from(selectedStudents), Math.abs(points), category, reason, true);
-        });
-
-        document.getElementById('quickMinusBtn')?.addEventListener('click', function () {
-            const points = parseInt(document.getElementById('customPointsValue').value) || 0;
-            const category = document.getElementById('quickCategory').value || '自定义';
-            const reason = document.getElementById('quickReason').value || '自定义扣分';
-
-            if (points === 0 || selectedStudents.size === 0) {
-                showNotification(points === 0 ? '请设定积分值' : '请先选择学生', 'warning');
-                return;
-            }
-            batchSubmitPoints(Array.from(selectedStudents), -Math.abs(points), category, reason, false);
-        });
-
-        // 打开快速积分模态框
-        function openQuickPointsModal(studentId, defaultPoints) {
-            const card = document.querySelector(`[data-student-id="${studentId}"]`);
-            const studentName = card.dataset.studentName;
-            const currentPoints = card.dataset.currentPoints;
-
-            document.getElementById('modalStudentId').value = studentId;
-            document.getElementById('modalStudentName').textContent = studentName;
-            document.getElementById('modalCurrentPoints').textContent = currentPoints;
-            document.getElementById('customPoints').value = defaultPoints !== 0 ? defaultPoints : '';
-
-            quickPointsModal.show();
-        }
-
-        // 快捷积分按钮
-        document.querySelectorAll('.quick-add-points').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const points = parseInt(this.dataset.points);
-                document.getElementById('customPoints').value = points;
-            });
-        });
-
-        // 提交快速积分
-        document.getElementById('submitQuickPoints').addEventListener('click', function () {
-            const studentId = document.getElementById('modalStudentId').value;
-            const points = parseInt(document.getElementById('customPoints').value) || 0;
-            const category = document.getElementById('modalCategory').value || '快捷操作';
-            const reason = document.getElementById('modalReason').value || '无具体事由';
-            const operator = document.getElementById('modalOperator').value;
-
-            if (points === 0) {
-                alert('请输入积分值');
-                return;
-            }
-
-            submitPoints(studentId, points, category, reason, operator);
-            quickPointsModal.hide();
-        });
-
-        // 提交传统表单
-        document.getElementById('submitTraditional').addEventListener('click', function () {
-            const form = document.getElementById('traditionalForm');
-            const formData = new FormData(form);
-
-            const studentId = formData.get('student_id');
-            const points = parseInt(formData.get('points')) || 0;
-            const category = formData.get('category') || '其他';
-            const reason = formData.get('reason') || '无具体事由';
-            const operator = formData.get('operator');
-
-            if (!studentId || points === 0 || !category) {
-                alert('请填写必要信息');
-                return;
-            }
-
-            submitPoints(studentId, points, category, reason, operator);
-            traditionalModal.hide();
-            form.reset();
-        });
-
-        // 提交积分数据
-        function submitPoints(studentId, points, category, reason, operator = '', callback) {
-            const formData = new FormData();
-            formData.append('student_id', studentId);
-            formData.append('points', points);
-            formData.append('category', category);
-            formData.append('reason', reason);
-            if (operator) {
-                formData.append('operator', operator);
-            }
-
-            fetch('{{ url_for("add_points") }}', {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // 更新学生积分显示
-                        updateStudentPoints(studentId, data.new_total_points);
-
-                        // 添加动画效果
-                        addPointsAnimation(studentId, points);
-
-                        // 执行回调
-                        if (callback) callback();
-                    } else {
-                        showNotification(data.message || '录入失败', 'error');
-                        if (callback) callback();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('网络错误，请重试', 'error');
-                    if (callback) callback();
-                });
-        }
-
-        // 更新学生积分显示
-        function updateStudentPoints(studentId, newPoints) {
-            const card = document.querySelector(`[data-student-id="${studentId}"]`);
-            if (card) {
-                card.dataset.currentPoints = newPoints;
-                const pointsValue = card.querySelector('.points-value');
-                if (pointsValue) {
-                    pointsValue.textContent = newPoints;
-                }
-            }
-        }
-
-        // 添加积分变化动画
-        function addPointsAnimation(studentId, points) {
-            const card = document.querySelector(`[data-student-id="${studentId}"]`);
-            if (card) {
-                const pointsValue = card.querySelector('.points-value');
-                if (pointsValue) {
-                    pointsValue.classList.add(points > 0 ? 'points-animation' : 'points-negative-animation');
-                    setTimeout(() => {
-                        pointsValue.classList.remove('points-animation', 'points-negative-animation');
-                    }, 600);
-                }
-            }
-        }
-
-        // 显示通知
-        function showNotification(message, type = 'success') {
-            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-            const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
-
-            const notification = document.createElement('div');
-            notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
-            notification.style.zIndex = '9999';
-            notification.innerHTML = `
-            <i class="bi ${icon}"></i> ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-    });
-</script>
+<script src="/assets/app/add-points.js" defer></script>
 {% endblock %}

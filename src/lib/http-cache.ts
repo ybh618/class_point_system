@@ -14,6 +14,25 @@ export interface CacheOptions {
   mustRevalidate?: boolean          // 是否必须重新验证
 }
 
+export function applyCacheHeadersToResponse(
+  response: Response,
+  options: CacheOptions
+): Response {
+  const headers = new Headers(response.headers)
+  setCacheHeaders(headers, options)
+
+  if (options.noStore) {
+    headers.set('Pragma', 'no-cache')
+    headers.set('Expires', '0')
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  })
+}
+
 /**
  * 页面缓存配置
  */
@@ -23,8 +42,8 @@ export const PAGE_CACHE_OPTIONS: Record<string, CacheOptions> = {
     private: true,
   },
   static: {
-    maxAge: 86400,  // 1 天
-    staleWhileRevalidate: 3600,
+    maxAge: 604800,  // 7 天
+    staleWhileRevalidate: 86400,
   },
   rankings: {
     maxAge: 60,     // 1 分钟

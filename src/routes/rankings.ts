@@ -41,8 +41,10 @@ export function registerRankingRoutes(app: Hono<Env>) {
       progressBEndStr
     )
 
-    const students = await fetchStudentsWithStats(c.env.DB, { orderBy: 'total_points DESC' })
-    const rangeMap = await fetchRangePoints(c.env.DB, rangeStart, rangeEnd)
+    const studentsPromise = fetchStudentsWithStats(c.env.DB, { orderBy: 'total_points DESC' })
+    const rangeMapPromise = fetchRangePoints(c.env.DB, rangeStart, rangeEnd)
+    const students = await studentsPromise
+    const rangeMap = await rangeMapPromise
 
     // 计算进步榜数据
     const progressRanking = await calculateProgressRanking(
@@ -236,9 +238,22 @@ function buildGroupRanking(
   students: StudentView[],
   rangeMap: Map<number, number>
 ) {
+  const studentsByGroupId = new Map<number, StudentView[]>()
+  for (const student of students) {
+    if (!student.group_id) {
+      continue
+    }
+    const existing = studentsByGroupId.get(student.group_id)
+    if (existing) {
+      existing.push(student)
+    } else {
+      studentsByGroupId.set(student.group_id, [student])
+    }
+  }
+
   return groups
     .map((group) => {
-      const members = students.filter((s) => s.group_id === group.id)
+      const members = studentsByGroupId.get(group.id) ?? []
       if (members.length === 0) {
         return null
       }

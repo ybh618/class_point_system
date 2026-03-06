@@ -6,13 +6,14 @@
 import type { Hono } from 'hono'
 import { read, utils } from 'xlsx'
 import type { Env } from '../lib/env'
-import { queryAll, queryOne, execute } from '../lib/db'
+import { queryAll, queryOne, execute, executeBatch } from '../lib/db'
 import { renderTemplate } from '../views/renderer'
 import { readFlash, redirectWithFlash } from '../lib/flash'
 import { createPagination } from '../lib/pagination'
 import { fetchStudentsWithStats } from '../lib/student_queries'
 import { PAGE_SIZE } from '../lib/constants'
 import { respondWithError } from '../lib/errors'
+import { invalidateStudentsCache } from '../lib/cache'
 
 /**
  * 注册学生相关路由
@@ -28,25 +29,25 @@ export function registerStudentRoutes(app: Hono<Env>) {
 
     const offset = (page - 1) * PAGE_SIZE
 
-    const rows = await fetchStudentsWithStats(db, {
-      search,
-      limit: PAGE_SIZE,
-      offset,
-    })
     const { where, params } = buildSearchFilter(search)
-    const countRow = await queryOne<{ total: number }>(
-      db,
-      `SELECT COUNT(*) as total FROM students s ${where}`,
-      params
-    )
+    const [rows, countRow, categories] = await Promise.all([
+      fetchStudentsWithStats(db, {
+        search,
+        limit: PAGE_SIZE,
+        offset,
+      }),
+      queryOne<{ total: number }>(
+        db,
+        `SELECT COUNT(*) as total FROM students s ${where}`,
+        params
+      ),
+      queryAll<{ name: string }>(
+        db,
+        'SELECT name FROM points_categories WHERE is_active = 1 ORDER BY name'
+      )
+    ])
     const total = countRow?.total ?? 0
-
     const pagination = createPagination(rows, total, page, PAGE_SIZE)
-
-    const categories = await queryAll<{ name: string }>(
-      db,
-      'SELECT name FROM points_categories WHERE is_active = 1 ORDER BY name'
-    )
 
     return c.html(
       renderTemplate({
@@ -98,7 +99,18 @@ export function registerStudentRoutes(app: Hono<Env>) {
           })
         }
 
-        let importCount = 0
+        const importStudentIds = rows.map((_, index) => `import_${index + 1}`)
+        const placeholders = importStudentIds.map(() => '?').join(',')
+        const existingIds = importStudentIds.length > 0
+          ? await queryAll<{ student_id: string }>(
+            db,
+            `SELECT student_id FROM students WHERE student_id IN (${placeholders})`,
+            importStudentIds
+          )
+          : []
+        const existingIdSet = new Set(existingIds.map((item) => item.student_id))
+
+        const insertStatements: Array<{ sql: string; params: unknown[] }> = []
         for (let i = 0; i < rows.length; i++) {
           const row = rows[i]
           const nameCell = row[1]
@@ -110,21 +122,20 @@ export function registerStudentRoutes(app: Hono<Env>) {
             continue
           }
           const studentId = `import_${i + 1}`
-          const exists = await queryOne<{ id: number }>(
-            db,
-            'SELECT id FROM students WHERE student_id = ?',
-            [studentId]
-          )
-          if (exists) {
+          if (existingIdSet.has(studentId)) {
             continue
           }
-          await execute(
-            db,
-            'INSERT INTO students (student_id, name, class_name) VALUES (?, ?, ?)',
-            [studentId, name, '默认班级']
-          )
-          importCount += 1
+          insertStatements.push({
+            sql: 'INSERT INTO students (student_id, name, class_name) VALUES (?, ?, ?)',
+            params: [studentId, name, '默认班级']
+          })
+          existingIdSet.add(studentId)
         }
+
+        await executeBatch(db, insertStatements)
+        const importCount = insertStatements.length
+
+        invalidateStudentsCache()
 
         return redirectWithFlash(c, '/students', {
           status: 'success',
@@ -161,6 +172,8 @@ export function registerStudentRoutes(app: Hono<Env>) {
       'INSERT INTO students (student_id, name, class_name) VALUES (?, ?, ?)',
       [studentId, name, className]
     )
+
+    invalidateStudentsCache()
 
     return redirectWithFlash(c, '/students', {
       status: 'success',

@@ -48,7 +48,7 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ avatar_url(student.id) }}" alt="{{ student.name }}" class="avatar me-2">
+                                <img src="{{ avatar_url(student.id, student.name) }}" alt="{{ student.name }}" class="avatar me-2" loading="lazy" decoding="async">
                                 <a href="{{ url_for('student_trend', id=student.id) }}"
                                     class="text-decoration-none fw-bold">
                                     {{ student.name }}
@@ -188,11 +188,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    function quickAddPoints(studentId, studentName) {
-        document.getElementById('quickStudentId').value = studentId;
-        document.getElementById('quickStudentName').value = studentName;
-        new bootstrap.Modal(document.getElementById('quickAddModal')).show();
-    }
-</script>
+<script src="/assets/app/students.js" defer></script>
 {% endblock %}

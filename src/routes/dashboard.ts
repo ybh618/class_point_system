@@ -15,12 +15,14 @@ import { readFlash } from '../lib/flash'
 export function registerDashboardRoutes(app: Hono<Env>) {
   app.get('/', async (c) => {
     const db = c.env.DB
-    const totalStudents = await queryOne<{ total: number }>(db, 'SELECT COUNT(*) as total FROM students')
-    const totalRecords = await queryOne<{ total: number }>(db, 'SELECT COUNT(*) as total FROM points_records')
-    const todayRecords = await queryOne<{ total: number }>(
-      db,
-      "SELECT COUNT(*) as total FROM points_records WHERE date(created_at) = date('now')"
-    )
+    const [totalStudents, totalRecords, todayRecords] = await Promise.all([
+      queryOne<{ total: number }>(db, 'SELECT COUNT(*) as total FROM students'),
+      queryOne<{ total: number }>(db, 'SELECT COUNT(*) as total FROM points_records'),
+      queryOne<{ total: number }>(
+        db,
+        "SELECT COUNT(*) as total FROM points_records WHERE date(created_at) = date('now')"
+      )
+    ])
 
     return c.html(
       renderTemplate({

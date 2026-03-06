@@ -152,35 +152,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const nameInput = document.getElementById('name');
-    const classInput = document.getElementById('class_name');
-    const colorInput = document.getElementById('color');
-    const preview = document.getElementById('preview');
-    const previewName = document.getElementById('previewName');
-    const previewClass = document.getElementById('previewClass');
-
-    function updatePreview() {
-        const name = nameInput.value || '小组名称';
-        const className = classInput.value || '班级名称';
-        const color = colorInput.value;
-
-        previewName.textContent = name;
-        previewClass.textContent = className;
-        preview.style.backgroundColor = color + '20';
-        preview.style.borderLeftColor = color;
-        preview.querySelector('i').style.color = color;
-    }
-
-    nameInput.addEventListener('input', updatePreview);
-    classInput.addEventListener('input', updatePreview);
-    colorInput.addEventListener('change', updatePreview);
-});
-
-function setColor(color) {
-    document.getElementById('color').value = color;
-    document.getElementById('color').dispatchEvent(new Event('change'));
-}
-</script>
+<script src="/assets/app/add-group.js" defer></script>
 {% endblock %}

@@ -9,6 +9,7 @@ import { fetchStudentsWithStats } from '../lib/student_queries'
 import { fetchGroups, buildGroupView } from '../lib/group_queries'
 import { invalidateStudentsCache } from '../lib/cache'
 import { DEFAULT_CATEGORY } from '../lib/constants'
+import { applyCacheHeadersToResponse, PAGE_CACHE_OPTIONS } from '../lib/http-cache'
 
 export function registerApiRoutes(app: Hono<Env>) {
     const api = new Hono<Env>()
@@ -18,10 +19,10 @@ export function registerApiRoutes(app: Hono<Env>) {
      */
     api.get('/students', async (c) => {
         const students = await fetchStudentsWithStats(c.env.DB, { orderBy: 's.name ASC' })
-        return c.json({
+        return applyCacheHeadersToResponse(c.json({
             success: true,
             data: students
-        })
+        }), PAGE_CACHE_OPTIONS.rankings)
     })
 
     /**
@@ -30,18 +31,30 @@ export function registerApiRoutes(app: Hono<Env>) {
     api.get('/groups', async (c) => {
         const students = await fetchStudentsWithStats(c.env.DB)
         const groups = await fetchGroups(c.env.DB)
+        const studentsByGroupId = new Map<number, typeof students>()
+        for (const student of students) {
+            if (!student.group_id) {
+                continue
+            }
+            const existing = studentsByGroupId.get(student.group_id)
+            if (existing) {
+                existing.push(student)
+            } else {
+                studentsByGroupId.set(student.group_id, [student])
+            }
+        }
         const groupsWithStudents = groups.map((group) => {
             const groupView = buildGroupView(group, students)
-            const groupStudents = students.filter((s) => s.group_id === group.id)
+            const groupStudents = studentsByGroupId.get(group.id) ?? []
             return {
                 ...groupView,
                 students: groupStudents
             }
         })
-        return c.json({
+        return applyCacheHeadersToResponse(c.json({
             success: true,
             data: groupsWithStudents
-        })
+        }), PAGE_CACHE_OPTIONS.rankings)
     })
 
     /**
@@ -52,10 +65,10 @@ export function registerApiRoutes(app: Hono<Env>) {
             c.env.DB,
             'SELECT name, default_points FROM points_categories WHERE is_active = 1 ORDER BY name'
         )
-        return c.json({
+        return applyCacheHeadersToResponse(c.json({
             success: true,
             data: categories
-        })
+        }), PAGE_CACHE_OPTIONS.dashboard)
     })
 
     /**
