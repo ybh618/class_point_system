@@ -14,8 +14,7 @@ import { toStartOfDayIso, toEndOfDayIso } from '../lib/time'
 import { fetchStudentsWithStats, type StudentView } from '../lib/student_queries'
 import {
   fetchGroups,
-  calculateGroupStats,
-  buildGroupView,
+  buildGroupViewFromMembers,
   type GroupRow,
 } from '../lib/group_queries'
 import { createErrorResponse } from '../lib/errors'
@@ -258,15 +257,14 @@ function buildGroupRanking(
         return null
       }
 
-      const groupView = buildGroupView(group, students, rangeMap)
-      const stats = calculateGroupStats(members, rangeMap)
+      const groupView = buildGroupViewFromMembers(group, members, rangeMap)
 
       return {
         group: groupView,
-        average_points: stats.average_points,
-        week_average_points: stats.week_average_points,
-        avg_range_points: stats.range_average ?? 0,
-        total_range_points: stats.range_points ?? 0,
+        average_points: groupView.average_points,
+        week_average_points: groupView.week_average_points,
+        avg_range_points: groupView.range_average ?? 0,
+        total_range_points: groupView.range_points ?? 0,
       }
     })
     .filter((item): item is NonNullable<typeof item> => Boolean(item))

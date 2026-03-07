@@ -11,7 +11,7 @@ import { readFlash, redirectWithFlash } from '../lib/flash'
 import { fetchStudentsWithStats } from '../lib/student_queries'
 import { DEFAULT_COLOR } from '../lib/constants'
 import { notFound, respondWithError } from '../lib/errors'
-import { fetchGroups, buildGroupView, calculateGroupStats } from '../lib/group_queries'
+import { fetchGroups, buildGroupViewFromMembers } from '../lib/group_queries'
 import { invalidateStudentsCache } from '../lib/cache'
 
 /**
@@ -25,8 +25,20 @@ export function registerGroupRoutes(app: Hono<Env>) {
     const db = c.env.DB
     const students = await fetchStudentsWithStats(db, { orderBy: 's.name ASC' })
     const groups = await fetchGroups(db)
+    const studentsByGroupId = new Map<number, typeof students>()
+    for (const student of students) {
+      if (!student.group_id) {
+        continue
+      }
+      const members = studentsByGroupId.get(student.group_id)
+      if (members) {
+        members.push(student)
+      } else {
+        studentsByGroupId.set(student.group_id, [student])
+      }
+    }
 
-    const enriched = groups.map((group) => buildGroupView(group, students))
+    const enriched = groups.map((group) => buildGroupViewFromMembers(group, studentsByGroupId.get(group.id) ?? []))
 
     return c.html(
       renderTemplate({
@@ -109,14 +121,12 @@ export function registerGroupRoutes(app: Hono<Env>) {
       ids: classStudentIds.map((item) => item.id),
     })
 
-    const stats = calculateGroupStats(members)
-
     return c.html(
       renderTemplate({
         template: 'edit_group.html',
         flash: readFlash(c),
         context: {
-          group: buildGroupView(group, members),
+          group: buildGroupViewFromMembers(group, members),
           available_students: available,
         },
       })

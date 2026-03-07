@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const selectedStudents = new Set()
   let currentFilter = 'all'
   let selectedLetter = null
-  const studentsGrid = document.getElementById('studentsGrid')
 
   function getMobileOpsModal() {
     const element = document.getElementById('mobileOpsModal')
@@ -100,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!wrapper) {
       return
     }
-    wrapper.dataset.currentPoints = String(newPoints)
     const pointsValue = wrapper.querySelector('.points-value')
     if (pointsValue) {
       pointsValue.textContent = String(newPoints)
@@ -267,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (groupSelectButton instanceof HTMLElement) {
       const groupId = groupSelectButton.dataset.groupId
       const selector = groupId === 'ungrouped'
-        ? '.student-card-wrapper[data-filter-type="ungrouped"] .student-card'
+        ? '.student-card-wrapper[data-group-id=""] .student-card'
         : `.student-card-wrapper[data-group-id="${groupId}"] .student-card`
       document.querySelectorAll(selector).forEach((card) => syncSelection(card, true))
       updateSelectedInfo()
@@ -275,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const card = target.closest('.student-card')
-    if (!(card instanceof HTMLElement) || !studentsGrid?.contains(card)) {
+    if (!(card instanceof HTMLElement) || !page.contains(card)) {
       return
     }
     if (target.closest('.student-checkbox')) {

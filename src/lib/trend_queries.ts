@@ -230,27 +230,6 @@ export async function fetchClassRank(
 }
 
 /**
- * 获取学生的类别分布
- * @param db D1 数据库实例
- * @param studentId 学生 ID
- * @returns 按类别分组的积分统计
- */
-export async function fetchCategoryDistribution(
-  db: D1Database,
-  studentId: number
-): Promise<Array<{ category: string; total: number }>> {
-  return queryAll<{ category: string; total: number }>(
-    db,
-    `SELECT category, SUM(points) as total
-     FROM points_records
-     WHERE student_id = ?
-     GROUP BY category
-     ORDER BY total DESC`,
-    [studentId]
-  )
-}
-
-/**
  * 计算学生在班级中的百分位
  * @param studentTotal 学生总积分
  * @param classAvg 班级平均分
@@ -259,7 +238,7 @@ export async function fetchCategoryDistribution(
  */
 export function calculatePercentile(
   studentTotal: number,
-  classAvg: number,
+  _classAvg: number,
   classMax: number
 ): number {
   if (classMax === 0) return 50

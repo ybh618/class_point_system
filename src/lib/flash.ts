@@ -13,7 +13,7 @@ export function readFlash(c: Context): FlashState {
   return { status, message }
 }
 
-export function redirectWithFlash(c: Context, location: string, flash: FlashState) {
+export function redirectWithFlash(_c: Context, location: string, flash: FlashState) {
   const url = new URL(location, 'https://placeholder')
   if (flash.status && flash.message) {
     url.searchParams.set('status', flash.status)

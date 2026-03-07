@@ -116,26 +116,21 @@ export function getGlobalCache(): MemoryCacheService {
   return globalCache
 }
 
-/**
- * 重置全局缓存（主要用于测试）
- */
-export function resetGlobalCache(): void {
-  if (globalCache) {
-    globalCache.clear()
-  }
-  globalCache = null
-}
-
 // 缓存键常量
 export const CACHE_KEYS = {
   CATEGORIES: 'categories',
-  STUDENTS_STATS: 'students_stats',
+  STUDENTS_PREFIX: 'students:',
+  STUDENTS_STATS_ALL: 'students:stats:all',
+  STUDENTS_LIST_ALL: 'students:list:all',
+  STUDENTS_POINTS_ALL: 'students:points:all',
 } as const
 
 // 默认 TTL 配置（毫秒）
 export const CACHE_TTL = {
   CATEGORIES: 5 * 60 * 1000,  // 5 分钟
   STUDENTS_STATS: 2 * 60 * 1000,  // 2 分钟
+  STUDENTS_LIST: 90 * 1000,  // 90 秒
+  STUDENTS_POINTS: 3 * 60 * 1000,  // 3 分钟
 } as const
 
 
@@ -152,5 +147,5 @@ export function invalidateCategoryCache(): void {
  */
 export function invalidateStudentsCache(): void {
   const cache = getGlobalCache()
-  cache.invalidate(CACHE_KEYS.STUDENTS_STATS)
+  cache.invalidatePattern(CACHE_KEYS.STUDENTS_PREFIX)
 }

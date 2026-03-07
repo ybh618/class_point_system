@@ -102,8 +102,7 @@
                     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 g-2 g-md-3">
                         {% for student in group_data.students %}
                         <div class="col student-card-wrapper" data-student-id="{{ student.id }}"
-                            data-student-name="{{ student.name }}" data-current-points="{{ student.total_points or 0 }}"
-                            data-group-id="{{ student.group_id or '' }}" data-filter-type="grouped">
+                            data-student-name="{{ student.name }}" data-group-id="{{ student.group_id or '' }}">
                             <div class="student-card h-100 position-relative">
                                 <div class="card h-100 border-0 shadow-sm student-card-inner">
                                     <div class="card-body text-center p-2 p-sm-3">
@@ -166,8 +165,7 @@
                     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 g-2 g-md-3">
                         {% for student in ungrouped_students %}
                         <div class="col student-card-wrapper" data-student-id="{{ student.id }}"
-                            data-student-name="{{ student.name }}" data-current-points="{{ student.total_points or 0 }}"
-                            data-group-id="" data-filter-type="ungrouped">
+                            data-student-name="{{ student.name }}" data-group-id="">
                             <div class="student-card h-100 position-relative">
                                 <div class="card h-100 border-0 shadow-sm student-card-inner">
                                     <div class="card-body text-center p-2 p-sm-3">

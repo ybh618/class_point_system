@@ -15,7 +15,6 @@ import {
   fetchClassTrendBatch,
   fetchClassStats,
   fetchClassRank,
-  fetchCategoryDistribution,
   calculatePercentile,
 } from '../lib/trend_queries'
 
@@ -32,15 +31,17 @@ export function registerTrendRoutes(app: Hono<Env>) {
       student_id: string
       name: string
       class_name: string
-      group_id: number | null
-      created_at: string
-    }>(db, 'SELECT * FROM students WHERE id = ?', [id])
+    }>(
+      db,
+      'SELECT id, student_id, name, class_name FROM students WHERE id = ?',
+      [id]
+    )
 
     if (!student) {
       return c.text('学生不存在', 404)
     }
 
-    const [totalPoints, recordsCount, categoryDistribution, recentRecords] = await Promise.all([
+    const [totalPoints, recordsCount, recentRecords] = await Promise.all([
       queryOne<{ total: number }>(
         db,
         'SELECT COALESCE(SUM(points), 0) as total FROM points_records WHERE student_id = ?',
@@ -51,9 +52,7 @@ export function registerTrendRoutes(app: Hono<Env>) {
         'SELECT COUNT(*) as count FROM points_records WHERE student_id = ?',
         [id]
       ),
-      fetchCategoryDistribution(db, id),
       queryAll<{
-        id: number
         points: number
         reason: string | null
         category: string
@@ -61,7 +60,11 @@ export function registerTrendRoutes(app: Hono<Env>) {
         created_at: string
       }>(
         db,
-        'SELECT * FROM points_records WHERE student_id = ? ORDER BY created_at DESC LIMIT 10',
+        `SELECT points, reason, category, operator, created_at
+           FROM points_records
+          WHERE student_id = ?
+          ORDER BY created_at DESC
+          LIMIT 10`,
         [id]
       )
     ])
@@ -100,7 +103,6 @@ export function registerTrendRoutes(app: Hono<Env>) {
         context: {
           student: {
             ...student,
-            created_at: makeDateHelper(student.created_at),
             total_points: totalPoints?.total ?? 0,
           },
           stats: {
@@ -115,7 +117,6 @@ export function registerTrendRoutes(app: Hono<Env>) {
           class_q1_data: classQuartiles.q1,
           class_q3_data: classQuartiles.q3,
           class_median_data: classQuartiles.median,
-          category_distribution: categoryDistribution,
           recent_records: recentRecords.map((r) => ({
             ...r,
             created_at: makeDateHelper(r.created_at),

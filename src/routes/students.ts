@@ -10,7 +10,7 @@ import { queryAll, queryOne, execute, executeBatch } from '../lib/db'
 import { renderTemplate } from '../views/renderer'
 import { readFlash, redirectWithFlash } from '../lib/flash'
 import { createPagination } from '../lib/pagination'
-import { fetchStudentsWithStats } from '../lib/student_queries'
+import { fetchStudentsForList } from '../lib/student_queries'
 import { PAGE_SIZE } from '../lib/constants'
 import { respondWithError } from '../lib/errors'
 import { invalidateStudentsCache } from '../lib/cache'
@@ -29,24 +29,29 @@ export function registerStudentRoutes(app: Hono<Env>) {
 
     const offset = (page - 1) * PAGE_SIZE
 
-    const { where, params } = buildSearchFilter(search)
-    const [rows, countRow, categories] = await Promise.all([
-      fetchStudentsWithStats(db, {
+    const countQuery = buildSearchFilter(search)
+    const [rows, categories] = await Promise.all([
+      fetchStudentsForList(db, {
         search,
         limit: PAGE_SIZE,
         offset,
       }),
-      queryOne<{ total: number }>(
-        db,
-        `SELECT COUNT(*) as total FROM students s ${where}`,
-        params
-      ),
       queryAll<{ name: string }>(
         db,
         'SELECT name FROM points_categories WHERE is_active = 1 ORDER BY name'
       )
     ])
-    const total = countRow?.total ?? 0
+
+    let total = offset + rows.length
+    if (rows.length === PAGE_SIZE || (page > 1 && rows.length === 0)) {
+      const countRow = await queryOne<{ total: number }>(
+        db,
+        `SELECT COUNT(*) as total FROM students s ${countQuery.where}`,
+        countQuery.params
+      )
+      total = countRow?.total ?? 0
+    }
+
     const pagination = createPagination(rows, total, page, PAGE_SIZE)
 
     return c.html(

@@ -232,12 +232,10 @@ output += "\n                        <div class=\"col student-card-wrapper\" dat
 output += runtime.suppressValue(runtime.memberLookup((t_17),"id"), env.opts.autoescape);
 output += "\"\n                            data-student-name=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_17),"name"), env.opts.autoescape);
-output += "\" data-current-points=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_17),"total_points") || 0, env.opts.autoescape);
-output += "\"\n                            data-group-id=\"";
+output += "\" data-group-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_17),"group_id") || "", env.opts.autoescape);
-output += "\" data-filter-type=\"grouped\">\n                            <div class=\"student-card h-100 position-relative\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-2 p-sm-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-1 mb-md-2\">\n                                            <img src=\"";
-output += runtime.suppressValue((lineno = 111, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_17),"id"),runtime.memberLookup((t_17),"name")])), env.opts.autoescape);
+output += "\">\n                            <div class=\"student-card h-100 position-relative\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-2 p-sm-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-1 mb-md-2\">\n                                            <img src=\"";
+output += runtime.suppressValue((lineno = 110, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_17),"id"),runtime.memberLookup((t_17),"name")])), env.opts.autoescape);
 output += "\" alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_17),"name"), env.opts.autoescape);
 output += "\"\n                                                class=\"avatar avatar-sm avatar-md-lg\" loading=\"lazy\" decoding=\"async\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1 text-truncate\">";
@@ -284,10 +282,8 @@ output += "\n                        <div class=\"col student-card-wrapper\" dat
 output += runtime.suppressValue(runtime.memberLookup((t_21),"id"), env.opts.autoescape);
 output += "\"\n                            data-student-name=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_21),"name"), env.opts.autoescape);
-output += "\" data-current-points=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_21),"total_points") || 0, env.opts.autoescape);
-output += "\"\n                            data-group-id=\"\" data-filter-type=\"ungrouped\">\n                            <div class=\"student-card h-100 position-relative\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-2 p-sm-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-1 mb-md-2\">\n                                            <img src=\"";
-output += runtime.suppressValue((lineno = 175, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_21),"id"),runtime.memberLookup((t_21),"name")])), env.opts.autoescape);
+output += "\" data-group-id=\"\">\n                            <div class=\"student-card h-100 position-relative\">\n                                <div class=\"card h-100 border-0 shadow-sm student-card-inner\">\n                                    <div class=\"card-body text-center p-2 p-sm-3\">\n                                        <!-- 学生头像 -->\n                                        <div class=\"student-avatar mb-1 mb-md-2\">\n                                            <img src=\"";
+output += runtime.suppressValue((lineno = 173, colno = 67, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "avatar_url"), "avatar_url", context, [runtime.memberLookup((t_21),"id"),runtime.memberLookup((t_21),"name")])), env.opts.autoescape);
 output += "\" alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_21),"name"), env.opts.autoescape);
 output += "\"\n                                                class=\"avatar avatar-sm avatar-md-lg\" loading=\"lazy\" decoding=\"async\">\n                                        </div>\n\n                                        <!-- 学生信息 -->\n                                        <h6 class=\"student-name mb-1 text-truncate\">";
@@ -362,7 +358,7 @@ cb(null, output);
 }
 }
 function b_scripts(env, context, frame, runtime, cb) {
-var lineno = 362;
+var lineno = 360;
 var colno = 3;
 var output = "";
 try {

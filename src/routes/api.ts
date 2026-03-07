@@ -6,9 +6,8 @@ import { Hono } from 'hono'
 import type { Env } from '../lib/env'
 import { queryAll, execute } from '../lib/db'
 import { fetchStudentsWithStats } from '../lib/student_queries'
-import { fetchGroups, buildGroupView } from '../lib/group_queries'
+import { fetchGroups, buildGroupViewFromMembers } from '../lib/group_queries'
 import { invalidateStudentsCache } from '../lib/cache'
-import { DEFAULT_CATEGORY } from '../lib/constants'
 import { applyCacheHeadersToResponse, PAGE_CACHE_OPTIONS } from '../lib/http-cache'
 
 export function registerApiRoutes(app: Hono<Env>) {
@@ -44,12 +43,8 @@ export function registerApiRoutes(app: Hono<Env>) {
             }
         }
         const groupsWithStudents = groups.map((group) => {
-            const groupView = buildGroupView(group, students)
             const groupStudents = studentsByGroupId.get(group.id) ?? []
-            return {
-                ...groupView,
-                students: groupStudents
-            }
+            return buildGroupViewFromMembers(group, groupStudents)
         })
         return applyCacheHeadersToResponse(c.json({
             success: true,

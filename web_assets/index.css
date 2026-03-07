@@ -1,10 +1,3 @@
-.glass-bg {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
 .hero-banner {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20px;
@@ -71,42 +64,4 @@
 .quick-link i {
   font-size: 1.25rem;
   margin-right: 15px;
-}
-
-.ranking-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.ranking-item:last-child {
-  border-bottom: none;
-}
-
-.rank-badge {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  margin-right: 15px;
-  font-size: 0.875rem;
-}
-
-.rank-1 {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.rank-2 {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.rank-3 {
-  background: #ffedd5;
-  color: #9a3412;
 }

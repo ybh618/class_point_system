@@ -41,13 +41,25 @@ export type GroupView = Omit<GroupRow, 'created_at'> &
     students: StudentView[]
   }
 
+export type GroupSummary = Omit<GroupRow, 'created_at'> &
+  GroupStats & {
+    created_at: ReturnType<typeof makeDateHelper>
+  }
+
+type GroupMemberStats = Pick<StudentView, 'id' | 'total_points'> & {
+  week_points?: number
+}
+
 /**
  * 获取所有小组
  * @param db D1 数据库实例
  * @returns 按班级和名称排序的小组列表
  */
 export async function fetchGroups(db: D1Database): Promise<GroupRow[]> {
-  return queryAll<GroupRow>(db, 'SELECT * FROM groups ORDER BY class_name, name')
+  return queryAll<GroupRow>(
+    db,
+    'SELECT id, name, description, class_name, color, created_at FROM groups ORDER BY class_name, name'
+  )
 }
 
 /**
@@ -57,7 +69,7 @@ export async function fetchGroups(db: D1Database): Promise<GroupRow[]> {
  * @returns 小组统计数据
  */
 export function calculateGroupStats(
-  members: StudentView[],
+  members: GroupMemberStats[],
   rangeMap?: Map<number, number>
 ): GroupStats {
   if (members.length === 0) {
@@ -72,7 +84,7 @@ export function calculateGroupStats(
   }
 
   const totalPoints = members.reduce((sum, s) => sum + s.total_points, 0)
-  const weekPoints = members.reduce((sum, s) => sum + s.week_points, 0)
+  const weekPoints = members.reduce((sum, s) => sum + (s.week_points ?? 0), 0)
   const rangeTotal = rangeMap
     ? members.reduce((sum, s) => sum + (rangeMap.get(s.id) ?? 0), 0)
     : 0
@@ -84,6 +96,31 @@ export function calculateGroupStats(
     week_average_points: weekPoints / members.length,
     range_points: rangeTotal,
     range_average: rangeTotal / members.length,
+  }
+}
+
+export function buildGroupSummary(
+  group: GroupRow,
+  members: GroupMemberStats[],
+  rangeMap?: Map<number, number>
+): GroupSummary {
+  const stats = calculateGroupStats(members, rangeMap)
+
+  return {
+    ...group,
+    ...stats,
+    created_at: makeDateHelper(group.created_at),
+  }
+}
+
+export function buildGroupViewFromMembers<T extends GroupMemberStats>(
+  group: GroupRow,
+  members: T[],
+  rangeMap?: Map<number, number>
+): Omit<GroupView, 'students'> & { students: T[] } {
+  return {
+    ...buildGroupSummary(group, members, rangeMap),
+    students: members,
   }
 }
 
@@ -100,12 +137,5 @@ export function buildGroupView(
   rangeMap?: Map<number, number>
 ): GroupView {
   const members = students.filter((s) => s.group_id === group.id)
-  const stats = calculateGroupStats(members, rangeMap)
-
-  return {
-    ...group,
-    ...stats,
-    created_at: makeDateHelper(group.created_at),
-    students: members,
-  }
+  return buildGroupViewFromMembers(group, members, rangeMap)
 }

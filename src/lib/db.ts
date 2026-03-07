@@ -4,7 +4,6 @@
  */
 
 import type { D1Database } from '@cloudflare/workers-types'
-import type { Pagination } from './types'
 import { PAGE_SIZE, DEFAULT_COLOR } from './constants'
 
 // 重新导出 PAGE_SIZE 以保持向后兼容
@@ -147,46 +146,6 @@ export async function ensureSchema(db: D1Database): Promise<void> {
     await schemaEnsurePromise
   } finally {
     schemaEnsurePromise = null
-  }
-}
-
-/**
- * 分页查询选项
- */
-export type PaginateOptions = {
-  page?: number
-  perPage?: number
-}
-
-/**
- * 执行分页查询
- * @param db D1 数据库实例
- * @param baseSql 基础查询语句（不含 LIMIT/OFFSET）
- * @param countSql 计数查询语句
- * @param params 查询参数
- * @param options 分页选项
- * @returns 分页结果
- */
-export async function paginate<T>(
-  db: D1Database,
-  baseSql: string,
-  countSql: string,
-  params: unknown[] = [],
-  options: PaginateOptions = {}
-): Promise<Pagination<T>> {
-  const page = Math.max(1, options.page ?? 1)
-  const perPage = options.perPage ?? PAGE_SIZE
-  const offset = (page - 1) * perPage
-
-  const rows = await queryAll<T>(db, `${baseSql} LIMIT ? OFFSET ?`, [...params, perPage, offset])
-  const countRow = await queryOne<{ total: number }>(db, countSql, params)
-  const total = countRow?.total ?? 0
-  return {
-    items: rows,
-    page,
-    per_page: perPage,
-    total,
-    pages: Math.max(1, Math.ceil(total / perPage)),
   }
 }
 

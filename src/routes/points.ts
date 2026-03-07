@@ -11,10 +11,10 @@ import { renderTemplate } from '../views/renderer'
 import { readFlash, redirectWithFlash } from '../lib/flash'
 import { makeDateHelper } from '../lib/time'
 import { createPagination } from '../lib/pagination'
-import { fetchStudentsWithStats } from '../lib/student_queries'
+import { fetchStudentsForPoints } from '../lib/student_queries'
 import { DEFAULT_CATEGORY, PAGE_SIZE } from '../lib/constants'
 import { respondWithError, createErrorResponse } from '../lib/errors'
-import { fetchGroups, buildGroupView } from '../lib/group_queries'
+import { fetchGroups, buildGroupSummary } from '../lib/group_queries'
 import { invalidateStudentsCache } from '../lib/cache'
 import { applyCacheHeadersToResponse, PAGE_CACHE_OPTIONS } from '../lib/http-cache'
 
@@ -28,7 +28,7 @@ export function registerPointsRoutes(app: Hono<Env>) {
   app.get('/points/add', async (c) => {
     const db = c.env.DB
     const [students, groups, categories] = await Promise.all([
-      fetchStudentsWithStats(db, { orderBy: 's.name ASC' }),
+      fetchStudentsForPoints(db, { orderBy: 's.name ASC' }),
       fetchGroups(db),
       queryAll<{ name: string; default_points: number }>(
         db,
@@ -49,10 +49,9 @@ export function registerPointsRoutes(app: Hono<Env>) {
     }
 
     const groupsWithStudents = groups.map((group) => {
-      const groupView = buildGroupView(group, students)
       const groupStudents = studentsByGroupId.get(group.id) ?? []
       return {
-        group: groupView,
+        group: buildGroupSummary(group, groupStudents),
         students: groupStudents,
       }
     })
@@ -122,35 +121,36 @@ export function registerPointsRoutes(app: Hono<Env>) {
     const offset = (page - 1) * perPage
 
     const filters = buildRecordFilter(search)
-    const [records, totalRow] = await Promise.all([
-      queryAll<{
-        id: number
-        student_id: number
-        points: number
-        reason: string | null
-        category: string
-        operator: string | null
-        created_at: string
-        student_name: string
-        student_number: string
-        class_name: string
-      }>(
-        db,
-        `SELECT pr.*, s.name as student_name, s.student_id as student_number, s.class_name
-           FROM points_records pr
-           JOIN students s ON s.id = pr.student_id
-           ${filters.where}
-           ORDER BY pr.created_at DESC
-           LIMIT ? OFFSET ?`,
-        [...filters.params, perPage, offset]
-      ),
-      queryOne<{ total: number }>(
+    const records = await queryAll<{
+      id: number
+      student_id: number
+      points: number
+      reason: string | null
+      category: string
+      operator: string | null
+      created_at: string
+      student_name: string
+      class_name: string
+    }>(
+      db,
+      `SELECT pr.id, pr.student_id, pr.points, pr.reason, pr.category, pr.operator, pr.created_at,
+              s.name as student_name, s.class_name
+         FROM points_records pr
+         JOIN students s ON s.id = pr.student_id
+         ${filters.where}
+         ORDER BY pr.created_at DESC
+         LIMIT ? OFFSET ?`,
+      [...filters.params, perPage, offset]
+    )
+    let total = offset + records.length
+    if (records.length === perPage || (page > 1 && records.length === 0)) {
+      const totalRow = await queryOne<{ total: number }>(
         db,
         `SELECT COUNT(*) as total FROM points_records pr JOIN students s ON s.id = pr.student_id ${filters.where}`,
         filters.params
       )
-    ])
-    const total = totalRow?.total ?? 0
+      total = totalRow?.total ?? 0
+    }
 
     const formatted = records.map((record) => ({
       ...record,
@@ -158,7 +158,6 @@ export function registerPointsRoutes(app: Hono<Env>) {
       student: {
         id: record.student_id,
         name: record.student_name,
-        student_id: record.student_number,
         class_name: record.class_name
       }
     }))
@@ -182,13 +181,14 @@ export function registerPointsRoutes(app: Hono<Env>) {
     const db = c.env.DB
     const record = await queryOne<{
       id: number
-      student_id: number
       points: number
-      category: string
       student_name: string | null
     }>(
       db,
-      'SELECT pr.*, s.name as student_name FROM points_records pr LEFT JOIN students s ON s.id = pr.student_id WHERE pr.id = ?',
+      `SELECT pr.id, pr.points, s.name as student_name
+         FROM points_records pr
+         LEFT JOIN students s ON s.id = pr.student_id
+        WHERE pr.id = ?`,
       [recordId]
     )
 

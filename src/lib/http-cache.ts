@@ -1,6 +1,6 @@
 /**
  * HTTP 缓存中间件模块
- * 提供 ETag 生成、Cache-Control 头设置和条件请求验证
+ * 提供 Cache-Control 头设置和路径级缓存策略
  */
 
 /**
@@ -63,24 +63,6 @@ export const PAGE_CACHE_OPTIONS: Record<string, CacheOptions> = {
 }
 
 /**
- * 生成 ETag（基于内容哈希）
- * 使用简单的字符串哈希算法
- * @param content 内容字符串
- * @returns ETag 字符串
- */
-export function generateETag(content: string): string {
-  let hash = 0
-  for (let i = 0; i < content.length; i++) {
-    const char = content.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
-    hash = hash & hash // 转换为 32 位整数
-  }
-  // 使用绝对值并转换为 16 进制
-  const hashStr = Math.abs(hash).toString(16)
-  return `"${hashStr}"`
-}
-
-/**
  * 构建 Cache-Control 头值
  * @param options 缓存选项
  * @returns Cache-Control 头值字符串
@@ -123,39 +105,6 @@ export function setCacheHeaders(
   if (etag) {
     headers.set('ETag', etag)
   }
-}
-
-/**
- * 验证条件请求（If-None-Match）
- * @param request 请求对象
- * @param etag 当前内容的 ETag
- * @returns 如果 ETag 匹配返回 304 响应，否则返回 null
- */
-export function validateConditionalRequest(
-  request: Request,
-  etag: string
-): Response | null {
-  const ifNoneMatch = request.headers.get('If-None-Match')
-  
-  if (!ifNoneMatch) {
-    return null
-  }
-
-  // 处理多个 ETag 值（逗号分隔）
-  const clientETags = ifNoneMatch.split(',').map(e => e.trim())
-  
-  // 检查是否匹配
-  if (clientETags.includes(etag) || clientETags.includes('*')) {
-    return new Response(null, {
-      status: 304,
-      statusText: 'Not Modified',
-      headers: {
-        'ETag': etag,
-      },
-    })
-  }
-
-  return null
 }
 
 /**
